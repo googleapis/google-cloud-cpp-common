@@ -29,15 +29,28 @@ fi
 if [[ -n "${IMAGE+x}" ]]; then
   echo "IMAGE is already defined."
 else
-  if [[ -n "${DISTRO_VERSION+x}" ]]; then
-    readonly IMAGE_BASENAME="gcpp-common-ci-${DISTRO}-${DISTRO_VERSION}"
-    if [[ -n "${PROJECT_ID:-}" ]]; then
-      IMAGE="gcr.io/${PROJECT_ID}/google-cloud-cpp/${IMAGE_BASENAME}"
-    else
-      IMAGE="${IMAGE_BASENAME}"
-    fi
-    readonly IMAGE
-    readonly BUILD_OUTPUT="cmake-out/${IMAGE_BASENAME}-${BUILD_NAME}"
-    readonly BUILD_HOME="cmake-out/home/${IMAGE_BASENAME}-${BUILD_NAME}"
+  DOCKER_IMAGE_BASENAME="ci-${DISTRO}"
+  if [[ -n "${DISTRO_VERSION:-}" ]]; then
+    DOCKER_IMAGE_BASENAME="${DOCKER_IMAGE_BASENAME}-${DISTRO_VERSION}"
   fi
+  readonly DOCKER_IMAGE_BASENAME
+
+  if [[ -n "${PROJECT_ID:-}" ]]; then
+    DOCKER_IMAGE_PREFIX="gcr.io/${PROJECT_ID}/google-cloud-cpp-common"
+    IMAGE="${DOCKER_IMAGE_PREFIX}/${DOCKER_IMAGE_BASENAME}"
+  else
+    DOCKER_IMAGE_PREFIX="gcr.io/--no-project--/google-cloud-cpp-common"
+    IMAGE="${DOCKER_IMAGE_PREFIX}/${DOCKER_IMAGE_BASENAME}"
+  fi
+  readonly DOCKER_IMAGE_PREFIX
+  readonly IMAGE
+
+  BUILD_OUTPUT="cmake-out/${DOCKER_IMAGE_BASENAME}"
+  BUILD_HOME="cmake-out/home/${DOCKER_IMAGE_BASENAME}"
+  if [[ -n "${BUILD_NAME:-}" ]]; then
+    BUILD_OUTPUT="${BUILD_OUTPUT}-${BUILD_NAME}"
+    BUILD_HOME="${BUILD_HOME}-${BUILD_NAME}"
+  fi
+  readonly BUILD_OUTPUT
+  readonly BUILD_NAME
 fi
