@@ -50,30 +50,28 @@ automatically. But once installed you can use them for any build.
 Configure the super-build to install in `$HOME/local`:
 
 ```console
-cmake -Hsuper -Bcmake-out/super-install \
-    -DGOOGLE_CLOUD_CPP_EXTERNAL_PREFIX=$HOME/local
+cmake -Hsuper -Bcmake-out/si \
+    -DGOOGLE_CLOUD_CPP_EXTERNAL_PREFIX=$HOME/local-common -GNinja
 ```
 
-If you have Ninja installed, you should consider using `-GNinja` to speed up the
-build.
+Remove the `-GNinja` option if you do not have Ninja installed, though
+installing it would significantly speed up this build.
 
 Once the configuration is done, install the dependencies, but not the project
 itself:
 
 ```console
-cmake --build cmake-out/super-install --target google-cloud-cpp-dependencies \
-    -- -j $(nproc)
+cmake --build cmake-out/si --target project-dependencies
 ```
 
 Now you can use these dependencies multiple times. To use them, add the
-`$HOME/local` directory to `CMAKE_PREFIX_PATH` when you configure the project:
+`$HOME/local-common` directory to `CMAKE_PREFIX_PATH` when you configure
+the project:
 
 ```console
-cmake -H. -Bcmake-out/home -DCMAKE_PREFIX_PATH=$HOME/local
+cmake -H. -Bcmake-out/home -DCMAKE_PREFIX_PATH=$HOME/local-common
 
-# Adjust the number of threads used by modifying parameter for `-j 4`
-cmake --build cmake-out/home -- -j 4
+cmake --build cmake-out/home -- -j $(nproc)
 
-# Verify build by running tests
 (cd cmake-out/home && ctest --output-on-failure)
 ```
