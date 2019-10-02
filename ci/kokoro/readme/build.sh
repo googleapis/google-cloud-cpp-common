@@ -71,7 +71,7 @@ if [[ -f "${KOKORO_GFILE_DIR:-}/gcr-service-account.json" ]]; then
 fi
 gcloud auth configure-docker
 
-readonly DEV_IMAGE="gcr.io/${PROJECT_ID}/google-cloud-cpp/test-readme-${DISTRO}"
+readonly DEV_IMAGE="${DOCKER_IMAGE_PREFIX}/test-readme-${DISTRO}"
 echo "================================================================"
 echo "Download existing image (if available) for ${DISTRO} $(date)."
 has_cache="false"
@@ -109,7 +109,8 @@ if docker build "${devtools_flags[@]}" ci; then
    update_cache="true"
 fi
 
-if "${update_cache}" && [[ -z "${KOKORO_GITHUB_PULL_REQUEST_NUMBER:-}" ]]; then
+if "${update_cache}" && [[ "${RUNNING_CI:-}" == "yes" ]] &&
+   [[ -z "${KOKORO_GITHUB_PULL_REQUEST_NUMBER:-}" ]]; then
   echo "================================================================"
   echo "Uploading updated base image for ${DISTRO} $(date)."
   # Do not stop the build on a failure to update the cache.
