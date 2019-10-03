@@ -22,10 +22,10 @@ badge() {
   local -r distro="$1"
   cat <<_EOF_
 
-[![Kokoro install ${distro} status][kokoro-install-${distro}-shield]][kokoro-install-${distro}-link]
+[![Kokoro readme ${distro} status][kokoro-readme-${distro}-shield]][kokoro-readme-${distro}-link]
 
-[kokoro-install-${distro}-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-${distro}.svg
-[kokoro-install-${distro}-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-${distro}-link.html
+[kokoro-readme-${distro}-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/${distro}.svg
+[kokoro-readme-${distro}-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/${distro}-link.html
 _EOF_
 }
 
@@ -38,7 +38,7 @@ badge centos
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.centos"
 
 echo "### Debian (9 - Stretch)"
-badge debian
+badge debian-stretch
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.debian-stretch"
 
 echo "### Fedora (30)"
@@ -46,7 +46,7 @@ badge fedora
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.fedora"
 
 echo "### openSUSE (Tumbleweed)"
-badge opensuse
+badge opensuse-tumbleweed
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.opensuse-tumbleweed"
 
 echo "### openSUSE (Leap)"
@@ -54,7 +54,7 @@ badge opensuse-leap
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.opensuse-leap"
 
 echo "### Ubuntu (18.04 - Bionic Beaver)"
-badge ubuntu
+badge ubuntu-bionic
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.ubuntu-bionic"
 
 echo "### Ubuntu (16.04 - Xenial Xerus)"
