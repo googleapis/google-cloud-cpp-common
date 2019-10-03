@@ -67,6 +67,5 @@ ExternalProject_Add(
     LOG_INSTALL OFF)
 
 # This makes it easy to compile the dependencies before the code.
-add_custom_target(google-cloud-cpp-dependencies)
-add_dependencies(google-cloud-cpp-dependencies
-                 ${GOOGLE_CLOUD_CPP_DEPENDENCIES_LIST})
+add_custom_target(project-dependencies)
+add_dependencies(project-dependencies ${GOOGLE_CLOUD_CPP_DEPENDENCIES_LIST})
