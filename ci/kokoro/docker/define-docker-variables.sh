@@ -39,7 +39,9 @@ else
     DOCKER_IMAGE_PREFIX="gcr.io/${PROJECT_ID}/google-cloud-cpp-common"
     IMAGE="${DOCKER_IMAGE_PREFIX}/${DOCKER_IMAGE_BASENAME}"
   else
-    DOCKER_IMAGE_PREFIX="gcr.io/--no-project--/google-cloud-cpp-common"
+    # We want a prefix that works when running interactively, so it must be a
+    # (syntactically) valid project id, this works.
+    DOCKER_IMAGE_PREFIX="gcr.io/cloud-cpp-reserved/google-cloud-cpp-common"
     IMAGE="${DOCKER_IMAGE_PREFIX}/${DOCKER_IMAGE_BASENAME}"
   fi
   readonly DOCKER_IMAGE_PREFIX
