@@ -26,7 +26,7 @@ RUN zypper refresh && \
         libcurl-devel libopenssl-devel make tar wget zlib-devel
 # ```
 
-# OpenSUSE:tumbleweed provides packages for gRPC, libcurl, and protobuf, and the
+# openSUSE Tumbleweed provides packages for gRPC, libcurl, and protobuf, and the
 # versions of these packages are recent enough to support the Google Cloud
 # Platform proto files.
 
