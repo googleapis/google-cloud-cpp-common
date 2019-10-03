@@ -29,7 +29,7 @@ if (NOT TARGET c_ares_project)
     set_external_project_prefix_vars()
 
     include(ExternalProject)
-    externalproject_add(
+    ExternalProject_Add(
         c_ares_project
         EXCLUDE_FROM_ALL ON
         PREFIX "${CMAKE_BINARY_DIR}/external/c-ares"

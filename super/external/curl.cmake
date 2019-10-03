@@ -31,7 +31,7 @@ if (NOT TARGET curl_project)
     set_external_project_prefix_vars()
 
     include(ExternalProject)
-    externalproject_add(
+    ExternalProject_Add(
         curl_project
         DEPENDS c_ares_project ssl_project zlib_project
         EXCLUDE_FROM_ALL ON

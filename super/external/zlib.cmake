@@ -27,7 +27,7 @@ if (NOT TARGET zlib_project)
     set_external_project_prefix_vars()
 
     include(ExternalProject)
-    externalproject_add(
+    ExternalProject_Add(
         zlib_project
         EXCLUDE_FROM_ALL ON
         PREFIX "${CMAKE_BINARY_DIR}/external/zlib"

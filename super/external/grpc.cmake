@@ -32,7 +32,7 @@ if (NOT TARGET grpc_project)
     set_external_project_prefix_vars()
 
     include(ExternalProject)
-    externalproject_add(
+    ExternalProject_Add(
         grpc_project
         DEPENDS c_ares_project protobuf_project ssl_project
         EXCLUDE_FROM_ALL ON

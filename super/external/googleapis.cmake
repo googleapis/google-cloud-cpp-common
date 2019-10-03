@@ -32,7 +32,7 @@ if (NOT TARGET googleapis_project)
     set_external_project_prefix_vars()
 
     include(ExternalProject)
-    externalproject_add(
+    ExternalProject_Add(
         googleapis_project
         DEPENDS grpc_project
         EXCLUDE_FROM_ALL ON
