@@ -22,18 +22,16 @@ if (NOT TARGET curl_project)
     # Give application developers a hook to configure the version and hash
     # downloaded from GitHub.
     set(GOOGLE_CLOUD_CPP_CURL_URL
-        "https://curl.haxx.se/download/curl-7.60.0.tar.gz")
+        "https://curl.haxx.se/download/curl-7.65.3.tar.gz")
     set(GOOGLE_CLOUD_CPP_CURL_SHA256
-        "e9c37986337743f37fd14fe8737f246e97aec94b39d1b71e8a5973f72a9fc4f5")
+        "4376ac72b95572fb6c4fbffefb97c7ea0dd083e1974c0e44cd7e49396f454839")
 
     set_external_project_build_parallel_level(PARALLEL)
 
     set_external_project_prefix_vars()
 
-    create_external_project_library_byproduct_list(curl_byproducts "curl")
-
     include(ExternalProject)
-    ExternalProject_Add(
+    externalproject_add(
         curl_project
         DEPENDS c_ares_project ssl_project zlib_project
         EXCLUDE_FROM_ALL ON
@@ -67,7 +65,6 @@ if (NOT TARGET curl_project)
                       --build
                       <BINARY_DIR>
                       ${PARALLEL}
-        BUILD_BYPRODUCTS ${curl_byproducts}
         LOG_DOWNLOAD ON
         LOG_CONFIGURE ON
         LOG_BUILD ON

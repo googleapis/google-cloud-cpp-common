@@ -24,12 +24,10 @@ if (NOT TARGET zlib_project)
 
     set_external_project_build_parallel_level(PARALLEL)
 
-    create_external_project_library_byproduct_list(zlib_byproducts "z")
-
     set_external_project_prefix_vars()
 
     include(ExternalProject)
-    ExternalProject_Add(
+    externalproject_add(
         zlib_project
         EXCLUDE_FROM_ALL ON
         PREFIX "${CMAKE_BINARY_DIR}/external/zlib"
@@ -48,7 +46,6 @@ if (NOT TARGET zlib_project)
                       --build
                       <BINARY_DIR>
                       ${PARALLEL}
-        BUILD_BYPRODUCTS ${zlib_byproducts}
         LOG_DOWNLOAD ON
         LOG_CONFIGURE ON
         LOG_BUILD ON
