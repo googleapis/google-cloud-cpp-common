@@ -138,8 +138,8 @@ these dependencies.
 - [openSUSE (Leap)](#opensuse-leap)
 - [Ubuntu (18.04 - Bionic Beaver)](#ubuntu-1804---bionic-beaver)
 - [Ubuntu (16.04 - Xenial Xerus)](#ubuntu-1604---xenial-xerus)
-- [Ubuntu (16.04 - Trusty Tahr)](#ubuntu-1404---trusty-tahr)
-- [Debian (Stretch)](#debian-stretch)
+- [Ubuntu (14.04 - Trusty Tahr)](#ubuntu-1404---trusty-tahr)
+- [Debian (9 Stretch)](#debian-9---stretch)
 - [CentOS 7](#centos-7)
 
 ### Fedora (30)
@@ -230,7 +230,7 @@ sudo cmake --build . --target install
 ```
 
 
-### OpenSUSE (Tumbleweed)
+### openSUSE (Tumbleweed)
 
 Install the minimal development tools:
 
@@ -240,7 +240,7 @@ sudo zypper install --allow-downgrade -y cmake gcc gcc-c++ git gzip \
         libcurl-devel libopenssl-devel make tar wget zlib-devel
 ```
 
-OpenSUSE:tumbleweed provides packages for gRPC, libcurl, and protobuf, and the
+openSUSE Tumbleweed provides packages for gRPC, libcurl, and protobuf, and the
 versions of these packages are recent enough to support the Google Cloud
 Platform proto files.
 
@@ -317,7 +317,7 @@ sudo cmake --build . --target install
 ```
 
 
-### OpenSUSE (Leap)
+### openSUSE (Leap)
 
 Install the minimal development tools:
 
@@ -900,7 +900,7 @@ sudo cmake --build . --target install
 ```
 
 
-### Debian (Stretch)
+### Debian (9 - Stretch)
 
 First install the development tools and libcurl.
 On Debian Stretch, libcurl links against openssl-1.0.2, and one must link

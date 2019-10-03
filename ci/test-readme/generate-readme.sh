@@ -22,38 +22,40 @@ badge() {
   local -r distro="$1"
   cat <<_EOF_
 
-[![Kokoro install ${distro} status][kokoro-install-${distro}-shield]][kokoro-install-${distro}-link]
+[![Kokoro readme ${distro} status][kokoro-readme-${distro}-shield]][kokoro-readme-${distro}-link]
 
-[kokoro-install-${distro}-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-${distro}.svg
-[kokoro-install-${distro}-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-${distro}-link.html
+[kokoro-readme-${distro}-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/${distro}.svg
+[kokoro-readme-${distro}-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/${distro}-link.html
 _EOF_
 }
 
 readonly DOCKERFILES_DIR="${BINDIR}/../kokoro/readme"
 
+echo "<!-- Start of automatically generated content by ci/$(basename "$0") -->"
+
 echo "### CentOS (7)"
 badge centos
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.centos"
 
-echo "### Debian (Stretch)"
-badge debian
-"${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.debian"
+echo "### Debian (9 - Stretch)"
+badge debian-stretch
+"${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.debian-stretch"
 
 echo "### Fedora (30)"
 badge fedora
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.fedora"
 
-echo "### OpenSUSE (Tumbleweed)"
-badge opensuse
-"${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.opensuse"
+echo "### openSUSE (Tumbleweed)"
+badge opensuse-tumbleweed
+"${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.opensuse-tumbleweed"
 
-echo "### OpenSUSE (Leap)"
+echo "### openSUSE (Leap)"
 badge opensuse-leap
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.opensuse-leap"
 
 echo "### Ubuntu (18.04 - Bionic Beaver)"
-badge ubuntu
-"${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.ubuntu"
+badge ubuntu-bionic
+"${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.ubuntu-bionic"
 
 echo "### Ubuntu (16.04 - Xenial Xerus)"
 badge ubuntu-xenial
@@ -62,3 +64,5 @@ badge ubuntu-xenial
 echo "### Ubuntu (14.04 - Trusty Tahr)"
 badge ubuntu-trusty
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.ubuntu-trusty"
+
+echo "<!-- End of automatically generated content -->"

@@ -26,11 +26,11 @@ Google Cloud C++ Client Libraries.
 
 **Install Instructions**
 [![CI status install/centos][install/centos-shield]][install/centos-link]
-[![CI status install/debian][install/debian-shield]][install/debian-link]
+[![CI status install/debian-stretch][install/debian-stretch-shield]][install/debian-stretch-link]
 [![CI status install/fedora][install/fedora-shield]][install/fedora-link]
-[![CI status install/opensuse][install/opensuse-shield]][install/opensuse-link]
 [![CI status install/opensuse-leap][install/opensuse-leap-shield]][install/opensuse-leap-link]
-[![CI status install/ubuntu][install/ubuntu-shield]][install/ubuntu-link]
+[![CI status install/opensuse-tumbleweed][install/opensuse-tumbleweed-shield]][install/opensuse-tumbleweed-link]
+[![CI status install/ubuntu-bionic][install/ubuntu-bionic-shield]][install/ubuntu-bionic-link]
 [![CI status install/ubuntu-trusty][install/ubuntu-trusty-shield]][install/ubuntu-trusty-link]
 [![CI status install/ubuntu-xenial][install/ubuntu-xenial-shield]][install/ubuntu-xenial-link]
 
@@ -62,16 +62,16 @@ Google Cloud C++ Client Libraries.
 [docker/ubsan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/ubsan.svg
 [install/centos-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos-link.html
 [install/centos-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos.svg
-[install/debian-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/debian-link.html
-[install/debian-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/debian.svg
+[install/debian-stretch-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/debian-stretch-link.html
+[install/debian-stretch-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/debian-stretch.svg
 [install/fedora-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/fedora-link.html
 [install/fedora-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/fedora.svg
 [install/opensuse-leap-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/opensuse-leap-link.html
 [install/opensuse-leap-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/opensuse-leap.svg
-[install/opensuse-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/opensuse-link.html
-[install/opensuse-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/opensuse.svg
-[install/ubuntu-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-link.html
-[install/ubuntu-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu.svg
+[install/opensuse-tumbleweed-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/opensuse-tumbleweed-link.html
+[install/opensuse-tumbleweed-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/opensuse-tumbleweed.svg
+[install/ubuntu-bionic-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-bionic-link.html
+[install/ubuntu-bionic-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-bionic.svg
 [install/ubuntu-trusty-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-trusty-link.html
 [install/ubuntu-trusty-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-trusty.svg
 [install/ubuntu-xenial-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-xenial-link.html
@@ -96,10 +96,10 @@ Google Cloud C++ Client Libraries.
   - [Tests](#tests)
 - [Install Dependencies](#install-dependencies)
   - [CentOS (7)](#centos-7)
-  - [Debian (Stretch)](#debian-stretch)
+  - [Debian (9 - Stretch)](#debian-9---stretch)
   - [Fedora (30)](#fedora-30)
-  - [OpenSuSE (Tumbleweed)](#opensuse-tumbleweed)
-  - [OpenSuSE (Leap)](#opensuse-leap)
+  - [openSuSE (Tumbleweed)](#opensuse-tumbleweed)
+  - [openSuSE (Leap)](#opensuse-leap)
   - [Ubuntu (18.04 - Bionic Beaver)](#ubuntu-1804---bionic-beaver)
   - [Ubuntu (16.04 - Xenial Xerus)](#ubuntu-1604---xenial-xerus)
   - [Ubuntu (14.04 - Trusty Tahr)](#ubuntu-1404---trusty-tahr)
@@ -154,12 +154,13 @@ against the latest version of the SDK on each commit and PR.
 
 ## Install Dependencies
 
+<!-- Start of automatically generated content by ci/generate-readme.sh -->
 ### CentOS (7)
 
-[![Kokoro install centos status][kokoro-install-centos-shield]][kokoro-install-centos-link]
+[![Kokoro readme centos status][kokoro-readme-centos-shield]][kokoro-readme-centos-link]
 
-[kokoro-install-centos-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-centos.svg
-[kokoro-install-centos-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-centos-link.html
+[kokoro-readme-centos-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos.svg
+[kokoro-readme-centos-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos-link.html
 
 The development tools distributed with CentOS (notably CMake) are too old to
 build `google-cloud-cpp`. In these instructions, we use `cmake3` obtained from
@@ -175,12 +176,12 @@ sudo yum install -y automake cmake3 curl-devel gcc gcc-c++ git libtool \
 ln -sf /usr/bin/cmake3 /usr/bin/cmake && ln -sf /usr/bin/ctest3 /usr/bin/ctest
 ```
 
-### Debian (Stretch)
+### Debian (9 - Stretch)
 
-[![Kokoro install debian status][kokoro-install-debian-shield]][kokoro-install-debian-link]
+[![Kokoro readme debian-stretch status][kokoro-readme-debian-stretch-shield]][kokoro-readme-debian-stretch-link]
 
-[kokoro-install-debian-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-debian.svg
-[kokoro-install-debian-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-debian-link.html
+[kokoro-readme-debian-stretch-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-stretch.svg
+[kokoro-readme-debian-stretch-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-stretch-link.html
 
 On Debian Stretch, libcurl links against openssl-1.0.2, and one must link
 against the same version or risk an inconsistent configuration of the library.
@@ -199,10 +200,10 @@ sudo apt install -y build-essential cmake git gcc g++ cmake \
 
 ### Fedora (30)
 
-[![Kokoro install fedora status][kokoro-install-fedora-shield]][kokoro-install-fedora-link]
+[![Kokoro readme fedora status][kokoro-readme-fedora-shield]][kokoro-readme-fedora-link]
 
-[kokoro-install-fedora-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-fedora.svg
-[kokoro-install-fedora-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-fedora-link.html
+[kokoro-readme-fedora-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/fedora.svg
+[kokoro-readme-fedora-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/fedora-link.html
 
 ```bash
 sudo dnf makecache && \
@@ -210,12 +211,12 @@ sudo dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
         zlib-devel
 ```
 
-### OpenSUSE (Tumbleweed)
+### openSUSE (Tumbleweed)
 
-[![Kokoro install opensuse status][kokoro-install-opensuse-shield]][kokoro-install-opensuse-link]
+[![Kokoro readme opensuse-tumbleweed status][kokoro-readme-opensuse-tumbleweed-shield]][kokoro-readme-opensuse-tumbleweed-link]
 
-[kokoro-install-opensuse-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-opensuse.svg
-[kokoro-install-opensuse-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-opensuse-link.html
+[kokoro-readme-opensuse-tumbleweed-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/opensuse-tumbleweed.svg
+[kokoro-readme-opensuse-tumbleweed-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/opensuse-tumbleweed-link.html
 
 ```bash
 sudo zypper refresh && \
@@ -223,12 +224,12 @@ sudo zypper install --allow-downgrade -y cmake gcc gcc-c++ git gzip \
         libcurl-devel libopenssl-devel make tar wget zlib-devel
 ```
 
-### OpenSUSE (Leap)
+### openSUSE (Leap)
 
-[![Kokoro install opensuse-leap status][kokoro-install-opensuse-leap-shield]][kokoro-install-opensuse-leap-link]
+[![Kokoro readme opensuse-leap status][kokoro-readme-opensuse-leap-shield]][kokoro-readme-opensuse-leap-link]
 
-[kokoro-install-opensuse-leap-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-opensuse-leap.svg
-[kokoro-install-opensuse-leap-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-opensuse-leap-link.html
+[kokoro-readme-opensuse-leap-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/opensuse-leap.svg
+[kokoro-readme-opensuse-leap-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/opensuse-leap-link.html
 
 ```bash
 sudo zypper refresh && \
@@ -238,10 +239,10 @@ sudo zypper install --allow-downgrade -y cmake gcc gcc-c++ git gzip \
 
 ### Ubuntu (18.04 - Bionic Beaver)
 
-[![Kokoro install ubuntu status][kokoro-install-ubuntu-shield]][kokoro-install-ubuntu-link]
+[![Kokoro readme ubuntu-bionic status][kokoro-readme-ubuntu-bionic-shield]][kokoro-readme-ubuntu-bionic-link]
 
-[kokoro-install-ubuntu-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-ubuntu.svg
-[kokoro-install-ubuntu-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-ubuntu-link.html
+[kokoro-readme-ubuntu-bionic-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-bionic.svg
+[kokoro-readme-ubuntu-bionic-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-bionic-link.html
 
 ```bash
 sudo apt update && \
@@ -252,10 +253,10 @@ sudo apt install -y build-essential cmake git gcc g++ cmake \
 
 ### Ubuntu (16.04 - Xenial Xerus)
 
-[![Kokoro install ubuntu-xenial status][kokoro-install-ubuntu-xenial-shield]][kokoro-install-ubuntu-xenial-link]
+[![Kokoro readme ubuntu-xenial status][kokoro-readme-ubuntu-xenial-shield]][kokoro-readme-ubuntu-xenial-link]
 
-[kokoro-install-ubuntu-xenial-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-ubuntu-xenial.svg
-[kokoro-install-ubuntu-xenial-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-ubuntu-xenial-link.html
+[kokoro-readme-ubuntu-xenial-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-xenial.svg
+[kokoro-readme-ubuntu-xenial-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-xenial-link.html
 
 ```bash
 sudo apt update && \
@@ -266,10 +267,10 @@ sudo apt install -y build-essential cmake git gcc g++ cmake \
 
 ### Ubuntu (14.04 - Trusty Tahr)
 
-[![Kokoro install ubuntu-trusty status][kokoro-install-ubuntu-trusty-shield]][kokoro-install-ubuntu-trusty-link]
+[![Kokoro readme ubuntu-trusty status][kokoro-readme-ubuntu-trusty-shield]][kokoro-readme-ubuntu-trusty-link]
 
-[kokoro-install-ubuntu-trusty-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-ubuntu-trusty.svg
-[kokoro-install-ubuntu-trusty-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/kokoro-install-ubuntu-trusty-link.html
+[kokoro-readme-ubuntu-trusty-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-trusty.svg
+[kokoro-readme-ubuntu-trusty-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-trusty-link.html
 
 We use the `ubuntu-toolchain-r` PPA to get a modern version of CMake:
 
@@ -308,6 +309,8 @@ OpenSSL:
 export OPENSSL_ROOT_DIR=/usr/local/ssl
 export PKG_CONFIG_PATH=/usr/local/ssl/lib/pkgconfig
 ```
+
+<!-- End of automatically generated content -->
 
 #### macOS (using brew)
 
