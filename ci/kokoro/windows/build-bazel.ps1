@@ -16,23 +16,24 @@
 # Stop on errors. This is similar to `set -e` on Unix shells.
 $ErrorActionPreference = "Stop"
 
-# First check the required environment variables.
-if (-not (Test-Path env:CONFIG)) {
-    throw "Aborting build because the CONFIG environment variable is not set."
+$common_flags = @()
+if (Test-Path env:RUNNING_CI) {
+    # In the Kokoro builds we need to pass this flag.
+    $common_flags += ("--output_user_root=C:\b")
 }
-
-$test_flags = @("--output_user_root=C:\b", "--test_output=errors",
-                "--verbose_failures=true", "--keep_going")
-$build_flags = @("--output_user_root=C:\b", "--keep_going")
+$test_flags = @("--test_output=errors",
+                "--verbose_failures=true",
+                "--keep_going")
+$build_flags = @("--keep_going")
 
 Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Compiling and running unit tests"
-bazel test $test_flags -- //google/cloud/...:all
+bazel $common_flags test $test_flags -- //google/cloud/...:all
 if ($LastExitCode) {
     throw "bazel test failed with exit code $LastExitCode"
 }
 
 Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Running extra programs"
-bazel build $build_flags -- //google/cloud/...:all
+bazel $common_flags build $build_flags -- //google/cloud/...:all
 if ($LastExitCode) {
     throw "bazel test failed with exit code $LastExitCode"
 }
