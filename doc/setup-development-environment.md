@@ -122,7 +122,7 @@ in a `cmd.exe` shell, running as the `Administrator`:
 Then you can install the dependencies in the same shell:
 ```console
 > choco install -y cmake git cmake.portable activeperl ninja golang yasm putty
-> choco install -y visualstudio2017community visualstudio2017-workload-nativedesktop microsoft-build-tools
+> choco install -y visualstudio2019community visualstudio2019-workload-nativedesktop microsoft-build-tools
 ```
 
 ### Connecting to GitHub with PuTTY
@@ -160,11 +160,35 @@ and do not forget to setup the `GIT_SSH` environment variable:
 > set GIT_SSH=plink
 ```
 
-### Download and compile `vcpkg`
+### Clone `google-cloud-cpp-common`
 
-The previous installation should create a
-`Developer Command Prompt for VS 2017` entry in your "Windows" menu, use that
-entry to create a new shell.
+You may need to create a new key pair to connect to GitHub.  Search the web
+for how to do this.  Then you can clone the code:
+
+```console
+> cd \Users\%USERNAME%
+> git clone git@github.com:<GITHUB-USERNAME_HERE>/google-cloud-cpp-common.git
+> cd google-cloud-cpp-common
+```
+
+### Compile using the CI build script
+
+Once you are in the `google-cloud-cpp-common` directory you can use the build script:
+
+```console
+> call "c:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+> powershell -exec bypass ci\kokoro\windows\build.ps1 cmake
+```
+
+### Manually compiling the code
+
+If you prefer to manually compile the code, then you need to first build the
+dependencies, this document describes how to do so using `vcpkg`, a package
+manager from Microsoft.
+
+#### Download and compile `vcpkg`
+
+In a shell 
 In that shell, install `vcpkg` the Microsoft-supported ports for many Open
 Source projects:
 
@@ -175,32 +199,20 @@ Source projects:
 > .\bootstrap-vcpkg.bat
 ```
 
-You can get `vcpkg` to compile all the dependencies for `google-cloud-cpp` by
-installing `google-cloud-cpp` itself:
+Then ask `vcpkg` to download and compile the dependencies for the project:
 
 ```console
-> vcpkg.exe install google-cloud-cpp:x64-windows-static
+> vcpkg.exe install gtest:x64-windows-static googleapis:x64-windows-static
 > vcpkg.exe integrate install
-```
-
-### Clone and compile `google-cloud-cpp`
-
-You may need to create a new key pair to connect to GitHub.  Search the web
-for how to do this.  Then you can clone the code:
-
-```console
-> cd \Users\%USERNAME%
-> git clone git@github.com:<GITHUB-USERNAME_HERE>/google-cloud-cpp.git
-> cd google-cloud-cpp
 ```
 
 And compile the code using:
 
 ```console
-> call "c:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-> cmake -GNinja -H. -Bcmake-out
-   -DCMAKE_BUILD_TYPE=Debug
-   -DCMAKE_TOOLCHAIN_FILE=C:\Users\%USERNAME%\vcpkg\scripts\buildsystems\vcpkg.cmake
+> cd \Users\%USERNAME\google-cloud-cpp-common
+> cmake -GNinja -H. -Bcmake-out ^
+   -DCMAKE_BUILD_TYPE=Debug ^
+   -DCMAKE_TOOLCHAIN_FILE=C:\Users\%USERNAME%\vcpkg\scripts\buildsystems\vcpkg.cmake ^
    -DVCPKG_TARGET_TRIPLET=x64-windows-static
 > cmake --build cmake-out
 ```

@@ -1,4 +1,4 @@
-# Format: //devtools/kokoro/config/proto/build.proto
+# !/usr/bin/env powershell
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,16 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-build_file: "google-cloud-cpp-common/ci/kokoro/windows/build.bat"
-timeout_mins: 120
-
-action {
-  define_artifacts {
-    regex: "**/win_minidumps/*.dmp"
-  }
-}
-
-env_vars {
-  key: "BUILD_CACHE"
-  value: "gs://cloud-cpp-kokoro-results/build-artifacts/common/vcpkg-installed-win-2019.zip"
-}
+Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) No dependencies required for Bazel builds."
