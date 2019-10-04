@@ -19,16 +19,18 @@ workspace(name = "com_github_googleapis_google_cloud_cpp_test_install")
 # Applications should use (maybe with a different version):
 #
 # http_archive(
-#     name = "com_github_googleapis_google_cloud_cpp",
+#     name = "com_github_googleapis_google_cloud_cpp_common",
 #     url = "http://github.com/googleapis/google-cloud-cpp-common/archive/v0.12.0.tar.gz",
 #     strip_prefix = "google-cloud-cpp-0.12.0",
 #     sha256 = "TBD",
 # )
 #
-# But we want to test that the *current* version is correct.
+
+# But we want to test that the *current* version is correct. In our CI builds we
+# always mount the source code in `/v`
 local_repository(
     name = "com_github_googleapis_google_cloud_cpp_common",
-    path = "../..",
+    path = "/v",
 )
 
 load("@com_github_googleapis_google_cloud_cpp_common//bazel:google_cloud_cpp_common_deps.bzl", "google_cloud_cpp_common_deps")
