@@ -61,7 +61,7 @@ if (Test-Path env:BUILD_CACHE) {
         # Ignore errors, caching failures should not break the build.
         Write-Host "extracting build cache failed with exit code $LastExitCode"
     }
-    
+
 }
 
 Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Bootstrap vcpkg."
@@ -111,11 +111,11 @@ if (Test-Path env:BUILD_CACHE) {
         # Ignore errors, caching failures should not break the build.
         Write-Host "zip build cache failed with exit code $LastExitCode"
     }
-    
+
     Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Upload cache zip file."
     gsutil cp vcpkg-installed.zip $BUILD_CACHE
     if ($LastExitCode) {
         # Ignore errors, caching failures should not break the build.
         Write-Host "gsutil upload failed with exit code $LastExitCode"
-    }    
+    }
 }

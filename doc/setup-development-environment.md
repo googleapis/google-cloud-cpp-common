@@ -188,7 +188,6 @@ manager from Microsoft.
 
 #### Download and compile `vcpkg`
 
-In a shell 
 In that shell, install `vcpkg` the Microsoft-supported ports for many Open
 Source projects:
 
