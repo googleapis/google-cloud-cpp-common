@@ -71,17 +71,6 @@ powershell -exec bypass "${ScriptLocation}/${BuildScript}"
 # even if the build fails.
 $BuildExitCode = $LastExitCode
 
-if (Test-Path env:KOKORO_ARTIFACTS_DIR) {
-    # Kokoro rsyncs all the files in the %KOKORO_ARTIFACTS_DIR%, which takes a
-    # long time. The recommended workaround is to remove all the files that are
-    # not interesting artifacts.
-    Write-Host
-    Get-Date -Format o
-    Write-Host "Cleaning up artifacts... "
-    Set-Location $env:KOKORO_ARTIFACTS_DIR
-    Get-ChildItem -Recurse -File -Exclude "test.xml,sponge_log.xml,build.bat" | Remove-Item -Recurse -Force
-}
-
 if ($BuildExitCode) {
     throw "Build failed with exit code $LastExitCode"
 }

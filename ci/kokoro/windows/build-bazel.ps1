@@ -18,8 +18,14 @@ $ErrorActionPreference = "Stop"
 
 $common_flags = @()
 if (Test-Path env:RUNNING_CI) {
-    # In the Kokoro builds we need to pass this flag.
-    $common_flags += ("--output_user_root=C:\b")
+    # Create output directory for Bazel. Bazel creates really long paths,
+    # sometimes exceeding the Windows limits. Using a short name for the
+    # root of the Bazel output directory works around this problem.
+    $bazel_root="C:\b"
+    if (-not (Test-Path $bazel_root)) {
+        New-Item -ItemType Directory -Path $bazel_root
+    }
+    $common_flags += ("--output_user_root=${bazel_root}")
 }
 $test_flags = @("--test_output=errors",
                 "--verbose_failures=true",
