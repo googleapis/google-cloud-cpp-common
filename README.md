@@ -21,6 +21,8 @@ Google Cloud C++ Client Libraries.
 [![CI status docker/tsan][docker/tsan-shield]][docker/tsan-link]
 [![CI status docker/ubsan][docker/ubsan-shield]][docker/ubsan-link]
 [![CI status macos/bazel][macos/bazel-shield]][macos/bazel-link]
+[![CI status windows/bazel][windows/bazel-shield]][windows/bazel-link]
+[![CI status windows/cmake][windows/cmake-shield]][windows/cmake-link]
 [![Code Coverage Status][codecov-io-badge]][codecov-io-link]
 [![Link to Reference Documentation][doxygen-shield]][doxygen-link]
 
@@ -80,6 +82,10 @@ Google Cloud C++ Client Libraries.
 [install/ubuntu-xenial-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-xenial.svg
 [macos/bazel-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/bazel-link.html
 [macos/bazel-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/bazel.svg
+[windows/bazel-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/windows/bazel-link.html
+[windows/bazel-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/windows/bazel.svg
+[windows/cmake-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/windows/cmake-link.html
+[windows/cmake-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/windows/cmake.svg
 [codecov-io-badge]: https://codecov.io/gh/googleapis/google-cloud-cpp-common/branch/master/graph/badge.svg
 [codecov-io-link]: https://codecov.io/gh/googleapis/google-cloud-cpp-common
 [doxygen-shield]: https://img.shields.io/badge/documentation-master-brightgreen.svg
