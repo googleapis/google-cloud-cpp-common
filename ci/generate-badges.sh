@@ -23,7 +23,9 @@ readonly BINDIR
 echo "<!-- Start of automatically generated content by ci/$(basename "$0") -->"
 echo
 echo '**Core Builds**'
-find "${BINDIR}/kokoro/macos" "${BINDIR}/kokoro/docker" \
+find "${BINDIR}/kokoro/macos" \
+     "${BINDIR}/kokoro/docker" \
+     "${BINDIR}/kokoro/windows" \
     \( -name '*-presubmit.cfg' -o -name 'common.cfg' \) -prune \
     -o -name '*.cfg' -print0 |
   while IFS= read -r -d $'\0' file; do
@@ -54,7 +56,10 @@ find "${BINDIR}/kokoro/install" \
 
 # We need at least one blank line before the link definitions.
 echo
-find "${BINDIR}/kokoro/macos" "${BINDIR}/kokoro/docker" "${BINDIR}/kokoro/install" \
+find "${BINDIR}/kokoro/macos" \
+     "${BINDIR}/kokoro/docker" \
+     "${BINDIR}/kokoro/install" \
+     "${BINDIR}/kokoro/windows" \
     \( -name '*-presubmit.cfg' -o -name 'common.cfg' \) -prune \
     -o -name '*.cfg' -print0 |
   while IFS= read -r -d $'\0' file; do
