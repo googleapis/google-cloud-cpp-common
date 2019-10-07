@@ -27,29 +27,28 @@ $CONFIG = $env:CONFIG
 # multiple times while debugging vcpkg installs.  It also works on AppVeyor
 # where we cache the vcpkg installation, but it might be empty on the first
 # build.
-Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Obtaining vcpkg repository."
 Set-Location ..
-if (Test-Path vcpkg\.git) {
-    Set-Location vcpkg
-    git pull
-} elseif (Test-Path vcpkg\installed) {
-    Move-Item vcpkg vcpkg-tmp
-    git clone https://github.com/Microsoft/vcpkg
-    Move-Item vcpkg-tmp\installed vcpkg
-    Set-Location vcpkg
-} else {
-    git clone https://github.com/Microsoft/vcpkg
-    Set-Location vcpkg
+if (Test-Path env:RUNNING_CI) {
+    Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Cloning vcpkg repository."
+    if (Test-Path "vcpkg") {
+        Remove-Item -LiteralPath "vcpkg" -Force -Recurse
+    }
+    git clone --depth 10 https://github.com/Microsoft/vcpkg.git
+    if ($LastExitCode) {
+      throw "vcpkg git setup failed with exit code $LastExitCode"
+    }
 }
-if ($LastExitCode) {
-    throw "vcpkg git setup failed with exit code $LastExitCode"
+if (-not (Test-Path "vcpkg")) {
+    throw "Missing vcpkg directory."
 }
+Set-Location vcpkg
 
 # If BUILD_CACHE is set (which typically is on Kokoro builds), try
 # to download and extract the build cache.
 if (Test-Path env:BUILD_CACHE) {
+    gcloud auth activate-service-account --key-file "${env:KOKORO_GFILE_DIR}/build-results-service-account.json"
     Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Downloading build cache."
-    gsutil cp $BUILD_CACHE vcpkg-installed.zip
+    gsutil cp $env:BUILD_CACHE vcpkg-installed.zip
     if ($LastExitCode) {
         # Ignore errors, caching failures should not break the build.
         Write-Host "gsutil download failed with exit code $LastExitCode"
@@ -60,13 +59,13 @@ if (Test-Path env:BUILD_CACHE) {
         # Ignore errors, caching failures should not break the build.
         Write-Host "extracting build cache failed with exit code $LastExitCode"
     }
-
 }
 
 Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Bootstrap vcpkg."
 powershell -exec bypass scripts\bootstrap.ps1
 if ($LastExitCode) {
-    throw "vcpkg bootstrap failed with exit code $LastExitCode"
+  throw "Error bootstrapping vcpkg: $LastExitCode"
+  Write-Host -ForegroundColor Red "bootstrap[1] failed"
 }
 
 # Only compile the release version of the packages we need, for Debug builds
@@ -112,7 +111,7 @@ if (Test-Path env:BUILD_CACHE) {
     }
 
     Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Upload cache zip file."
-    gsutil cp vcpkg-installed.zip $BUILD_CACHE
+    gsutil cp vcpkg-installed.zip $env:BUILD_CACHE
     if ($LastExitCode) {
         # Ignore errors, caching failures should not break the build.
         Write-Host "gsutil upload failed with exit code $LastExitCode"

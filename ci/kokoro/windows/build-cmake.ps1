@@ -49,6 +49,11 @@ if ($LastExitCode) {
 
 Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Running unit tests $env:CONFIG"
 Set-Location cmake-out
+if (Test-Path env:RUNNING_CI) {
+    # On Kokoro we need to define %TEMP% or the tests do not have a valid directory for
+    # temporary files.
+    $env:TEMP="T:\tmp"
+}
 ctest --output-on-failure -C $env:CONFIG
 if ($LastExitCode) {
     throw "ctest failed with exit code $LastExitCode"
