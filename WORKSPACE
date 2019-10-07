@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-workspace(name = "com_github_googleapis_google_cloud_cpp")
+workspace(name = "com_github_googleapis_google_cloud_cpp_common")
 
 load("//bazel:google_cloud_cpp_common_deps.bzl", "google_cloud_cpp_common_deps")
 

@@ -7,6 +7,7 @@ Google Cloud C++ Client Libraries.
 
 **Core Builds**
 [![CI status docker/asan][docker/asan-shield]][docker/asan-link]
+[![CI status docker/bazel-dependency][docker/bazel-dependency-shield]][docker/bazel-dependency-link]
 [![CI status docker/check-api][docker/check-api-shield]][docker/check-api-link]
 [![CI status docker/clang-tidy][docker/clang-tidy-shield]][docker/clang-tidy-link]
 [![CI status docker/coverage][docker/coverage-shield]][docker/coverage-link]
@@ -19,8 +20,7 @@ Google Cloud C++ Client Libraries.
 [![CI status docker/shared][docker/shared-shield]][docker/shared-link]
 [![CI status docker/tsan][docker/tsan-shield]][docker/tsan-link]
 [![CI status docker/ubsan][docker/ubsan-shield]][docker/ubsan-link]
-[![CI status macos/continuous][macos/continuous-shield]][macos/continuous-link]
-[![CI status macos/presubmit][macos/presubmit-shield]][macos/presubmit-link]
+[![CI status macos/bazel][macos/bazel-shield]][macos/bazel-link]
 [![Code Coverage Status][codecov-io-badge]][codecov-io-link]
 [![Link to Reference Documentation][doxygen-shield]][doxygen-link]
 
@@ -36,6 +36,8 @@ Google Cloud C++ Client Libraries.
 
 [docker/asan-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/asan-link.html
 [docker/asan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/asan.svg
+[docker/bazel-dependency-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/bazel-dependency-link.html
+[docker/bazel-dependency-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/bazel-dependency.svg
 [docker/check-api-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/check-api-link.html
 [docker/check-api-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/check-api.svg
 [docker/clang-tidy-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/clang-tidy-link.html
@@ -76,10 +78,8 @@ Google Cloud C++ Client Libraries.
 [install/ubuntu-trusty-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-trusty.svg
 [install/ubuntu-xenial-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-xenial-link.html
 [install/ubuntu-xenial-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-xenial.svg
-[macos/continuous-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/continuous-link.html
-[macos/continuous-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/continuous.svg
-[macos/presubmit-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/presubmit-link.html
-[macos/presubmit-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/presubmit.svg
+[macos/bazel-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/bazel-link.html
+[macos/bazel-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/bazel.svg
 [codecov-io-badge]: https://codecov.io/gh/googleapis/google-cloud-cpp-common/branch/master/graph/badge.svg
 [codecov-io-link]: https://codecov.io/gh/googleapis/google-cloud-cpp-common
 [doxygen-shield]: https://img.shields.io/badge/documentation-master-brightgreen.svg

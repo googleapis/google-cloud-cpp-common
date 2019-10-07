@@ -16,12 +16,13 @@ package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])  # Apache 2.0
 
-cc_binary(
+cc_test(
     name = "common_install_test",
     srcs = [
         "common_install_test.cc",
     ],
     deps = [
         "@com_github_googleapis_google_cloud_cpp_common//google/cloud:google_cloud_cpp_common",
+        "@com_github_googleapis_google_cloud_cpp_common//google/cloud/grpc_utils:google_cloud_cpp_grpc_utils",
     ],
 )
