@@ -206,9 +206,9 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-tar -xf b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-cd $HOME/Downloads/googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+tar -xf release-1.10.0.tar.gz
+cd $HOME/Downloads/googletest-release-1.10.0
 cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
@@ -293,9 +293,9 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-tar -xf b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-cd $HOME/Downloads/googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+tar -xf release-1.10.0.tar.gz
+cd $HOME/Downloads/googletest-release-1.10.0
 cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
@@ -440,9 +440,9 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-tar -xf b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-cd $HOME/Downloads/googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+tar -xf release-1.10.0.tar.gz
+cd $HOME/Downloads/googletest-release-1.10.0
 cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
@@ -554,9 +554,9 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-tar -xf b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-cd $HOME/Downloads/googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+tar -xf release-1.10.0.tar.gz
+cd $HOME/Downloads/googletest-release-1.10.0
 cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
@@ -692,9 +692,9 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-tar -xf b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-cd $HOME/Downloads/googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+tar -xf release-1.10.0.tar.gz
+cd $HOME/Downloads/googletest-release-1.10.0
 cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
@@ -875,9 +875,9 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-tar -xf b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-cd $HOME/Downloads/googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+tar -xf release-1.10.0.tar.gz
+cd $HOME/Downloads/googletest-release-1.10.0
 cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
@@ -957,9 +957,9 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-tar -xf b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-cd $HOME/Downloads/googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+tar -xf release-1.10.0.tar.gz
+cd $HOME/Downloads/googletest-release-1.10.0
 cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
@@ -1078,9 +1078,9 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-tar -xf b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-cd $HOME/Downloads/googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+tar -xf release-1.10.0.tar.gz
+cd $HOME/Downloads/googletest-release-1.10.0
 cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
@@ -1213,9 +1213,9 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-tar -xf b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
-cd $HOME/Downloads/googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+tar -xf release-1.10.0.tar.gz
+cd $HOME/Downloads/googletest-release-1.10.0
 cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \

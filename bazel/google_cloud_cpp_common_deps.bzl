@@ -26,15 +26,26 @@ def google_cloud_cpp_common_deps():
     override the version of the dependencies they want to use.
     """
 
-    # Load a newer version of google test than what gRPC does.
+    # Load rules_cc, used by googletest
+    if "rules_cc" not in native.existing_rules():
+        http_archive(
+            name = "rules_cc",
+            strip_prefix = "rules_cc-a508235df92e71d537fcbae0c7c952ea6957a912",
+            urls = [
+                "https://github.com/bazelbuild/rules_cc/archive/a508235df92e71d537fcbae0c7c952ea6957a912.tar.gz",
+            ],
+            sha256 = "d21d38c4b8e81eed8fa95ede48dd69aba01a3b938be6ac03d2b9dc61886a7183",
+        )
+
+    # Load a version of googletest that we know works.
     if "com_google_googletest" not in native.existing_rules():
         http_archive(
             name = "com_google_googletest",
-            strip_prefix = "googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb",
+            strip_prefix = "googletest-release-1.10.0",
             urls = [
-                "https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz",
+                "https://github.com/google/googletest/archive/release-1.10.0.tar.gz",
             ],
-            sha256 = "8d9aa381a6885fe480b7d0ce8ef747a0b8c6ee92f99d74ab07e3503434007cb0",
+            sha256 = "9dc9157a9a1551ec7a7e43daea9a694a0bb5fb8bec81235d8a1e6ef64c716dcb",
         )
 
     # Load the googleapis dependency.
