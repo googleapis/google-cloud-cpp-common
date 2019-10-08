@@ -200,5 +200,9 @@ echo "### Debian (9 - Stretch)"
 "${BINDIR}/extract-install.sh" "${DOCKERFILES_DIR}/Dockerfile.debian-stretch"
 
 echo
+echo "### CentOS (8)"
+"${BINDIR}/extract-install.sh" "${DOCKERFILES_DIR}/Dockerfile.centos-8"
+
+echo
 echo "### CentOS (7)"
 "${BINDIR}/extract-install.sh" "${DOCKERFILES_DIR}/Dockerfile.centos"
