@@ -33,12 +33,16 @@ readonly DOCKERFILES_DIR="${BINDIR}/../kokoro/readme"
 
 echo "<!-- Start of automatically generated content by ci/$(basename "$0") -->"
 
+echo "### CentOS (8)"
+badge centos-8
+"${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.centos-8"
+
 echo "### CentOS (7)"
 badge centos
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.centos"
 
 echo "### Debian (10 - Buster)"
-badge debian-stretch
+badge debian-buster
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.debian-buster"
 
 echo "### Debian (9 - Stretch)"

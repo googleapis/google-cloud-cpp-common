@@ -27,7 +27,9 @@ Google Cloud C++ Client Libraries.
 [![Link to Reference Documentation][doxygen-shield]][doxygen-link]
 
 **Install Instructions**
+[![CI status install/centos-8][install/centos-8-shield]][install/centos-8-link]
 [![CI status install/centos][install/centos-shield]][install/centos-link]
+[![CI status install/debian-buster][install/debian-buster-shield]][install/debian-buster-link]
 [![CI status install/debian-stretch][install/debian-stretch-shield]][install/debian-stretch-link]
 [![CI status install/fedora][install/fedora-shield]][install/fedora-link]
 [![CI status install/opensuse-leap][install/opensuse-leap-shield]][install/opensuse-leap-link]
@@ -64,8 +66,12 @@ Google Cloud C++ Client Libraries.
 [docker/tsan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/tsan.svg
 [docker/ubsan-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/ubsan-link.html
 [docker/ubsan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/ubsan.svg
+[install/centos-8-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos-8-link.html
+[install/centos-8-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos-8.svg
 [install/centos-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos-link.html
 [install/centos-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos.svg
+[install/debian-buster-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/debian-buster-link.html
+[install/debian-buster-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/debian-buster.svg
 [install/debian-stretch-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/debian-stretch-link.html
 [install/debian-stretch-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/debian-stretch.svg
 [install/fedora-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/fedora-link.html
@@ -101,6 +107,7 @@ Google Cloud C++ Client Libraries.
   - [Libraries](#libraries)
   - [Tests](#tests)
 - [Install Dependencies](#install-dependencies)
+  - [CentOS (8)](#centos-8)
   - [CentOS (7)](#centos-7)
   - [Debian (10 - Buster)](#debian-10---buster)
   - [Debian (9 - Stretch)](#debian-9---stretch)
@@ -162,6 +169,21 @@ against the latest version of the SDK on each commit and PR.
 ## Install Dependencies
 
 <!-- Start of automatically generated content by ci/generate-readme.sh -->
+### CentOS (8)
+
+[![Kokoro readme centos-8 status][kokoro-readme-centos-8-shield]][kokoro-readme-centos-8-link]
+
+[kokoro-readme-centos-8-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos-8.svg
+[kokoro-readme-centos-8-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos-8-link.html
+
+Install the development tools needed to compile the project:
+
+```bash
+sudo dnf makecache && \
+sudo dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
+        zlib-devel
+```
+
 ### CentOS (7)
 
 [![Kokoro readme centos status][kokoro-readme-centos-shield]][kokoro-readme-centos-link]
@@ -185,10 +207,10 @@ ln -sf /usr/bin/cmake3 /usr/bin/cmake && ln -sf /usr/bin/ctest3 /usr/bin/ctest
 
 ### Debian (10 - Buster)
 
-[![Kokoro readme debian-stretch status][kokoro-readme-debian-stretch-shield]][kokoro-readme-debian-stretch-link]
+[![Kokoro readme debian-buster status][kokoro-readme-debian-buster-shield]][kokoro-readme-debian-buster-link]
 
-[kokoro-readme-debian-stretch-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-stretch.svg
-[kokoro-readme-debian-stretch-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-stretch-link.html
+[kokoro-readme-debian-buster-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-buster.svg
+[kokoro-readme-debian-buster-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-buster-link.html
 
 ```bash
 sudo apt update && \

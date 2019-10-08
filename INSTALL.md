@@ -1103,6 +1103,126 @@ sudo cmake --build . --target install
 ```
 
 
+### CentOS (8)
+
+Install the minimal development tools:
+
+```bash
+sudo dnf makecache && \
+sudo dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
+        zlib-devel libcurl-devel c-ares-devel tar wget which
+```
+
+#### crc32c
+
+There is no CentOS package for this library. To install it, use:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
+tar -xf 1.0.6.tar.gz
+cd $HOME/Downloads/crc32c-1.0.6
+cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBUILD_SHARED_LIBS=yes \
+      -DCRC32C_BUILD_TESTS=OFF \
+      -DCRC32C_BUILD_BENCHMARKS=OFF \
+      -DCRC32C_USE_GLOG=OFF \
+      -H. -Bcmake-out/crc32c
+sudo cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
+sudo ldconfig
+```
+
+#### Protobuf
+
+Likewise, manually install Protobuf:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
+tar -xf v3.9.1.tar.gz
+cd $HOME/Downloads/protobuf-3.9.1/cmake
+cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -H. -Bcmake-out
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+sudo ldconfig
+```
+
+#### gRPC
+
+gRPC also requires a manual install. gRPC uses `pkg-config` to find protobuf,
+as we installed this library in `/usr/local/*` we need to change the
+environment variables used by `pkg-config` to find modules:
+
+```bash
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
+export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
+export PATH=/usr/local/bin:${PATH}
+```
+
+Once the environment is setup, we can compile gRPC:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
+tar -xf v1.23.1.tar.gz
+cd $HOME/Downloads/grpc-1.23.1
+make -j ${NCPU:-4}
+sudo make install
+sudo ldconfig
+```
+
+#### googleapis
+
+There is no Fedora package for this library. To install it, use:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
+tar -xf v0.1.5.tar.gz
+cd $HOME/Downloads/cpp-cmakefiles-0.1.5
+cmake \
+    -DBUILD_SHARED_LIBS=YES \
+    -H. -Bcmake-out
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+sudo ldconfig
+```
+
+#### googletest
+
+We need a recent version of GoogleTest to compile the unit and integration
+tests.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+tar -xf release-1.10.0.tar.gz
+cd $HOME/Downloads/googletest-release-1.10.0
+cmake \
+      -DCMAKE_BUILD_TYPE="Release" \
+      -DBUILD_SHARED_LIBS=yes \
+      -H. -Bcmake-out
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+sudo ldconfig
+```
+
+#### google-cloud-cpp
+
+We can now compile and install `google-cloud-cpp`.
+
+```bash
+cd $HOME/google-cloud-cpp
+cmake -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
+cd $HOME/google-cloud-cpp/cmake-out
+ctest --output-on-failure
+sudo cmake --build . --target install
+```
+
+
 ### CentOS (7)
 
 First install the development tools and OpenSSL. The development tools
