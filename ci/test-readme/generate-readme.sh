@@ -37,6 +37,10 @@ echo "### CentOS (7)"
 badge centos
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.centos"
 
+echo "### Debian (10 - Buster)"
+badge debian-stretch
+"${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.debian-buster"
+
 echo "### Debian (9 - Stretch)"
 badge debian-stretch
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.debian-stretch"

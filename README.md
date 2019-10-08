@@ -102,6 +102,7 @@ Google Cloud C++ Client Libraries.
   - [Tests](#tests)
 - [Install Dependencies](#install-dependencies)
   - [CentOS (7)](#centos-7)
+  - [Debian (10 - Buster)](#debian-10---buster)
   - [Debian (9 - Stretch)](#debian-9---stretch)
   - [Fedora (30)](#fedora-30)
   - [openSuSE (Tumbleweed)](#opensuse-tumbleweed)
@@ -180,6 +181,20 @@ sudo yum makecache && \
 sudo yum install -y automake cmake3 curl-devel gcc gcc-c++ git libtool \
         make openssl-devel pkgconfig tar wget which zlib-devel
 ln -sf /usr/bin/cmake3 /usr/bin/cmake && ln -sf /usr/bin/ctest3 /usr/bin/ctest
+```
+
+### Debian (10 - Buster)
+
+[![Kokoro readme debian-stretch status][kokoro-readme-debian-stretch-shield]][kokoro-readme-debian-stretch-link]
+
+[kokoro-readme-debian-stretch-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-stretch.svg
+[kokoro-readme-debian-stretch-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-stretch-link.html
+
+```bash
+sudo apt update && \
+sudo apt install -y build-essential cmake git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev make \
+        pkg-config tar wget zlib1g-dev
 ```
 
 ### Debian (9 - Stretch)
