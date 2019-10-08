@@ -30,11 +30,11 @@ def google_cloud_cpp_common_deps():
     if "rules_cc" not in native.existing_rules():
         http_archive(
             name = "rules_cc",
-            strip_prefix = "rules_cc-master",
+            strip_prefix = "rules_cc-a508235df92e71d537fcbae0c7c952ea6957a912",
             urls = [
                 "https://github.com/bazelbuild/rules_cc/archive/a508235df92e71d537fcbae0c7c952ea6957a912.tar.gz",
             ],
-            sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            sha256 = "d21d38c4b8e81eed8fa95ede48dd69aba01a3b938be6ac03d2b9dc61886a7183",
         )
 
     # Load a version of googletest that we know works.
