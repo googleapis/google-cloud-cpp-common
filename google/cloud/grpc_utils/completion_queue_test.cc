@@ -17,6 +17,7 @@
 #include <gtest/gtest.h>
 #include <chrono>
 #include <memory>
+#include <thread>
 
 namespace google {
 namespace cloud {
