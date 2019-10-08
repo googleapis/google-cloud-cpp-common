@@ -13,7 +13,10 @@
 // limitations under the License.
 
 #include "google/cloud/grpc_utils/completion_queue.h"
+#include "google/cloud/future.h"
 #include <gtest/gtest.h>
+#include <chrono>
+#include <memory>
 
 namespace google {
 namespace cloud {
