@@ -1,13 +1,13 @@
-# Creating a new release of google-cloud-cpp
+# Creating a new release of google-cloud-cpp-common
 
-Unless there are no changes, we create releases for `google-cloud-cpp` every
-4 weeks, or if there is a major announcement or change to the status of one
-of the libraries (like reaching the "Alpha" or "Beta" milestone).
+Unless there are no changes, we create releases for `google-cloud-cpp-common`
+every 4 weeks, or if there is a major announcement or change to the status of
+one of the libraries.
 
-The intended audience of this document are developers in the `google-cloud-cpp`
-project that need to create a new release. The audience is expected to be
-familiar with the project itself, [git][git-docs], [GitHub][github-guides],
-[semantic versioning](https://semver.org).
+The intended audience of this document are developers in the
+`google-cloud-cpp-common` project that need to create a new release. The
+audience is expected to be familiar with the project itself, [git][git-docs],
+[GitHub][github-guides], [semantic versioning](https://semver.org).
 
 ## Preparing for a release
 
@@ -19,20 +19,10 @@ Assuming you are working on your own fork of the `google-cloud-cpp` project,
 and `upstream` points to the `googleapis/google-cloud-cpp` remote,
 these commands should be useful in identifying important changes:
 
-```bash
-# Summarize the output of this into google/cloud/bigtable/README.md
-git log upstream/master -- google/cloud/bigtable
-```
+Update `google/cloud/README.md` based on the release notes:
 
 ```bash
-# Summarize the output of this into google/cloud/storage/README.md
-git log upstream/master -- google/cloud/storage
-```
-
-Do not forget to update `google/cloud/README.md` too:
-
-```bash
-git log upstream/master -- google/cloud ":(exclude)google/cloud/storage" ":(exclude)google/cloud/bigtable"
+git log upstream/master -- google/cloud
 ```
 
 It is not recommended that you create the release branch before this PR is
@@ -64,8 +54,8 @@ actual release value, e.g. `v0.5` or `v0.7`, and not the generic `N`.
 Clone the main repository to create the tags and branch:
 
 ```bash
-git clone git@github.com:googleapis/google-cloud-cpp.git releases
-cd releases
+git clone git@github.com:googleapis/google-cloud-cpp-common.git common-releases
+cd common-releases
 ```
 
 Create a tag for the new release.
@@ -90,7 +80,7 @@ This will start a CI build cycle. The builds *should* pass, as we normally keep
 ## Create pre-release for review.
 
 Create a pre-release using
-[GitHub](https://github.com/googleapis/google-cloud-cpp/releases/new).
+[GitHub](https://github.com/googleapis/google-cloud-cpp-common/releases/new).
 Use the tag that you just created ("${RELEASE}.0").
 Make sure to check the `pre-release` checkbox.
 
@@ -102,8 +92,8 @@ commands might be handy:
 
 ```bash
 TAG="${RELEASE}.0" # change this to the actual tag
-wget -q -O - "https://github.com/googleapis/google-cloud-cpp/archive/${TAG}.tar.gz" | sha256sum
-wget -q -O - "https://github.com/googleapis/google-cloud-cpp/archive/${TAG}.zip" | sha256sum
+wget -q -O - "https://github.com/googleapis/google-cloud-cpp-common/archive/${TAG}.tar.gz" | sha256sum
+wget -q -O - "https://github.com/googleapis/google-cloud-cpp-common/archive/${TAG}.zip" | sha256sum
 ```
 
 You can publish this release once the notes are updated.
@@ -117,6 +107,8 @@ Edit the notes as needed.
 Uncheck the pre-release checkbox and publish.
 
 ## Generate and upload the documentation to googleapis.dev
+
+<!-- TODO(...) - Create a refdocs push for google-cloud-cpp-common -->
 
 Manually run a Kokoro job
 `cloud-devrel/client-libraries/cpp/google-cloud-cpp/refdocs` in the Cloud C++
@@ -161,7 +153,7 @@ Please note that we use more strict settings for release branches than for
 
 [git-docs]: https://git-scm.com/doc
 [github-guides]: https://guides.github.com/
-[github-branch-settings]: https://github.com/googleapis/google-cloud-cpp/settings/branches
+[github-branch-settings]: https://github.com/googleapis/google-cloud-cpp-common/settings/branches
 
 ## Push the release to Microsoft vcpkg
 
