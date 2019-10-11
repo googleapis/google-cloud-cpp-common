@@ -73,41 +73,6 @@ def google_cloud_cpp_common_deps():
             sha256 = "f56ced18740895b943418fa29575a65cc2396ccfa3159fa40d318ef5f59471f9",
         )
 
-    # We need libcurl for the Google Cloud Storage client.
-    if "com_github_curl_curl" not in native.existing_rules():
-        http_archive(
-            name = "com_github_curl_curl",
-            urls = [
-                "https://mirror.bazel.build/curl.haxx.se/download/curl-7.60.0.tar.gz",
-                "https://curl.haxx.se/download/curl-7.60.0.tar.gz",
-            ],
-            strip_prefix = "curl-7.60.0",
-            sha256 = "e9c37986337743f37fd14fe8737f246e97aec94b39d1b71e8a5973f72a9fc4f5",
-            build_file = "@com_github_googleapis_google_cloud_cpp//bazel:curl.BUILD",
-        )
-
-    # We need the nlohmann_json library
-    if "com_github_nlohmann_json_single_header" not in native.existing_rules():
-        http_file(
-            name = "com_github_nlohmann_json_single_header",
-            urls = [
-                "https://github.com/nlohmann/json/releases/download/v3.4.0/json.hpp",
-            ],
-            sha256 = "63da6d1f22b2a7bb9e4ff7d6b255cf691a161ff49532dcc45d398a53e295835f",
-        )
-
-    # Load google/crc32c, a library to efficiently compute CRC32C checksums.
-    if "com_github_google_crc32c" not in native.existing_rules():
-        http_archive(
-            name = "com_github_google_crc32c",
-            strip_prefix = "crc32c-1.0.6",
-            urls = [
-                "https://github.com/google/crc32c/archive/1.0.6.tar.gz",
-            ],
-            sha256 = "6b3b1d861bb8307658b2407bc7a4c59e566855ef5368a60b35c893551e4788e9",
-            build_file = "@com_github_googleapis_google_cloud_cpp//bazel:crc32c.BUILD",
-        )
-
     # We use the cc_proto_library() rule from @com_google_protobuf, which
     # assumes that grpc_cpp_plugin and grpc_lib are in the //external: module
     native.bind(
