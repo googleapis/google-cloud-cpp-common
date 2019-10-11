@@ -66,7 +66,7 @@ upload_docs() {
   pushd "${docs_dir}"
   # Copy the tag file into the html directory.
   cp "../${tag_file}" .
-  
+
   if [[ "${branch}" == "master" ]]; then
     docs_version="master"
   else
