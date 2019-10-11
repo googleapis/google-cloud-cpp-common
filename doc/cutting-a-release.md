@@ -15,9 +15,9 @@ First you should collect and update the release notes for the project. Prepare
 a pull request (PR) with the necessary changes to the README files in each
 project.
 
-Assuming you are working on your own fork of the `google-cloud-cpp` project,
-and `upstream` points to the `googleapis/google-cloud-cpp` remote,
-these commands should be useful in identifying important changes:
+Assuming you are working on your own fork of the `google-cloud-cpp-common`
+project, and `upstream` points to the `googleapis/google-cloud-cpp-common`
+remote, these commands should be useful in identifying important changes:
 
 Update `google/cloud/README.md` based on the release notes:
 
@@ -108,25 +108,26 @@ Uncheck the pre-release checkbox and publish.
 
 ## Generate and upload the documentation to googleapis.dev
 
-<!-- TODO(...) - Create a refdocs push for google-cloud-cpp-common -->
+**TODO(coryan) - Create a refdocs push for google-cloud-cpp-common**
 
 Manually run a Kokoro job
-`cloud-devrel/client-libraries/cpp/google-cloud-cpp/refdocs` in the Cloud C++
-internal testing dashboard and specify the branch name (e.g. `v0.11.x`) in the
-`Committish` field. This job will generate and upload the doxygen documentation
-to the staging bucket for googleapis.dev hosting. The uploaded documentation
-will generally be live in an hour at URLs like
-`https://googleapis.dev/cpp/google-cloud-bigtable/latest/`.
+`cloud-devrel/client-libraries/cpp/google-cloud-cpp-common/refdocs` in the
+Cloud C++ internal testing dashboard and specify the branch name (e.g.
+`v0.11.x`) in the `Committish` field. This job will generate and upload the
+doxygen documentation to the staging bucket for googleapis.dev hosting. The
+uploaded documentation will generally be live in an hour at the
+[googleapis.dev site](https://googleapis.dev/cpp/google-cloud-common/latest/).
 
 You are now finished with this "releases" clone of the repo that we created in
 the instructions above. You may now remove this directory.
 
 ## Bump the version numbers in `master`
 
-Working in your fork of `gooogle-cloud-cpp`: bump the version numbers to the
-*next* version (i.e., one version past the release you just did above), and
-send the PR for review against `master`. For an example, look at
-[#1962](https://github.com/googleapis/google-cloud-cpp/pull/1962)
+Working in your fork of `gooogle-cloud-cpp-common`: bump the version numbers
+to the *next* version (i.e., one version past the release you just did above),
+and send the PR for review against `master`. For an example, look at
+[#3182](https://github.com/googleapis/google-cloud-cpp/pull/3182)
+**TODO for the next releaser - update this PR to point to one in this repo**
 
 ## Review the branch protections
 
@@ -158,6 +159,6 @@ Please note that we use more strict settings for release branches than for
 ## Push the release to Microsoft vcpkg
 
 Nudge coryan@ to send a PR to
-[vcpkg](https://github.com/Microsoft/vcpkg/tree/master/ports/google-cloud-cpp).
+[vcpkg](https://github.com/Microsoft/vcpkg/tree/master/ports/google-cloud-cpp-common).
 The PRs are not difficult, but contributing to this repository requires SVP
 approval.
