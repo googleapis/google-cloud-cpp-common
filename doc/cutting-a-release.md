@@ -108,7 +108,7 @@ Uncheck the pre-release checkbox and publish.
 
 ## Generate and upload the documentation to googleapis.dev
 
-**TODO(coryan) - Create a refdocs push for google-cloud-cpp-common**
+**TODO(#43) - Create a refdocs push for google-cloud-cpp-common**
 
 Manually run a Kokoro job
 `cloud-devrel/client-libraries/cpp/google-cloud-cpp-common/refdocs` in the
