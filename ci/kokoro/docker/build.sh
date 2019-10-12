@@ -182,6 +182,7 @@ if [[ -z "${PROJECT_ROOT+x}" ]]; then
   readonly PROJECT_ROOT="$(cd "$(dirname "$0")/../../.."; pwd)"
 fi
 
+
 echo "================================================================"
 echo "Change working directory to project root $(date)."
 cd "${PROJECT_ROOT}"

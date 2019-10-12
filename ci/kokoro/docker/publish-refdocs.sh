@@ -89,4 +89,4 @@ upload_docs() {
   return 0
 }
 
-source "${PROJECT_ROOT}/ci-customization/publish-refdocs.sh"
+source "${PROJECT_ROOT}/ci/etc/publish-refdocs.sh"
