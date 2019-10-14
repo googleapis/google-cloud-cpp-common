@@ -17,18 +17,20 @@ Google Cloud C++ Client Libraries.
 [![CI status docker/ninja][docker/ninja-shield]][docker/ninja-link]
 [![CI status docker/noex][docker/noex-shield]][docker/noex-link]
 [![CI status docker/no-tests][docker/no-tests-shield]][docker/no-tests-link]
+[![CI status docker/publish-refdocs][docker/publish-refdocs-shield]][docker/publish-refdocs-link]
 [![CI status docker/shared][docker/shared-shield]][docker/shared-link]
 [![CI status docker/tsan][docker/tsan-shield]][docker/tsan-link]
 [![CI status docker/ubsan][docker/ubsan-shield]][docker/ubsan-link]
 [![CI status macos/bazel][macos/bazel-shield]][macos/bazel-link]
+[![CI status macos/cmake-super][macos/cmake-super-shield]][macos/cmake-super-link]
 [![CI status windows/bazel][windows/bazel-shield]][windows/bazel-link]
 [![CI status windows/cmake][windows/cmake-shield]][windows/cmake-link]
 [![Code Coverage Status][codecov-io-badge]][codecov-io-link]
 [![Link to Reference Documentation][doxygen-shield]][doxygen-link]
 
 **Install Instructions**
+[![CI status install/centos-7][install/centos-7-shield]][install/centos-7-link]
 [![CI status install/centos-8][install/centos-8-shield]][install/centos-8-link]
-[![CI status install/centos][install/centos-shield]][install/centos-link]
 [![CI status install/debian-buster][install/debian-buster-shield]][install/debian-buster-link]
 [![CI status install/debian-stretch][install/debian-stretch-shield]][install/debian-stretch-link]
 [![CI status install/fedora][install/fedora-shield]][install/fedora-link]
@@ -60,16 +62,18 @@ Google Cloud C++ Client Libraries.
 [docker/noex-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/noex.svg
 [docker/no-tests-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/no-tests-link.html
 [docker/no-tests-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/no-tests.svg
+[docker/publish-refdocs-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/publish-refdocs-link.html
+[docker/publish-refdocs-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/publish-refdocs.svg
 [docker/shared-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/shared-link.html
 [docker/shared-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/shared.svg
 [docker/tsan-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/tsan-link.html
 [docker/tsan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/tsan.svg
 [docker/ubsan-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/ubsan-link.html
 [docker/ubsan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/ubsan.svg
+[install/centos-7-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos-7-link.html
+[install/centos-7-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos-7.svg
 [install/centos-8-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos-8-link.html
 [install/centos-8-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos-8.svg
-[install/centos-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos-link.html
-[install/centos-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/centos.svg
 [install/debian-buster-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/debian-buster-link.html
 [install/debian-buster-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/debian-buster.svg
 [install/debian-stretch-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/debian-stretch-link.html
@@ -88,6 +92,8 @@ Google Cloud C++ Client Libraries.
 [install/ubuntu-xenial-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-xenial.svg
 [macos/bazel-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/bazel-link.html
 [macos/bazel-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/bazel.svg
+[macos/cmake-super-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/cmake-super-link.html
+[macos/cmake-super-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/cmake-super.svg
 [windows/bazel-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/windows/bazel-link.html
 [windows/bazel-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/windows/bazel.svg
 [windows/cmake-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/windows/cmake-link.html
@@ -186,10 +192,10 @@ sudo dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
 
 ### CentOS (7)
 
-[![Kokoro readme centos status][kokoro-readme-centos-shield]][kokoro-readme-centos-link]
+[![Kokoro readme centos-7 status][kokoro-readme-centos-7-shield]][kokoro-readme-centos-7-link]
 
-[kokoro-readme-centos-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos.svg
-[kokoro-readme-centos-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos-link.html
+[kokoro-readme-centos-7-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos-7.svg
+[kokoro-readme-centos-7-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos-7-link.html
 
 The development tools distributed with CentOS (notably CMake) are too old to
 build `google-cloud-cpp`. In these instructions, we use `cmake3` obtained from
