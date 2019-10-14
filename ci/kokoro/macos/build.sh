@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,40 +16,46 @@
 
 set -eu
 
-echo "Running build and tests"
-cd "$(dirname "$0")/../../.."
-readonly PROJECT_ROOT="${PWD}"
+export BAZEL_CONFIG=""
+export RUN_INTEGRATION_TESTS="no"
+driver_script="ci/kokoro/macos/build-bazel.sh"
 
-echo
-echo "================================================================"
-echo "================================================================"
-echo "Update or Install Bazel."
-echo
+if [[ $# -eq 1 ]]; then
+  export BUILD_NAME="${1}"
+elif [[ -n "${KOKORO_JOB_NAME:-}" ]]; then
+  # Kokoro injects the KOKORO_JOB_NAME environment variable, the value of this
+  # variable is cloud-cpp/spanner/<config-file-name-without-cfg> (or more
+  # generally <path/to/config-file-without-cfg>). By convention we name these
+  # files `$foo.cfg` for continuous builds and `$foo-presubmit.cfg` for
+  # presubmit builds. Here we extract the value of "foo" and use it as the build
+  # name.
+  BUILD_NAME="$(basename "${KOKORO_JOB_NAME}" "-presubmit")"
+  export BUILD_NAME
+else
+  echo "Aborting build as the build name is not defined."
+  echo "If you are invoking this script via the command line use:"
+  echo "    $0 <build-name>"
+  echo
+  echo "If this script is invoked by Kokoro, the CI system is expected to set"
+  echo "the KOKORO_JOB_NAME environment variable."
+  exit 1
+fi
 
-# macOS does not have sha256sum by default, but `shasum -a 256` does the same
-# thing:
-function sha256sum() { shasum -a 256 "$@" ; } && export -f sha256sum
+if [[ -z "${PROJECT_ROOT+x}" ]]; then
+  readonly PROJECT_ROOT="$(cd "$(dirname "$0")/../../.."; pwd)"
+fi
+cd "${PROJECT_ROOT}"
 
-"${PROJECT_ROOT}/ci/install-bazel.sh"
+script_flags=("${PROJECT_ROOT}")
 
-readonly BAZEL_BIN="$HOME/bin/bazel"
-echo "Using Bazel in ${BAZEL_BIN}"
+if [[ "${BUILD_NAME}" = "bazel" ]]; then
+  driver_script="ci/kokoro/macos/build-bazel.sh"
+elif [[ "${BUILD_NAME}" = "cmake-super" ]]; then
+  driver_script="ci/kokoro/macos/build-cmake.sh"
+  script_flags+=("super" "cmake-out/macos")
+else
+  echo "Unknown BUILD_NAME (${BUILD_NAME})."
+  exit 1
+fi
 
-# The -DGRPC_BAZEL_BUILD is needed because gRPC does not compile on macOS unless
-# it is set.
-"${BAZEL_BIN}" test \
-    --copt=-DGRPC_BAZEL_BUILD \
-    --test_output=errors \
-    --verbose_failures=true \
-    --keep_going \
-    -- //google/cloud/...:all
-
-echo
-echo "================================================================"
-echo "================================================================"
-"${BAZEL_BIN}" build \
-    --copt=-DGRPC_BAZEL_BUILD \
-    --test_output=errors \
-    --verbose_failures=true \
-    --keep_going \
-    -- //google/cloud/...:all
+exec "${driver_script}" "${script_flags[@]}"
