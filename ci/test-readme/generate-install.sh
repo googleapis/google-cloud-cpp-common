@@ -205,4 +205,4 @@ echo "### CentOS (8)"
 
 echo
 echo "### CentOS (7)"
-"${BINDIR}/extract-install.sh" "${DOCKERFILES_DIR}/Dockerfile.centos"
+"${BINDIR}/extract-install.sh" "${DOCKERFILES_DIR}/Dockerfile.centos-7"

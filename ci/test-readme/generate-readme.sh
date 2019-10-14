@@ -38,8 +38,8 @@ badge centos-8
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.centos-8"
 
 echo "### CentOS (7)"
-badge centos
-"${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.centos"
+badge centos-7
+"${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.centos-7"
 
 echo "### Debian (10 - Buster)"
 badge debian-buster
