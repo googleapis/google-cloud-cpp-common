@@ -48,8 +48,17 @@ echo "${COLOR_YELLOW}Starting docker build $(date) with ${NCPU} cores${COLOR_RES
 echo
 
 echo "${COLOR_YELLOW}Started CMake config at: $(date)${COLOR_RESET}"
+
 # Extra flags to pass to CMake based on our build configurations.
-declare -a cmake_extra_flags
+cmake_extra_flags=(
+    # Always set the build type, so it can be configured by the `build.sh`
+    # script.
+    "-DCMAKE_BUILD_TYPE=${BUILD_TYPE}"
+
+    # Always disable the ccache, it can make some builds flaky, and we do not
+    # preserve the cache between builds.
+    "-DGOOGLE_CLOUD_CPP_ENABLE_CCACHE=OFF"
+)
 if [[ "${BUILD_TESTING:-}" == "no" ]]; then
   cmake_extra_flags+=( "-DBUILD_TESTING=OFF" )
 fi
@@ -81,10 +90,7 @@ fi
 # unset. We also disable the shellcheck warning because we want ${CMAKE_FLAGS}
 # to expand as separate arguments.
 # shellcheck disable=SC2086
-${CMAKE_COMMAND} \
-    -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-    "-DGOOGLE_CLOUD_CPP_CCACHE=OFF" \
-    "${cmake_extra_flags[@]+"${cmake_extra_flags[@]}"}" \
+${CMAKE_COMMAND} "${cmake_extra_flags[@]+"${cmake_extra_flags[@]}"}" \
     ${CMAKE_FLAGS:-} \
     "-H${SOURCE_DIR}" \
     "-B${BINARY_DIR}"
