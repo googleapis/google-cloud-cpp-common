@@ -15,9 +15,12 @@
 
 set -eu
 
-# This script is sourced from several other scripts in script is meant to source from ci/kokoro/docker/publish_refdocs.sh.
+# This script is sourced from several other scripts in `ci/` to configure the
+# repository name (and short name). It makes those scripts portable across
+# `google-cloud-cpp*` repositories.
 
 GOOGLE_CLOUD_CPP_REPOSITORY="google-cloud-cpp-common"
 readonly GOOGLE_CLOUD_CPP_REPOSITORY
+
 GOOGLE_CLOUD_CPP_REPOSITORY_SHORT="common"
 readonly GOOGLE_CLOUD_CPP_REPOSITORY_SHORT
