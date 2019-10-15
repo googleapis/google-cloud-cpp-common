@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG DISTRO_VERSION=bionic
-FROM ubuntu:${DISTRO_VERSION} AS devtools
+ARG DISTRO_VERSION=30
+FROM fedora:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
 
-# Please keep the formatting in these commands, it is optimized to cut & paste
-# into the README.md file.
+# Please keep the formatting below, it is used by `extract-readme.sh` and
+# `extract-install.md` to generate the contents of the top-level README.md and
+# INSTALL.md files.
 
 ## [START INSTALL.md]
 
@@ -26,17 +27,16 @@ ARG NCPU=4
 ## [START README.md]
 
 # ```bash
-RUN apt update && \
-    apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev make \
-        pkg-config tar wget zlib1g-dev
+RUN dnf makecache && \
+    dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
+        zlib-devel
 # ```
 
 FROM devtools AS readme
 ARG NCPU=4
 
 ## [START IGNORED]
-# Verify that the tools above are enough to compile google-cloud-cpp-common when using
+# Verify that the tools above are enough to compile @GOOGLE_CLOUD_CPP_REPOSITORY@ when using
 # the super build.
 WORKDIR /home/build/super
 COPY . /home/build/super

@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ ARG NCPU=4
 ## [START README.md]
 
 # The development tools distributed with CentOS (notably CMake) are too old to
-# build `google-cloud-cpp`. In these instructions, we use `cmake3` obtained from
-# [Software Collections](https://www.softwarecollections.org/).
+# build `google-cloud-cpp-common. In these instructions, we use `cmake3`
+# obtained from [Software Collections](https://www.softwarecollections.org/).
 
 # ```bash
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -43,8 +43,8 @@ FROM devtools AS readme
 ARG NCPU=4
 
 ## [START IGNORED]
-# Verify that the tools above are enough to compile google-cloud-cpp when using
-# the super build.
+# Verify that the tools above are enough to compile google-cloud-cpp-common
+# when using the super build.
 WORKDIR /home/build/super
 COPY . /home/build/super
 RUN cmake -Hsuper -Bcmake-out \
