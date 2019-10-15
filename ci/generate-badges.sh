@@ -16,16 +16,22 @@
 set -eu
 
 # Use this script to generate the badges in the README.md file.
+if [[ -z "${PROJECT_ROOT+x}" ]]; then
+  PROJECT_ROOT="$(cd "$(dirname "$0")/.."; pwd)"
+  readonly PROJECT_ROOT
+fi
 
-BINDIR="$(dirname "$0")"
-readonly BINDIR
+source "${PROJECT_ROOT}/ci/etc/repo-config.sh"
+
+CI_DIR="${PROJECT_ROOT}/ci"
+readonly CI_DIR
 
 echo "<!-- Start of automatically generated content by ci/$(basename "$0") -->"
 echo
 echo '**Core Builds**'
-find "${BINDIR}/kokoro/macos" \
-     "${BINDIR}/kokoro/docker" \
-     "${BINDIR}/kokoro/windows" \
+find "${CI_DIR}/kokoro/macos" \
+     "${CI_DIR}/kokoro/docker" \
+     "${CI_DIR}/kokoro/windows" \
     \( -name '*-presubmit.cfg' -o -name 'common.cfg' \) -prune \
     -o -name '*.cfg' -print0 |
   while IFS= read -r -d $'\0' file; do
@@ -43,7 +49,7 @@ cat <<'_EOF_'
 **Install Instructions**
 _EOF_
 
-find "${BINDIR}/kokoro/install" \
+find "${CI_DIR}/kokoro/install" \
     \( -name '*-presubmit.cfg' -o -name 'common.cfg' \) -prune \
     -o -name '*.cfg' -print0 |
   while IFS= read -r -d $'\0' file; do
@@ -56,26 +62,27 @@ find "${BINDIR}/kokoro/install" \
 
 # We need at least one blank line before the link definitions.
 echo
-find "${BINDIR}/kokoro/macos" \
-     "${BINDIR}/kokoro/docker" \
-     "${BINDIR}/kokoro/install" \
-     "${BINDIR}/kokoro/windows" \
+BADGE_FOLDER="https://storage.googleapis.com/cloud-cpp-kokoro-status/${GOOGLE_CLOUD_CPP_REPOSITORY_SHORT}"
+find "${CI_DIR}/kokoro/macos" \
+     "${CI_DIR}/kokoro/docker" \
+     "${CI_DIR}/kokoro/install" \
+     "${CI_DIR}/kokoro/windows" \
     \( -name '*-presubmit.cfg' -o -name 'common.cfg' \) -prune \
     -o -name '*.cfg' -print0 |
   while IFS= read -r -d $'\0' file; do
     base="$(basename "${file}" .cfg)"
     dir="$(dirname "${file}")"
     prefix="$(basename "${dir}")"
-    echo "[${prefix}/${base}-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/${prefix}/${base}.svg"
-    echo "[${prefix}/${base}-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/${prefix}/${base}-link.html"
+    echo "[${prefix}/${base}-shield]: ${BADGE_FOLDER}/${prefix}/${base}.svg"
+    echo "[${prefix}/${base}-link]: ${BADGE_FOLDER}/${prefix}/${base}-link.html"
   done |
   sort
 
-cat <<'_EOF_'
-[codecov-io-badge]: https://codecov.io/gh/googleapis/google-cloud-cpp-common/branch/master/graph/badge.svg
-[codecov-io-link]: https://codecov.io/gh/googleapis/google-cloud-cpp-common
+cat <<_EOF_
+[codecov-io-badge]: https://codecov.io/gh/googleapis/${GOOGLE_CLOUD_CPP_REPOSITORY}/branch/master/graph/badge.svg
+[codecov-io-link]: https://codecov.io/gh/googleapis/${GOOGLE_CLOUD_CPP_REPOSITORY}
 [doxygen-shield]: https://img.shields.io/badge/documentation-master-brightgreen.svg
-[doxygen-link]: https://googleapis.github.io/google-cloud-cpp-common/latest/
+[doxygen-link]: https://googleapis.github.io/${GOOGLE_CLOUD_CPP_REPOSITORY}/latest/
 
 <!-- End of automatically generated content -->
 _EOF_
