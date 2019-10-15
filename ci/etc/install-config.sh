@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +15,11 @@
 
 set -eu
 
-if [[ -z "${PROJECT_ROOT+x}" ]]; then
-  PROJECT_ROOT="$(cd "$(dirname "$0")/.."; pwd)"
-  readonly PROJECT_ROOT
-fi
-source "${PROJECT_ROOT}/ci/etc/install-config.sh"
+GOOGLE_CLOUD_CPP_BAZEL_VERSION="1.0.0"
+readonly GOOGLE_CLOUD_CPP_BAZEL_VERSION
 
-readonly SITE="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads"
-readonly TARBALL="google-cloud-sdk-${GOOGLE_CLOUD_CPP_CLOUD_SDK_VERSION}-linux-x86_64.tar.gz"
-wget -q "${SITE}/${TARBALL}"
+GOOGLE_CLOUD_CPP_CLOUD_SDK_VERSION="266.0.0"
+readonly GOOGLE_CLOUD_CPP_CLOUD_SDK_VERSION
 
-echo "${GOOGLE_CLOUD_CPP_CLOUD_SDK_SHA256} ${TARBALL}" | sha256sum --check -
-tar x -C /usr/local -f "${TARBALL}"
-/usr/local/google-cloud-sdk/bin/gcloud --quiet components install cbt bigtable
+GOOGLE_CLOUD_CPP_SDK_SHA256="e2b2cd5e49e1dc73ffe1d57ba2bcc1b76620ae9549d2aa27ece05d819a8f4bbc"
+readonly GOOGLE_CLOUD_CPP_SDK_SHA256

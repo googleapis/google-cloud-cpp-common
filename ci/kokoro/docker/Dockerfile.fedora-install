@@ -86,5 +86,5 @@ RUN ldconfig
 
 # Install Bazel because some of the builds need it.
 WORKDIR /var/tmp/ci
-COPY install-bazel.sh /var/tmp/ci
+COPY . /var/tmp/ci
 RUN /var/tmp/ci/install-bazel.sh

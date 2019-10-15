@@ -61,5 +61,5 @@ RUN cmake --build .build-libcxx --target cxx
 RUN cmake --build .build-libcxx --target install-cxx
 
 WORKDIR /var/tmp/ci
-COPY install-bazel.sh /var/tmp/ci
+COPY . /var/tmp/ci
 RUN /var/tmp/ci/install-bazel.sh

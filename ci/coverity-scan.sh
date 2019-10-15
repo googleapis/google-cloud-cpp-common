@@ -16,6 +16,16 @@
 
 set -eu
 
+# Compile the code using the Coverity Scan static analysis tool and upload the
+# results.
+
+if [[ -z "${PROJECT_ROOT+x}" ]]; then
+  PROJECT_ROOT="$(cd "$(dirname "$0")/.."; pwd)"
+  readonly PROJECT_ROOT
+fi
+
+source "${PROJECT_ROOT}/ci/etc/repo-config.sh"
+
 if [[ -z "$(command -v cov-build)" ]]; then
   echo "This script requires the coverity scan tool (cov-build) in PATH."
   echo "Please download the tool, make sure your PATH includes the directory"
@@ -30,13 +40,13 @@ export CC=gcc
 
 # Running with coverity-scan and ccache seems like a bad idea, disable ccache.
 # Also build in Debug mode because building in Release mode takes too long.
-cmake -H. -B.coverity \
+cmake -Hsuper -B.coverity \
     -DCMAKE_BUILD_TYPE=Debug \
     -DGOOGLE_CLOUD_CPP_ENABLE_CCACHE=OFF
 
 # The project dependencies, including the generated protos, should be built
 # without coverity-scan, any errors in them are not actionable.
-cmake --build .coverity --target google-cloud-cpp-dependencies -- -j "$(nproc)"
+cmake --build .coverity --target project-dependencies -- -j "$(nproc)"
 
 # Run coverity scan over our code.
 cov-build --dir cov-int cmake --build .coverity -- -j "$(nproc)"
@@ -55,12 +65,15 @@ fi
 # a while.
 /bin/echo -n "Creating a tarball with the Coverity Scan results." \
   "This may take several minutes..."
-tar caf google-cloud-cpp.tar.xz cov-int
+tar caf "${GOOGLE_CLOUD_CPP_REPOSITORY}.tar.xz" cov-int
 /bin/echo "DONE"
+
+URL="https://scan.coverity.com/builds?project=googleapis%2F${GOOGLE_CLOUD_CPP_REPOSITORY}"
+readonly URL
 
 curl --form "token=${COVERITY_SCAN_TOKEN}" \
   --form email="${COVERITY_SCAN_EMAIL}" \
-  --form file=@google-cloud-cpp.tar.xz \
+  --form "file=@${GOOGLE_CLOUD_CPP_REPOSITORY}.tar.xz" \
   --form version="master" \
   --form description="Automatically Compiled Coverity Scan" \
-  https://scan.coverity.com/builds?project=googleapis%2Fgoogle-cloud-cpp
+  "${URL}"
