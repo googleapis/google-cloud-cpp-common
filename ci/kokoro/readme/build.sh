@@ -20,7 +20,7 @@ if [[ $# -eq 1 ]]; then
   export DISTRO="${1}"
 elif [[ -n "${KOKORO_JOB_NAME:-}" ]]; then
   # Kokoro injects the KOKORO_JOB_NAME environment variable, the value of this
-  # variable is cloud-cpp/spanner/<config-file-name-without-cfg> (or more
+  # variable is cloud-cpp/<repo>/<config-file-name-without-cfg> (or more
   # generally <path/to/config-file-without-cfg>). By convention we name these
   # files `$foo.cfg` for continuous builds and `$foo-presubmit.cfg` for
   # presubmit builds. Here we extract the value of "foo" and use it as the build
@@ -71,11 +71,11 @@ if [[ -f "${KOKORO_GFILE_DIR:-}/gcr-service-account.json" ]]; then
 fi
 gcloud auth configure-docker
 
-readonly DEV_IMAGE="${DOCKER_IMAGE_PREFIX}/test-readme-${DISTRO}"
+readonly README_IMAGE="${DOCKER_IMAGE_PREFIX}/test-readme-${DISTRO}"
 echo "================================================================"
 echo "Download existing image (if available) for ${DISTRO} $(date)."
 has_cache="false"
-if docker pull "${DEV_IMAGE}:latest"; then
+if docker pull "${README_IMAGE}:latest"; then
   echo "Existing image successfully downloaded."
   has_cache="true"
 fi
@@ -90,13 +90,13 @@ devtools_flags=(
   "--target" "devtools"
   # Create the image with the same tag as the cache we are using, so we can
   # upload it.
-  "-t" "${DEV_IMAGE}:latest"
+  "-t" "${README_IMAGE}:latest"
   "--build-arg" "NCPU=${NCPU}"
   "-f" "ci/kokoro/readme/Dockerfile.${DISTRO}"
 )
 
 if "${has_cache}"; then
-  devtools_flags+=("--cache-from=${DEV_IMAGE}:latest")
+  devtools_flags+=("--cache-from=${README_IMAGE}:latest")
 fi
 
 if [[ "${RUNNING_CI:-}" == "yes" ]] && \
@@ -114,13 +114,13 @@ if "${update_cache}" && [[ "${RUNNING_CI:-}" == "yes" ]] &&
   echo "================================================================"
   echo "Uploading updated base image for ${DISTRO} $(date)."
   # Do not stop the build on a failure to update the cache.
-  docker push "${DEV_IMAGE}:latest" || true
+  docker push "${README_IMAGE}:latest" || true
 fi
 
 echo "================================================================"
 echo "Run validation script for README instructions on ${DISTRO}."
 docker build \
-  "--cache-from=${DEV_IMAGE}:latest" \
+  "--cache-from=${README_IMAGE}:latest" \
   "--target=readme" \
   "--build-arg" "NCPU=${NCPU}" \
   -f "ci/kokoro/readme/Dockerfile.${DISTRO}" .
