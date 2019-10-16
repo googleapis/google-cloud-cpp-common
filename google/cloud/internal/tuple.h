@@ -27,8 +27,6 @@ namespace internal {
 
 // This header reimplements some of C++14's <tuple> header.
 
-namespace detail {
-
 /**
  * Extract the return type of `std::apply` for given argument types.
  */
@@ -53,19 +51,16 @@ struct ApplyRes<F, std::tuple<Args...>> {
  * @tparam I indices 0..(sizeof(Tuple)-1)
  */
 template <class F, class Tuple, std::size_t... I>
-typename detail::ApplyRes<F, Tuple>::type ApplyImpl(F&& f, Tuple&& t,
-                                                    index_sequence<I...>) {
+typename ApplyRes<F, Tuple>::type ApplyImpl(F&& f, Tuple&& t,
+                                            index_sequence<I...>) {
   return std::forward<F>(f)(std::get<I>(std::forward<Tuple>(t))...);
 }
 
-}  // namespace detail
-
 // Reimplementation of `std::apply` from C++14
 template <class F, class Tuple>
-typename detail::ApplyRes<F, Tuple>::type apply(F&& f, Tuple&& t) {
+typename ApplyRes<F, Tuple>::type apply(F&& f, Tuple&& t) {
   using Indices = make_index_sequence<std::tuple_size<Tuple>::value>;
-  return detail::ApplyImpl(std::forward<F>(f), std::forward<Tuple>(t),
-                           Indices());
+  return ApplyImpl(std::forward<F>(f), std::forward<Tuple>(t), Indices());
 }
 
 }  // namespace internal

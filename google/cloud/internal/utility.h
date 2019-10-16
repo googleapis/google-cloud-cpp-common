@@ -36,16 +36,14 @@ struct integer_sequence {
 template <std::size_t... Ints>
 using index_sequence = integer_sequence<std::size_t, Ints...>;
 
-namespace detail {
-
 /**
  * Implementation of `make_index_sequence`.
  *
- * `make_index_sequence_impl` references itself accumulating the result
+ * `MakeIndexSequenceImpl` references itself accumulating the result
  * indices in `I`. The recursion stops when `N` reaches 0. By that time, `I`
  * should contain the result.
  *
- * `make_index_sequence_impl<T, N, void, I...>::result` will return an
+ * `MakeIndexSequenceImpl<T, N, void, I...>::result` will return an
  * `integer_sequence<T, 0, 1, 2, ..., (N - 1), I...>`.
  *
  * @tparam T the type of the index in `index_sequence`
@@ -57,38 +55,36 @@ namespace detail {
  * @tparam `I` indices accumulated so far in the recursion.
  */
 template <typename T, typename N, typename Enable, T... I>
-struct make_index_sequence_impl {};
+struct MakeIndexSequenceImpl {};
 
 /**
- * Implementation od `make_index_sequence`.
+ * Implementation of `make_index_sequence`.
  *
  * Specialization for N > 0.
  */
 template <typename T, T N, T... I>
-struct make_index_sequence_impl<T, std::integral_constant<T, N>,
-                                typename std::enable_if<(N > 0), void>::type,
-                                I...> {
+struct MakeIndexSequenceImpl<T, std::integral_constant<T, N>,
+                             typename std::enable_if<(N > 0), void>::type,
+                             I...> {
   using result =
-      typename make_index_sequence_impl<T, std::integral_constant<T, N - 1>,
-                                        void, N - 1, I...>::result;
+      typename MakeIndexSequenceImpl<T, std::integral_constant<T, N - 1>, void,
+                                     N - 1, I...>::result;
 };
 
 /**
- * Implementation od `make_index_sequence`.
+ * Implementation of `make_index_sequence`.
  *
  * Specialization for N == 0.
  */
 template <typename T, T... I>
-struct make_index_sequence_impl<T, std::integral_constant<T, 0>, void, I...> {
+struct MakeIndexSequenceImpl<T, std::integral_constant<T, 0>, void, I...> {
   using result = integer_sequence<T, I...>;
 };
 
-}  // namespace detail
-
 template <class T, T N>
 using make_integer_sequence =
-    typename detail::make_index_sequence_impl<T, std::integral_constant<T, N>,
-                                              void>::result;
+    typename MakeIndexSequenceImpl<T, std::integral_constant<T, N>,
+                                   void>::result;
 
 template <size_t N>
 using make_index_sequence = make_integer_sequence<size_t, N>;
