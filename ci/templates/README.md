@@ -1,6 +1,6 @@
 # Helper scripts to generate CI build scripts
 
-The Google Cloud C++ project largely share their CI scripts, but there are some
+The Google Cloud C++ projects largely share their CI scripts, but there are some
 differences that cannot be (easily) handled by configuration files. This
 directory contains helper scripts to generate the scripts or configuration
 files that cannot be refactored in any other form.
