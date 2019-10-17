@@ -12,12 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG DISTRO_VERSION=bionic
-FROM ubuntu:${DISTRO_VERSION} AS devtools
+ARG DISTRO_VERSION=latest
+FROM opensuse/leap:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
-
-# Please keep the formatting in these commands, it is optimized to cut & paste
-# into the README.md file.
 
 ## [START INSTALL.md]
 
@@ -26,17 +23,16 @@ ARG NCPU=4
 ## [START README.md]
 
 # ```bash
-RUN apt update && \
-    apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev make \
-        pkg-config tar wget zlib1g-dev
+RUN zypper refresh && \
+    zypper install --allow-downgrade -y cmake gcc gcc-c++ git gzip \
+        libcurl-devel libopenssl-devel make tar wget
 # ```
 
 FROM devtools AS readme
 ARG NCPU=4
 
 ## [START IGNORED]
-# Verify that the tools above are enough to compile google-cloud-cpp-common when using
+# Verify that the tools above are enough to compile @GOOGLE_CLOUD_CPP_REPOSITORY@ when using
 # the super build.
 WORKDIR /home/build/super
 COPY . /home/build/super

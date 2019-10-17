@@ -32,7 +32,7 @@ FROM devtools AS readme
 ARG NCPU=4
 
 ## [START IGNORED]
-# Verify that the tools above are enough to compile google-cloud-cpp when using
+# Verify that the tools above are enough to compile google-cloud-cpp-common when using
 # the super build.
 WORKDIR /home/build/super
 COPY . /home/build/super

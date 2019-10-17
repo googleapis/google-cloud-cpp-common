@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG DISTRO_VERSION=stretch
-FROM debian:${DISTRO_VERSION} AS devtools
+ARG DISTRO_VERSION=bionic
+FROM ubuntu:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
 
 # Please keep the formatting in these commands, it is optimized to cut & paste
@@ -21,22 +21,14 @@ ARG NCPU=4
 
 ## [START INSTALL.md]
 
-# First install the development tools and libcurl.
+# Install the minimal development tools:
 
 ## [START README.md]
-
-# On Debian Stretch, libcurl links against openssl-1.0.2, and one must link
-# against the same version or risk an inconsistent configuration of the library.
-# This is especially important for multi-threaded applications, as openssl-1.0.2
-# requires explicitly setting locking callbacks. Therefore, to use libcurl one
-# must link against openssl-1.0.2. To do so, we need to install libssl1.0-dev.
-# Note that this removes libssl-dev if you have it installed already, and would
-# prevent you from compiling against openssl-1.1.0.
 
 # ```bash
 RUN apt update && \
     apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl1.0-dev make \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev make \
         pkg-config tar wget zlib1g-dev
 # ```
 
@@ -44,7 +36,7 @@ FROM devtools AS readme
 ARG NCPU=4
 
 ## [START IGNORED]
-# Verify that the tools above are enough to compile google-cloud-cpp-common when using
+# Verify that the tools above are enough to compile @GOOGLE_CLOUD_CPP_REPOSITORY@ when using
 # the super build.
 WORKDIR /home/build/super
 COPY . /home/build/super
