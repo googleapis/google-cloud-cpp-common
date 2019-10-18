@@ -75,7 +75,7 @@ readonly INSTALL_IMAGE="${DOCKER_IMAGE_PREFIX}/test-install-${DISTRO}"
 echo "================================================================"
 echo "Download existing image (if available) for ${DISTRO} $(date)."
 has_cache="false"
-if docker pull "${DEV_IMAGE}:latest"; then
+if docker pull "${INSTALL_IMAGE}:latest"; then
   echo "Existing image successfully downloaded."
   has_cache="true"
 fi
