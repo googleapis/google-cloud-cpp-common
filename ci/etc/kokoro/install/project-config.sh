@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,49 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG DISTRO_VERSION=buster
-FROM debian:${DISTRO_VERSION} AS devtools
-ARG NCPU=4
+read -r -d '' INSTALL_COMMON_SOURCE_DEPENDENCIES <<'_EOF_'
 
-# This is an automatically generated file, do not modify it directly, see
-#   https://github.com/googleapis/google-cloud-cpp-common/ci/templates
-
-## [START INSTALL.md]
-
-# Install the minimal development tools:
-
-# ```bash
-RUN apt update && \
-    apt install -y build-essential cmake git gcc g++ cmake \
-        libssl-dev make pkg-config tar wget zlib1g-dev
-# ```
-# Debian 10 includes versions of gRPC and Protobuf that support the
-# Google Cloud Platform proto files. We simply install these pre-built versions:
-
-# ```bash
-RUN apt update && \
-    apt install -y libcurl4-openssl-dev libgrpc++-dev libprotobuf-dev \
-        protobuf-compiler protobuf-compiler-grpc
-# ```
-# #### crc32c
-
-# There is no Debian package for this library. To install it use:
-
-# ```bash
-WORKDIR /var/tmp/build
-RUN wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-RUN tar -xf 1.0.6.tar.gz
-WORKDIR /var/tmp/build/crc32c-1.0.6
-RUN cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-RUN cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-RUN ldconfig
-# ```
 # #### googleapis
 
 # We need a recent version of the Google Cloud Platform proto C++ libraries:
@@ -88,26 +48,11 @@ RUN cmake \
 RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
 RUN ldconfig
 # ```
+_EOF_
 
-FROM devtools AS install
 
-# #### Compile and install the main project
+read -r -d '' TEST_INSTALLED_PROJECT_FRAGMENT <<'_EOF_'
 
-# We can now compile and install `google-cloud-cpp-common`.
-
-# ```bash
-WORKDIR /home/build/project
-COPY . /home/build/project
-RUN cmake -H. -B/o
-RUN cmake --build /o -- -j ${NCPU:-4}
-RUN cmake --build /o --target install
-WORKDIR /o
-RUN ctest --output-on-failure
-# ```
-
-## [END INSTALL.md]
-
-ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-plain-make
 COPY ci/test-install /home/build/test-install-plain-make
@@ -121,3 +66,4 @@ COPY google/cloud/samples/common_install_test.cc /home/build/test-install-cmake
 # that CMake does not depend on pkg-config to discover the project.
 RUN env -u PKG_CONFIG_PATH cmake -H. -Bcmake-out
 RUN cmake --build cmake-out -- -j ${NCPU:-4}
+_EOF_

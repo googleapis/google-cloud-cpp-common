@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@ ARG DISTRO_VERSION=30
 FROM fedora:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
 
-# Please keep the formatting below, it is used by `extract-readme.sh` and
-# `extract-install.md` to generate the contents of the top-level README.md and
-# INSTALL.md files.
+# This is an automatically generated file, do not modify it directly, see
+#   https://github.com/googleapis/google-cloud-cpp-common/ci/templates
 
 ## [START INSTALL.md]
 
@@ -29,20 +28,18 @@ RUN dnf makecache && \
     dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
         zlib-devel
 # ```
-
 # Fedora includes packages for gRPC, libcurl, and OpenSSL that are recent enough
-# for `google-cloud-cpp`. Install these packages and additional development
-# tools to compile the dependencies:
+# for the project. Install these packages and additional development tools to
+# compile the dependencies:
 
 # ```bash
 RUN dnf makecache && \
     dnf install -y grpc-devel grpc-plugins \
         libcurl-devel protobuf-compiler tar wget zlib-devel
 # ```
-
 # #### crc32c
 
-# There is no Fedora package for this library. To install it, use:
+# There is no CentOS package for this library. To install it use:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -59,10 +56,9 @@ RUN cmake \
 RUN cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
 RUN ldconfig
 # ```
-
 # #### googleapis
 
-# There is no Fedora package for this library. To install it, use:
+# We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -96,25 +92,25 @@ RUN ldconfig
 
 FROM devtools AS install
 
-# #### google-cloud-cpp
+# #### Compile and install the main project
 
-# We can now compile and install `google-cloud-cpp`.
+# We can now compile and install `google-cloud-cpp-common`.
 
 # ```bash
-WORKDIR /home/build/google-cloud-cpp
-COPY . /home/build/google-cloud-cpp
-RUN cmake -H. -Bcmake-out
-RUN cmake --build cmake-out -- -j ${NCPU:-4}
-WORKDIR /home/build/google-cloud-cpp/cmake-out
+WORKDIR /home/build/project
+COPY . /home/build/project
+RUN cmake -H. -B/o
+RUN cmake --build /o -- -j ${NCPU:-4}
+RUN cmake --build /o --target install
+WORKDIR /o
 RUN ctest --output-on-failure
-RUN cmake --build . --target install
 # ```
 
 ## [END INSTALL.md]
 
+ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-plain-make
-ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 COPY ci/test-install /home/build/test-install-plain-make
 COPY google/cloud/samples/common_install_test.cc /home/build/test-install-plain-make
 RUN make
@@ -122,5 +118,7 @@ RUN make
 WORKDIR /home/build/test-install-cmake
 COPY ci/test-install /home/build/test-install-cmake
 COPY google/cloud/samples/common_install_test.cc /home/build/test-install-cmake
+# Always unset PKG_CONFIG_PATH before building with CMake, this is to ensure
+# that CMake does not depend on pkg-config to discover the project.
 RUN env -u PKG_CONFIG_PATH cmake -H. -Bcmake-out
 RUN cmake --build cmake-out -- -j ${NCPU:-4}

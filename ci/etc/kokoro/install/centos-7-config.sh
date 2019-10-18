@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,15 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG DISTRO_VERSION=7
-FROM centos:${DISTRO_VERSION} AS devtools
-ARG NCPU=4
-
-# This is an automatically generated file, do not modify it directly, see
-#   https://github.com/googleapis/google-cloud-cpp-common/ci/templates
-
-## [START INSTALL.md]
-
+read -r -d '' INSTALL_DEVTOOLS_FRAGMENT <<'_EOF_'
 # First install the development tools and OpenSSL. The development tools
 # distributed with CentOS (notably CMake) are too old to build
 # `google-cloud-cpp`. In these instructions, we use `cmake3` obtained from
@@ -35,6 +29,12 @@ RUN yum makecache && \
         make openssl-devel pkgconfig tar wget which zlib-devel
 RUN ln -sf /usr/bin/cmake3 /usr/bin/cmake && ln -sf /usr/bin/ctest3 /usr/bin/ctest
 # ```
+_EOF_
+
+read -r -d '' INSTALL_BINARY_DEPENDENCIES <<'_EOF_'
+_EOF_
+
+read -r -d '' INSTALL_SOURCE_DEPENDENCIES <<'_EOF_'
 
 # #### crc32c
 
@@ -105,69 +105,8 @@ RUN make -j ${NCPU:-4}
 RUN make install
 RUN ldconfig
 # ```
-# #### googleapis
+_EOF_
 
-# We need a recent version of the Google Cloud Platform proto C++ libraries:
-
-# ```bash
-WORKDIR /var/tmp/build
-RUN wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-RUN tar -xf v0.1.5.tar.gz
-WORKDIR /var/tmp/build/cpp-cmakefiles-0.1.5
-RUN cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
-RUN ldconfig
-# ```
-
-# #### googletest
-
-# We need a recent version of GoogleTest to compile the unit and integration
-# tests.
-
-# ```bash
-WORKDIR /var/tmp/build
-RUN wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-RUN tar -xf release-1.10.0.tar.gz
-WORKDIR /var/tmp/build/googletest-release-1.10.0
-RUN cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
-RUN ldconfig
-# ```
-
-FROM devtools AS install
-
-# #### Compile and install the main project
-
-# We can now compile and install `google-cloud-cpp-common`.
-
-# ```bash
-WORKDIR /home/build/project
-COPY . /home/build/project
-RUN cmake -H. -B/o
-RUN cmake --build /o -- -j ${NCPU:-4}
-RUN cmake --build /o --target install
-WORKDIR /o
-RUN ctest --output-on-failure
-# ```
-
-## [END INSTALL.md]
-
+read -r -d '' ENABLE_USR_LOCAL_FRAGMENT <<'_EOF_'
 ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
-# Verify that the installed files are actually usable
-WORKDIR /home/build/test-install-plain-make
-COPY ci/test-install /home/build/test-install-plain-make
-COPY google/cloud/samples/common_install_test.cc /home/build/test-install-plain-make
-RUN make
-
-WORKDIR /home/build/test-install-cmake
-COPY ci/test-install /home/build/test-install-cmake
-COPY google/cloud/samples/common_install_test.cc /home/build/test-install-cmake
-# Always unset PKG_CONFIG_PATH before building with CMake, this is to ensure
-# that CMake does not depend on pkg-config to discover the project.
-RUN env -u PKG_CONFIG_PATH cmake -H. -Bcmake-out
-RUN cmake --build cmake-out -- -j ${NCPU:-4}
+_EOF_
