@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,47 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG DISTRO_VERSION=30
-FROM fedora:${DISTRO_VERSION} AS devtools
-ARG NCPU=4
-
-# This is an automatically generated file, do not modify it directly, see
-#   https://github.com/googleapis/google-cloud-cpp-common/ci/templates
-
-## [START INSTALL.md]
-
-# Install the minimal development tools:
-
-# ```bash
-RUN dnf makecache && \
-    dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
-        zlib-devel
-# ```
-
-# Fedora 30 includes packages for gRPC, libcurl, and OpenSSL that are recent
-# enough for the project. Install these packages and additional development
-# tools to compile the dependencies:
-
-# ```bash
-RUN dnf makecache && \
-    dnf install -y grpc-devel grpc-plugins \
-        libcurl-devel protobuf-compiler tar wget zlib-devel
-# ```
-
+BUILD_AND_TEST_PROJECT_FRAGMENT=$(replace_fragments \
+      "INSTALL_CPP_CMAKEFILES_FROM_SOURCE" \
+      "INSTALL_GOOGLETEST_FROM_SOURCE" <<'_EOF_'
 # #### googleapis
 
 # We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 # ```bash
-WORKDIR /var/tmp/build
-RUN wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-RUN tar -xf v0.1.5.tar.gz
-WORKDIR /var/tmp/build/cpp-cmakefiles-0.1.5
-RUN cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
-RUN ldconfig
+@INSTALL_CPP_CMAKEFILES_FROM_SOURCE@
 # ```
 
 # #### googletest
@@ -61,23 +30,14 @@ RUN ldconfig
 # tests.
 
 # ```bash
-WORKDIR /var/tmp/build
-RUN wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-RUN tar -xf release-1.10.0.tar.gz
-WORKDIR /var/tmp/build/googletest-release-1.10.0
-RUN cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
-RUN ldconfig
+@INSTALL_GOOGLETEST_FROM_SOURCE@
 # ```
 
 FROM devtools AS install
 
 # #### Compile and install the main project
 
-# We can now compile, test, and install `google-cloud-cpp-common`.
+# We can now compile, test, and install `@GOOGLE_CLOUD_CPP_REPOSITORY@`.
 
 # ```bash
 WORKDIR /home/build/project
@@ -107,3 +67,5 @@ COPY google/cloud/samples/common_install_test.cc /home/build/test-install-cmake
 # that CMake does not depend on pkg-config to discover the project.
 RUN env -u PKG_CONFIG_PATH cmake -H. -B/i
 RUN cmake --build /i -- -j ${NCPU:-4}
+_EOF_
+)
