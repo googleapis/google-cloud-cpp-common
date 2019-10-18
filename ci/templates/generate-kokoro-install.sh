@@ -69,8 +69,8 @@ generate_dockerfile() {
   readonly distro_version
 
   set +e
-  source "${DESTINATION_ROOT}/ci/etc/kokoro/install/${build}-config.sh"
   source "${DESTINATION_ROOT}/ci/etc/kokoro/install/project-config.sh"
+  source "${DESTINATION_ROOT}/ci/etc/kokoro/install/${build}-config.sh"
   set -e
 
   target="${DESTINATION_ROOT}/ci/kokoro/install/Dockerfile.${build}"

@@ -100,15 +100,13 @@ RUN ldconfig
 
 # #### Protobuf
 
-# While Protobuf-2.5 is distributed with Ubuntu-14.04, the Google Cloud Plaform
-# proto files require more recent versions (circa 3.4.x). To manually install a
-# more recent version use:
+# Likewise, manually install protobuf:
 
 # ```bash
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/google/protobuf/archive/v3.6.1.tar.gz
-RUN tar -xf v3.6.1.tar.gz
-WORKDIR /var/tmp/build/protobuf-3.6.1/cmake
+RUN wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
+RUN tar -xf v3.9.1.tar.gz
+WORKDIR /var/tmp/build/protobuf-3.9.1/cmake
 RUN cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -120,9 +118,8 @@ RUN ldconfig
 
 # #### c-ares
 
-# Recent versions of gRPC require c-ares >= 1.11, while Ubuntu-16.04
-# distributes c-ares-1.10. We can manually install a newer version
-# of c-ares:
+# Recent versions of gRPC require c-ares >= 1.11, while CentOS-7
+# distributes c-ares-1.10. Manually install a newer version:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -131,22 +128,23 @@ RUN tar -xf cares-1_14_0.tar.gz
 WORKDIR /var/tmp/build/c-ares-cares-1_14_0
 RUN ./buildconf && ./configure && make -j ${NCPU:-4}
 RUN make install
+RUN ldconfig
 # ```
 
 # #### gRPC
 
-# Ubuntu-14.04 does not provide a package for gRPC. Manually install this
-# library:
+# Can be manually installed using:
 
 # ```bash
-ENV PKG_CONFIG_PATH=/usr/local/ssl/lib/pkgconfig:/usr/local/curl/lib/pkgconfig
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/grpc/grpc/archive/v1.19.1.tar.gz
-RUN tar -xf v1.19.1.tar.gz
-WORKDIR /var/tmp/build/grpc-1.19.1
+RUN wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
+RUN tar -xf v1.23.1.tar.gz
+WORKDIR /var/tmp/build/grpc-1.23.1
 RUN make -j ${NCPU:-4}
 RUN make install
+RUN ldconfig
 # ```
+
 # #### googleapis
 
 # We need a recent version of the Google Cloud Platform proto C++ libraries:

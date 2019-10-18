@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,64 +35,39 @@ _EOF_
 read -r -d '' INSTALL_BINARY_DEPENDENCIES <<'_EOF_'
 _EOF_
 
-read -r -d '' INSTALL_SOURCE_DEPENDENCIES <<'_EOF_'
-
+INSTALL_SOURCE_DEPENDENCIES=$(
+  cat <<'_EOF_'
 # #### crc32c
 
-# There is no Debian package for this library. To install it use:
+# There is no CentOS package for this library. To install it use:
 
 # ```bash
-WORKDIR /var/tmp/build
-RUN wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-RUN tar -xf 1.0.6.tar.gz
-WORKDIR /var/tmp/build/crc32c-1.0.6
-RUN cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-RUN cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-RUN ldconfig
+_EOF_
+  echo "${INSTALL_CRC32C_FROM_SOURCE}"
+
+  cat <<'_EOF_'
 # ```
 
 # #### Protobuf
 
-# While protobuf-3.0 is distributed with Ubuntu, the Google Cloud Plaform proto
-# files require more recent versions (circa 3.4.x). To manually install a more
-# recent version use:
+# Likewise, manually install protobuf:
 
 # ```bash
-WORKDIR /var/tmp/build
-RUN wget -q https://github.com/google/protobuf/archive/v3.6.1.tar.gz
-RUN tar -xf v3.6.1.tar.gz
-WORKDIR /var/tmp/build/protobuf-3.6.1/cmake
-RUN cmake \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DBUILD_SHARED_LIBS=yes \
-        -Dprotobuf_BUILD_TESTS=OFF \
-        -H. -Bcmake-out
-RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
-RUN ldconfig
+_EOF_
+  echo "${INSTALL_PROTOBUF_FROM_SOURCE}"
+
+  cat <<'_EOF_'
 # ```
 
 # #### gRPC
 
-# Likewise, Ubuntu has packages for grpc-1.3.x, but this version is too old for
-# the Google Cloud Platform APIs:
+# Can be manually installed using:
 
 # ```bash
-WORKDIR /var/tmp/build
-RUN wget -q https://github.com/grpc/grpc/archive/v1.19.1.tar.gz
-RUN tar -xf v1.19.1.tar.gz
-WORKDIR /var/tmp/build/grpc-1.19.1
-RUN make -j ${NCPU:-4}
-RUN make install
-RUN ldconfig
-# ```
-
 _EOF_
+  echo "${INSTALL_GRPC_FROM_SOURCE}"
+  echo '# ```'
+)
 
 read -r -d '' ENABLE_USR_LOCAL_FRAGMENT <<'_EOF_'
 ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig

@@ -21,7 +21,7 @@ ARG NCPU=4
 
 ## [START INSTALL.md]
 
-# Install the minimal development tools:
+# Install the minimal development tools, libcurl, OpenSSL and libc-ares:
 
 # ```bash
 RUN apt update && \
@@ -32,7 +32,7 @@ RUN apt update && \
 
 # #### crc32c
 
-# There is no Ubuntu package for this library. To install it use:
+# There is no CentOS package for this library. To install it use:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -52,15 +52,13 @@ RUN ldconfig
 
 # #### Protobuf
 
-# While protobuf-3.0 is distributed with Ubuntu, the Google Cloud Plaform proto
-# files require more recent versions (circa 3.4.x). To manually install a more
-# recent version use:
+# Likewise, manually install protobuf:
 
 # ```bash
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/google/protobuf/archive/v3.6.1.tar.gz
-RUN tar -xf v3.6.1.tar.gz
-WORKDIR /var/tmp/build/protobuf-3.6.1/cmake
+RUN wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
+RUN tar -xf v3.9.1.tar.gz
+WORKDIR /var/tmp/build/protobuf-3.9.1/cmake
 RUN cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -72,18 +70,18 @@ RUN ldconfig
 
 # #### gRPC
 
-# Likewise, Ubuntu has packages for grpc-1.3.x, but this version is too old for
-# the Google Cloud Platform APIs:
+# Can be manually installed using:
 
 # ```bash
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/grpc/grpc/archive/v1.19.1.tar.gz
-RUN tar -xf v1.19.1.tar.gz
-WORKDIR /var/tmp/build/grpc-1.19.1
+RUN wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
+RUN tar -xf v1.23.1.tar.gz
+WORKDIR /var/tmp/build/grpc-1.23.1
 RUN make -j ${NCPU:-4}
 RUN make install
 RUN ldconfig
 # ```
+
 # #### googleapis
 
 # We need a recent version of the Google Cloud Platform proto C++ libraries:

@@ -21,7 +21,8 @@ ARG NCPU=4
 
 ## [START INSTALL.md]
 
-# Install the minimal development tools:
+# Install the minimal development tools, libcurl, OpenSSL, and the c-ares
+# library (required by gRPC):
 
 # ```bash
 RUN dnf makecache && \
@@ -31,7 +32,7 @@ RUN dnf makecache && \
 
 # #### crc32c
 
-# There is no CentOS package for this library. To install it, use:
+# There is no CentOS package for this library. To install it use:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -51,7 +52,7 @@ RUN ldconfig
 
 # #### Protobuf
 
-# Likewise, manually install Protobuf:
+# Likewise, manually install protobuf:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -69,17 +70,15 @@ RUN ldconfig
 
 # #### gRPC
 
-# gRPC also requires a manual install. gRPC uses `pkg-config` to find protobuf,
-# as we installed this library in `/usr/local/*` we need to change the
-# environment variables used by `pkg-config` to find modules:
+# To install gRPC we first need to configure pkg-config to find the version of
+# Protobuf we just installed in `/usr/local`:
 
 # ```bash
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
 ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
-ENV PATH=/usr/local/bin:${PATH}
 # ```
 
-# Once the environment is setup, we can compile gRPC:
+# The we install it using using:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -90,6 +89,7 @@ RUN make -j ${NCPU:-4}
 RUN make install
 RUN ldconfig
 # ```
+
 # #### googleapis
 
 # We need a recent version of the Google Cloud Platform proto C++ libraries:

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,12 @@
 # limitations under the License.
 
 read -r -d '' INSTALL_DEVTOOLS_FRAGMENT <<'_EOF_'
-# Install the minimal development tools:
+# Install the minimal development tools, libcurl, and OpenSSL:
 
 # ```bash
 RUN apt update && \
     apt install -y build-essential cmake git gcc g++ cmake \
-        libssl-dev make pkg-config tar wget zlib1g-dev
+        libcurl4-openssl-dev libssl-dev make pkg-config tar wget zlib1g-dev
 # ```
 _EOF_
 
@@ -30,33 +29,22 @@ read -r -d '' INSTALL_BINARY_DEPENDENCIES <<'_EOF_'
 
 # ```bash
 RUN apt update && \
-    apt install -y libcurl4-openssl-dev libgrpc++-dev libprotobuf-dev \
+    apt install -y libgrpc++-dev libprotobuf-dev \
         protobuf-compiler protobuf-compiler-grpc
 # ```
 _EOF_
 
-read -r -d '' INSTALL_SOURCE_DEPENDENCIES <<'_EOF_'
-
+INSTALL_SOURCE_DEPENDENCIES=$(
+  cat <<'_EOF_'
 # #### crc32c
 
-# There is no Debian package for this library. To install it use:
+# There is no Debian 10 package for this library. To install it use:
 
 # ```bash
-WORKDIR /var/tmp/build
-RUN wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-RUN tar -xf 1.0.6.tar.gz
-WORKDIR /var/tmp/build/crc32c-1.0.6
-RUN cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-RUN cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-RUN ldconfig
-# ```
 _EOF_
+  echo "${INSTALL_CRC32C_FROM_SOURCE}"
+  echo '# ```'
+)
 
 read -r -d '' ENABLE_USR_LOCAL_FRAGMENT <<'_EOF_'
 ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
