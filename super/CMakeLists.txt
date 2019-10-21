@@ -32,10 +32,8 @@ set_external_project_prefix_vars()
 
 set_external_project_build_parallel_level(PARALLEL)
 
-set(GOOGLE_CLOUD_CPP_DEPENDENCIES_LIST
-    grpc_project
-    googleapis_project
-    googletest_project)
+set(GOOGLE_CLOUD_CPP_DEPENDENCIES_LIST grpc_project googleapis_project
+                                       googletest_project)
 
 include(ExternalProject)
 ExternalProject_Add(
