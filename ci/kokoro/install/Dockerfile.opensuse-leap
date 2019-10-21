@@ -26,26 +26,6 @@ RUN zypper refresh && \
         libcurl-devel libopenssl-devel make tar wget
 # ```
 
-# #### crc32c
-
-# There is no OpenSUSE package for this library. To install it, use:
-
-# ```bash
-WORKDIR /var/tmp/build
-RUN wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-RUN tar -xf 1.0.6.tar.gz
-WORKDIR /var/tmp/build/crc32c-1.0.6
-RUN cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-RUN cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-RUN ldconfig
-# ```
-
 # #### Protobuf
 
 # OpenSUSE Leap includes a package for protobuf-2.6, but this is too old to

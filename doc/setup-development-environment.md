@@ -18,7 +18,7 @@ First, install the basic development tools:
 ```console
 sudo apt update
 sudo apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev make \
+        libc-ares-dev libc-ares2 libssl-dev make \
         pkg-config tar wget zlib1g-dev
 ```
 
@@ -53,7 +53,7 @@ pip install numpy cmake_format==0.4.0
 Install the Python modules used in the integration tests:
 
 ```console
-pip install flask httpbin gevent gunicorn crc32c --user
+pip install flask httpbin gevent gunicorn --user
 ```
 
 Add the pip directory to your PATH:

@@ -31,7 +31,6 @@ RUN apt update && \
         gcc \
         g++ \
         cmake \
-        libcurl4-openssl-dev \
         libssl-dev \
         libtool \
         lsb-release \

@@ -118,9 +118,6 @@ cc_binary(
 | Library | Minimum version | Description |
 | ------- | --------------: | ----------- |
 | gRPC    | 1.16.x | gRPC++ for Cloud Bigtable |
-| libcurl | 7.47.0  | HTTP client library for the Google Cloud Storage client |
-| crc32c  | 1.0.6 | Hardware-accelerated CRC32C implementation |
-| OpenSSL | 1.0.2 | Crypto functions for Google Cloud Storage authentication |
 
 Note that these libraries may also depend on other libraries. The following
 instructions include steps to install these indirect dependencies too.
@@ -161,26 +158,6 @@ tools to compile the dependencies:
 sudo dnf makecache && \
 sudo dnf install -y grpc-devel grpc-plugins \
         libcurl-devel protobuf-compiler tar wget zlib-devel
-```
-
-#### crc32c
-
-There is no Fedora package for this library. To install it, use:
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-tar -xf 1.0.6.tar.gz
-cd $HOME/Downloads/crc32c-1.0.6
-cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-sudo cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-sudo ldconfig
 ```
 
 #### googleapis
@@ -250,26 +227,6 @@ sudo zypper refresh && \
 sudo zypper install -y grpc-devel gzip libcurl-devel tar wget
 ```
 
-#### crc32c
-
-There is no OpenSUSE package for this library. To install it, use:
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-tar -xf 1.0.6.tar.gz
-cd $HOME/Downloads/crc32c-1.0.6
-cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-sudo cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-sudo ldconfig
-```
-
 #### googleapis
 
 There is no OpenSUSE package for this library. To install it, use:
@@ -326,26 +283,6 @@ Install the minimal development tools:
 sudo zypper refresh && \
 sudo zypper install --allow-downgrade -y cmake gcc gcc-c++ git gzip \
         libcurl-devel libopenssl-devel make tar wget
-```
-
-#### crc32c
-
-There is no OpenSUSE package for this library. To install it, use:
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-tar -xf 1.0.6.tar.gz
-cd $HOME/Downloads/crc32c-1.0.6
-cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-sudo cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-sudo ldconfig
 ```
 
 #### Protobuf
@@ -476,26 +413,6 @@ sudo apt install -y build-essential cmake git gcc g++ cmake \
         pkg-config tar wget zlib1g-dev
 ```
 
-#### crc32c
-
-There is no Ubuntu package for this library. To install it use:
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-tar -xf 1.0.6.tar.gz
-cd $HOME/Downloads/crc32c-1.0.6
-cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-sudo cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-sudo ldconfig
-```
-
 #### Protobuf
 
 While protobuf-3.0 is distributed with Ubuntu, the Google Cloud Plaform proto
@@ -588,26 +505,6 @@ sudo apt update && \
 sudo apt install -y build-essential cmake git gcc g++ cmake \
         libcurl4-openssl-dev libssl-dev make \
         pkg-config tar wget zlib1g-dev
-```
-
-#### crc32c
-
-There is no Ubuntu-16.04 package for this library. To install it use:
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-tar -xf 1.0.6.tar.gz
-cd $HOME/Downloads/crc32c-1.0.6
-cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-sudo cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-sudo ldconfig
 ```
 
 #### Protobuf
@@ -774,26 +671,6 @@ sudo make install
 sudo ldconfig
 ```
 
-#### crc32c
-
-There is no Ubuntu Trusty package for this library. To install it, use:
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-tar -xf 1.0.6.tar.gz
-cd $HOME/Downloads/crc32c-1.0.6
-cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-sudo cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-sudo ldconfig
-```
-
 #### Protobuf
 
 While protobuf-2.5 is distributed with Ubuntu:trusty, the Google Cloud Plaform
@@ -914,26 +791,6 @@ sudo apt install -y build-essential cmake git gcc g++ cmake \
         protobuf-compiler protobuf-compiler-grpc tar wget zlib1g-dev
 ```
 
-#### crc32c
-
-There is no Debian package for this library. To install it use:
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-tar -xf 1.0.6.tar.gz
-cd $HOME/Downloads/crc32c-1.0.6
-cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-sudo cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-sudo ldconfig
-```
-
 #### googleapis
 
 There is no Debian package for this library. To install it, use:
@@ -998,26 +855,6 @@ sudo apt update && \
 sudo apt install -y build-essential cmake git gcc g++ cmake \
         libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl1.0-dev make \
         pkg-config tar wget zlib1g-dev
-```
-
-#### crc32c
-
-There is no Debian package for this library. To install it use:
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-tar -xf 1.0.6.tar.gz
-cd $HOME/Downloads/crc32c-1.0.6
-cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-sudo cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-sudo ldconfig
 ```
 
 #### Protobuf
@@ -1111,26 +948,6 @@ Install the minimal development tools:
 sudo dnf makecache && \
 sudo dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
         zlib-devel libcurl-devel c-ares-devel tar wget which
-```
-
-#### crc32c
-
-There is no CentOS package for this library. To install it, use:
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-tar -xf 1.0.6.tar.gz
-cd $HOME/Downloads/crc32c-1.0.6
-cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-sudo cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-sudo ldconfig
 ```
 
 #### Protobuf
@@ -1238,26 +1055,6 @@ sudo yum makecache && \
 sudo yum install -y automake cmake3 curl-devel gcc gcc-c++ git libtool \
         make openssl-devel pkgconfig tar wget which zlib-devel
 ln -sf /usr/bin/cmake3 /usr/bin/cmake && ln -sf /usr/bin/ctest3 /usr/bin/ctest
-```
-
-#### crc32c
-
-There is no CentOS package for this library. To install it use:
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-tar -xf 1.0.6.tar.gz
-cd $HOME/Downloads/crc32c-1.0.6
-cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-sudo cmake --build cmake-out/crc32c --target install -- -j ${NCPU:-4}
-sudo ldconfig
 ```
 
 #### Protobuf
