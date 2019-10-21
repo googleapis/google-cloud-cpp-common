@@ -23,8 +23,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(GOOGLE_CLOUD_CPP_ROOT "${PROJECT_SOURCE_DIR}/..")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
-include(external/curl)
-include(external/crc32c)
 include(external/grpc)
 include(external/googleapis)
 include(external/googletest)
@@ -36,8 +34,6 @@ set_external_project_build_parallel_level(PARALLEL)
 
 set(GOOGLE_CLOUD_CPP_DEPENDENCIES_LIST
     grpc_project
-    curl_project
-    crc32c_project
     googleapis_project
     googletest_project)
 

@@ -197,9 +197,10 @@ sudo dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
 [kokoro-readme-centos-7-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos-7.svg
 [kokoro-readme-centos-7-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos-7-link.html
 
+First install the development tools and OpenSSL.
 The development tools distributed with CentOS (notably CMake) are too old to
-build `google-cloud-cpp`. In these instructions, we use `cmake3` obtained from
-[Software Collections](https://www.softwarecollections.org/).
+build `google-cloud-cpp-common`. In these instructions, we use `cmake3`
+obtained from [Software Collections](https://www.softwarecollections.org/).
 
 ```bash
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -218,6 +219,8 @@ ln -sf /usr/bin/cmake3 /usr/bin/cmake && ln -sf /usr/bin/ctest3 /usr/bin/ctest
 [kokoro-readme-debian-buster-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-buster.svg
 [kokoro-readme-debian-buster-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-buster-link.html
 
+First install the development tools.
+
 ```bash
 sudo apt update && \
 sudo apt install -y build-essential cmake git gcc g++ cmake \
@@ -232,13 +235,7 @@ sudo apt install -y build-essential cmake git gcc g++ cmake \
 [kokoro-readme-debian-stretch-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-stretch.svg
 [kokoro-readme-debian-stretch-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/debian-stretch-link.html
 
-On Debian Stretch, libcurl links against openssl-1.0.2, and one must link
-against the same version or risk an inconsistent configuration of the library.
-This is especially important for multi-threaded applications, as openssl-1.0.2
-requires explicitly setting locking callbacks. Therefore, to use libcurl one
-must link against openssl-1.0.2. To do so, we need to install libssl1.0-dev.
-Note that this removes libssl-dev if you have it installed already, and would
-prevent you from compiling against openssl-1.1.0.
+First install the development tools.
 
 ```bash
 sudo apt update && \
@@ -254,6 +251,8 @@ sudo apt install -y build-essential cmake git gcc g++ cmake \
 [kokoro-readme-fedora-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/fedora.svg
 [kokoro-readme-fedora-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/fedora-link.html
 
+Install the minimal development tools:
+
 ```bash
 sudo dnf makecache && \
 sudo dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
@@ -266,6 +265,8 @@ sudo dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
 
 [kokoro-readme-opensuse-tumbleweed-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/opensuse-tumbleweed.svg
 [kokoro-readme-opensuse-tumbleweed-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/opensuse-tumbleweed-link.html
+
+Install the minimal development tools:
 
 ```bash
 sudo zypper refresh && \
@@ -280,6 +281,8 @@ sudo zypper install --allow-downgrade -y cmake gcc gcc-c++ git gzip \
 [kokoro-readme-opensuse-leap-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/opensuse-leap.svg
 [kokoro-readme-opensuse-leap-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/opensuse-leap-link.html
 
+Install the minimal development tools:
+
 ```bash
 sudo zypper refresh && \
 sudo zypper install --allow-downgrade -y cmake gcc gcc-c++ git gzip \
@@ -292,6 +295,8 @@ sudo zypper install --allow-downgrade -y cmake gcc gcc-c++ git gzip \
 
 [kokoro-readme-ubuntu-bionic-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-bionic.svg
 [kokoro-readme-ubuntu-bionic-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-bionic-link.html
+
+Install the minimal development tools:
 
 ```bash
 sudo apt update && \
@@ -307,6 +312,8 @@ sudo apt install -y build-essential cmake git gcc g++ cmake \
 [kokoro-readme-ubuntu-xenial-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-xenial.svg
 [kokoro-readme-ubuntu-xenial-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-xenial-link.html
 
+Install the minimal development tools:
+
 ```bash
 sudo apt update && \
 sudo apt install -y build-essential cmake git gcc g++ cmake \
@@ -320,6 +327,8 @@ sudo apt install -y build-essential cmake git gcc g++ cmake \
 
 [kokoro-readme-ubuntu-trusty-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-trusty.svg
 [kokoro-readme-ubuntu-trusty-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-trusty-link.html
+
+Install the minimal development tools.
 
 We use the `ubuntu-toolchain-r` PPA to get a modern version of CMake:
 
@@ -497,10 +506,8 @@ Use `vcpkg` to download and install `google-cloud-cpp`'s dependencies:
 ```console
 .\vcpkg.exe install openssl:x64-windows-static ^
     grpc:x64-windows-static ^
-    curl:x64-windows-static ^
     gtest:x64-windows-static ^
-    googleapis:x64-windows-static ^
-    crc32c:x64-windows-static
+    googleapis:x64-windows-static
 .\vcpkg.exe integrate install
 ```
 

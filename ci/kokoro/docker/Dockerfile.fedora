@@ -28,7 +28,6 @@ RUN dnf makecache && dnf install -y \
     doxygen \
     gcc-c++ \
     git \
-    libcurl-devel \
     libcxx-devel \
     libcxxabi-devel \
     libtool \
