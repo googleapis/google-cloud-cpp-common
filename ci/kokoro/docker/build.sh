@@ -252,13 +252,12 @@ echo "Logging to ${BUILD_OUTPUT}/create-build-docker-image.log"
 # is an error, so disabling from this point on is the right choice.
 set +e
 mkdir -p "${BUILD_OUTPUT}"
-if timeout 3600s docker build "${docker_build_flags[@]}" ci \
-    >"${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
+if timeout 3600s docker build "${docker_build_flags[@]}" ci; then
    update_cache="true"
 fi
-if [[ "$?" != 0 ]]; then
-  dump_log "${BUILD_OUTPUT}/create-build-docker-image.log"
-fi
+#if [[ "$?" != 0 ]]; then
+#  dump_log "${BUILD_OUTPUT}/create-build-docker-image.log"
+#fi
 
 if "${update_cache}" && [[ "${RUNNING_CI:-}" == "yes" ]] &&
    [[ -z "${KOKORO_GITHUB_PULL_REQUEST_NUMBER:-}" ]]; then
