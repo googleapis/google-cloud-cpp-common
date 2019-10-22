@@ -54,10 +54,7 @@ if (NOT TARGET grpc_project)
                    -DgRPC_SSL_PROVIDER=package
                    -DgRPC_CARES_PROVIDER=package
                    -DgRPC_PROTOBUF_PROVIDER=package
-        BUILD_COMMAND ${CMAKE_COMMAND}
-                      --build
-                      <BINARY_DIR>
-                      ${PARALLEL}
+        BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> ${PARALLEL}
         LOG_DOWNLOAD ON
         LOG_CONFIGURE ON
         LOG_BUILD ON
