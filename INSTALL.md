@@ -343,9 +343,9 @@ Then gRPC can be manually installed using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.24.3.tar.gz
-tar -xf v1.24.3.tar.gz
-cd $HOME/Downloads/grpc-1.24.3
+wget -q https://github.com/grpc/grpc/archive/v1.19.1.tar.gz
+tar -xf v1.19.1.tar.gz
+cd $HOME/Downloads/grpc-1.19.1
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
 export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
 export PATH=/usr/local/bin:${PATH}
@@ -440,9 +440,9 @@ the Google Cloud Platform APIs:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.24.3.tar.gz
-tar -xf v1.24.3.tar.gz
-cd $HOME/Downloads/grpc-1.24.3
+wget -q https://github.com/grpc/grpc/archive/v1.19.1.tar.gz
+tar -xf v1.19.1.tar.gz
+cd $HOME/Downloads/grpc-1.19.1
 make -j ${NCPU:-4}
 sudo make install
 sudo ldconfig
@@ -558,9 +558,9 @@ library manually:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.24.3.tar.gz
-tar -xf v1.24.3.tar.gz
-cd $HOME/Downloads/grpc-1.24.3
+wget -q https://github.com/grpc/grpc/archive/v1.19.1.tar.gz
+tar -xf v1.19.1.tar.gz
+cd $HOME/Downloads/grpc-1.19.1
 make -j ${NCPU:-4}
 sudo make install
 sudo ldconfig
@@ -884,9 +884,9 @@ the Google Cloud Platform APIs:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.24.3.tar.gz
-tar -xf v1.24.3.tar.gz
-cd $HOME/Downloads/grpc-1.24.3
+wget -q https://github.com/grpc/grpc/archive/v1.19.1.tar.gz
+tar -xf v1.19.1.tar.gz
+cd $HOME/Downloads/grpc-1.19.1
 make -j ${NCPU:-4}
 sudo make install
 sudo ldconfig
@@ -1096,9 +1096,9 @@ Can be manually installed using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.24.3.tar.gz
-tar -xf v1.24.3.tar.gz
-cd $HOME/Downloads/grpc-1.24.3
+wget -q https://github.com/grpc/grpc/archive/v1.19.1.tar.gz
+tar -xf v1.19.1.tar.gz
+cd $HOME/Downloads/grpc-1.19.1
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
 export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
 export PATH=/usr/local/bin:${PATH}

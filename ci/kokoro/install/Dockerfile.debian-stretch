@@ -66,9 +66,9 @@ RUN ldconfig
 
 # ```bash
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/grpc/grpc/archive/v1.24.3.tar.gz
-RUN tar -xf v1.24.3.tar.gz
-WORKDIR /var/tmp/build/grpc-1.24.3
+RUN wget -q https://github.com/grpc/grpc/archive/v1.19.1.tar.gz
+RUN tar -xf v1.19.1.tar.gz
+WORKDIR /var/tmp/build/grpc-1.19.1
 RUN make -j ${NCPU:-4}
 RUN make install
 RUN ldconfig
