@@ -16,7 +16,7 @@
 
 # This should be included from the top level CMakeLists file
 set(GOOGLE_CLOUD_CPP_VERSION_MAJOR 0)
-set(GOOGLE_CLOUD_CPP_VERSION_MINOR 13)
+set(GOOGLE_CLOUD_CPP_VERSION_MINOR 14)
 set(GOOGLE_CLOUD_CPP_VERSION_PATCH 0)
 
 string(CONCAT GOOGLE_CLOUD_CPP_VERSION "${GOOGLE_CLOUD_CPP_VERSION_MAJOR}" "."
@@ -89,7 +89,7 @@ if (NOT "${GOOGLE_CLOUD_CPP_BUILD_METADATA}" STREQUAL "")
     # The build metadata flag is already defined, do not re-compute the
     # initialization value. This works both when the user supplies
     # -DGOOGLE_CLOUD_CPP_METADATA=value in the command line, and when
-    # GOOGLE_CLOUD_CPP_METADATA has a cached value
+    # GOOGLE_CLOUD_CPP_METADATA has a cached value.
     set(GOOGLE_CLOUD_CPP_GIT_HEAD "unused")
 else ()
     google_cloud_cpp_initialize_git_head(GOOGLE_CLOUD_CPP_GIT_HEAD)
