@@ -22,7 +22,7 @@ remote, these commands should be useful in identifying important changes:
 Update `google/cloud/README.md` based on the release notes:
 
 ```bash
-git log upstream/master -- google/cloud
+git log --format="format:* %s" upstream/master -- google/cloud
 ```
 
 It is not recommended that you create the release branch before this PR is

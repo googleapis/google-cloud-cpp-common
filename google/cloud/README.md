@@ -20,7 +20,17 @@ Documentation for the common utilities is available [online][doxygen-link].
 
 ## Release Notes
 
-### v0.14.x - TBD
+### v0.15.x - TBD
+
+### v0.14.x - 2019-10
+
+* chore: update cmake-format (#66)
+* chore: remove orphaned google/cloud/google_cloud_cpp_testing.bzl (#63)
+* feat: implement std::apply (#59)
+* doc: prepare release notes for 0.13.0 release (#37)
+* feat: implement smoke tests for CompletionQueue. (#32)
+* feat: implement install components (#33)
+* Initial copy from google-cloud-cpp.
 
 ### v0.13.x - 2019-10
 
