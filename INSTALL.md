@@ -984,9 +984,9 @@ Once the environment is setup, we can compile gRPC:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
-tar -xf v1.23.1.tar.gz
-cd $HOME/Downloads/grpc-1.23.1
+wget -q https://github.com/grpc/grpc/archive/v1.24.3.tar.gz
+tar -xf v1.24.3.tar.gz
+cd $HOME/Downloads/grpc-1.24.3
 make -j ${NCPU:-4}
 sudo make install
 sudo ldconfig
