@@ -30,22 +30,32 @@ if [[ -n "${IMAGE+x}" ]]; then
   echo "IMAGE is already defined."
 else
   DOCKER_IMAGE_BASENAME="ci-${DISTRO}"
+  DOCKER_README_IMAGE_BASENAME="ci-readme-${DISTRO}"
+  DOCKER_INSTALL_IMAGE_BASENAME="ci-install-${DISTRO}"
   if [[ -n "${DISTRO_VERSION:-}" ]]; then
     DOCKER_IMAGE_BASENAME="${DOCKER_IMAGE_BASENAME}-${DISTRO_VERSION}"
+    DOCKER_README_IMAGE_BASENAME="${DOCKER_README_IMAGE_BASENAME}-${DISTRO_VERSION}"
+    DOCKER_INSTALL_IMAGE_BASENAME="${DOCKER_INSTALL_IMAGE_BASENAME}-${DISTRO_VERSION}"
   fi
+  readonly DOCKER_README_IMAGE_BASENAME
+  readonly DOCKER_INSTALL_IMAGE_BASENAME
   readonly DOCKER_IMAGE_BASENAME
 
   if [[ -n "${PROJECT_ID:-}" ]]; then
     DOCKER_IMAGE_PREFIX="gcr.io/${PROJECT_ID}/google-cloud-cpp-common"
-    IMAGE="${DOCKER_IMAGE_PREFIX}/${DOCKER_IMAGE_BASENAME}"
   else
     # We want a prefix that works when running interactively, so it must be a
     # (syntactically) valid project id, this works.
     DOCKER_IMAGE_PREFIX="gcr.io/cloud-cpp-reserved/google-cloud-cpp-common"
-    IMAGE="${DOCKER_IMAGE_PREFIX}/${DOCKER_IMAGE_BASENAME}"
   fi
   readonly DOCKER_IMAGE_PREFIX
+
+  IMAGE="${DOCKER_IMAGE_PREFIX}/${DOCKER_IMAGE_BASENAME}"
+  README_IMAGE="${DOCKER_IMAGE_PREFIX}/${DOCKER_README_IMAGE_BASENAME}"
+  INSTALL_IMAGE="${DOCKER_IMAGE_PREFIX}/${DOCKER_INSTALL_IMAGE_BASENAME}"
   readonly IMAGE
+  readonly README_IMAGE
+  readonly README_INSTALL_IMAGE
 
   BUILD_OUTPUT="cmake-out/${DOCKER_IMAGE_BASENAME}"
   BUILD_HOME="cmake-out/home/${DOCKER_IMAGE_BASENAME}"
