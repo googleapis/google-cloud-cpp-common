@@ -722,9 +722,9 @@ library:
 ```bash
 export PKG_CONFIG_PATH=/usr/local/ssl/lib/pkgconfig:/usr/local/curl/lib/pkgconfig
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.24.3.tar.gz
-tar -xf v1.24.3.tar.gz
-cd $HOME/Downloads/grpc-1.24.3
+wget -q https://github.com/grpc/grpc/archive/v1.19.1.tar.gz
+tar -xf v1.19.1.tar.gz
+cd $HOME/Downloads/grpc-1.19.1
 make -j ${NCPU:-4}
 sudo make install
 ```
