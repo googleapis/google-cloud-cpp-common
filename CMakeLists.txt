@@ -60,7 +60,9 @@ if (APPLE)
     # confusing. Help our users by giving them some guidance.
     if ("${GOOGLE_CLOUD_CPP_ENABLE_MACOS_OPENSSL_CHECK}"
         AND NOT DEFINED ENV{OPENSSL_ROOT_DIR})
-        message(FATAL_ERROR [===[
+        message(
+            FATAL_ERROR
+                [===[
 The Google Cloud C++ client libraries use the native OpenSSL library. In most
 macOS systems, you need to set the OPENSSL_ROOT_DIR environment variable to find
 this dependency, for example:
@@ -88,12 +90,10 @@ if ("${GOOGLE_CLOUD_CPP_ENABLE_CCACHE}")
     mark_as_advanced(GOOGLE_CLOUD_CPP_CCACHE_PROGRAM)
     if (GOOGLE_CLOUD_CPP_CCACHE_PROGRAM)
         message(STATUS "ccache found: ${GOOGLE_CLOUD_CPP_CCACHE_PROGRAM}")
-        set_property(GLOBAL
-                     PROPERTY RULE_LAUNCH_COMPILE
-                              "${GOOGLE_CLOUD_CPP_CCACHE_PROGRAM}")
-        set_property(GLOBAL
-                     PROPERTY RULE_LAUNCH_LINK
-                              "${GOOGLE_CLOUD_CPP_CCACHE_PROGRAM}")
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE
+                                     "${GOOGLE_CLOUD_CPP_CCACHE_PROGRAM}")
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK
+                                     "${GOOGLE_CLOUD_CPP_CCACHE_PROGRAM}")
 
         set(GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CCACHE
             "-DCMAKE_CXX_COMPILER_LAUNCHER=${GOOGLE_CLOUD_CPP_CCACHE_PROGRAM}"

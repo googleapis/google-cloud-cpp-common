@@ -15,8 +15,8 @@
 # ~~~
 
 # Find out the name of the subproject.
-get_filename_component(GOOGLE_CLOUD_CPP_SUBPROJECT "${CMAKE_CURRENT_SOURCE_DIR}"
-                       NAME)
+get_filename_component(GOOGLE_CLOUD_CPP_SUBPROJECT
+                       "${CMAKE_CURRENT_SOURCE_DIR}" NAME)
 
 # Find out what flags turn on all available warnings and turn those warnings
 # into errors.
@@ -56,11 +56,7 @@ else ()
     find_package(Doxygen)
     if (Doxygen_FOUND)
         set(DOXYGEN_RECURSIVE YES)
-        set(DOXYGEN_FILE_PATTERNS
-            *.h
-            *.cc
-            *.proto
-            *.dox)
+        set(DOXYGEN_FILE_PATTERNS *.h *.cc *.proto *.dox)
         set(DOXYGEN_EXAMPLE_RECURSIVE YES)
         set(DOXYGEN_EXCLUDE "third_party" "cmake-build-debug" "cmake-out")
         set(DOXYGEN_EXCLUDE_SYMLINKS YES)
@@ -77,7 +73,8 @@ else ()
         set(DOXYGEN_GENERATE_BUGLIST NO)
         set(DOXYGEN_GENERATE_TESTLIST NO)
         set(DOXYGEN_CLANG_ASSISTED_PARSING YES)
-        set(DOXYGEN_CLANG_OPTIONS "\
+        set(DOXYGEN_CLANG_OPTIONS
+            "\
 -std=c++11 \
 -I${PROJECT_SOURCE_DIR} \
 -I${PROJECT_BINARY_DIR} \
@@ -103,12 +100,10 @@ else ()
         set(DOXYGEN_LAYOUT_FILE
             "${PROJECT_SOURCE_DIR}/doc/config/DoxygenLayout.xml")
 
-        doxygen_add_docs(${GOOGLE_CLOUD_CPP_SUBPROJECT}-docs
-                         ${CMAKE_CURRENT_SOURCE_DIR}
-                         WORKING_DIRECTORY
-                         ${CMAKE_CURRENT_SOURCE_DIR}
-                         COMMENT
-                         "Generate HTML documentation")
+        doxygen_add_docs(
+            ${GOOGLE_CLOUD_CPP_SUBPROJECT}-docs ${CMAKE_CURRENT_SOURCE_DIR}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} COMMENT
+            "Generate HTML documentation")
         add_dependencies(doxygen-docs ${GOOGLE_CLOUD_CPP_SUBPROJECT}-docs)
     endif ()
 endif ()
@@ -137,8 +132,8 @@ endfunction ()
 function (google_cloud_cpp_add_clang_tidy target)
     if (GOOGLE_CLOUD_CPP_CLANG_TIDY_PROGRAM AND GOOGLE_CLOUD_CPP_CLANG_TIDY)
         set_target_properties(
-            ${target}
-            PROPERTIES CXX_CLANG_TIDY "${GOOGLE_CLOUD_CPP_CLANG_TIDY_PROGRAM}")
+            ${target} PROPERTIES CXX_CLANG_TIDY
+                                 "${GOOGLE_CLOUD_CPP_CLANG_TIDY_PROGRAM}")
     endif ()
 endfunction ()
 
@@ -156,17 +151,11 @@ endfunction ()
 function (google_cloud_cpp_install_headers target destination)
     get_target_property(target_sources ${target} SOURCES)
     foreach (header ${target_sources})
-        if (NOT
-            "${header}"
-            MATCHES
-            "\\.h$"
-            AND NOT "${header}" MATCHES "\\.inc$")
+        if (NOT "${header}" MATCHES "\\.h$" AND NOT "${header}" MATCHES
+                                                "\\.inc$")
             continue()
         endif ()
-        string(REPLACE "${CMAKE_CURRENT_BINARY_DIR}/"
-                       ""
-                       relative
-                       "${header}")
+        string(REPLACE "${CMAKE_CURRENT_BINARY_DIR}/" "" relative "${header}")
         get_filename_component(dir "${relative}" DIRECTORY)
         install(FILES "${header}" DESTINATION "${destination}/${dir}")
     endforeach ()
@@ -185,9 +174,11 @@ function (google_cloud_cpp_set_doxygen_tagfiles)
 ${PROJECT_BINARY_DIR}/google/cloud/cloud.tag=../../google-cloud-common/master/"
                 PARENT_SCOPE)
         else ()
-            set(DOXYGEN_TAGFILES "\
+            set(DOXYGEN_TAGFILES
+                "\
 ${PROJECT_BINARY_DIR}/google/cloud/cloud.tag=../../google-cloud-common/\
-${GOOGLE_CLOUD_CPP_VERSION}/" PARENT_SCOPE)
+${GOOGLE_CLOUD_CPP_VERSION}/"
+                PARENT_SCOPE)
         endif ()
     endif ()
 endfunction ()

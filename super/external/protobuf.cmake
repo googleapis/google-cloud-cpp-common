@@ -54,18 +54,14 @@ if (NOT TARGET protobuf_project)
             -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
             # Protobuf installs using `CMAKE_INSTALL_LIBDIR`, as it should,
             # which expands to `lib` or `lib64`. But hard-codes RPATH to
-            # `$ORIGIN/../lib`, so change the default `LIBDIR` to something
-            # that works.
-            # https://github.com/protocolbuffers/protobuf/pull/6204
+            # `$ORIGIN/../lib`, so change the default `LIBDIR` to something that
+            # works. https://github.com/protocolbuffers/protobuf/pull/6204
             -DCMAKE_INSTALL_LIBDIR=lib
             -Dprotobuf_BUILD_TESTS=OFF
             -Dprotobuf_DEBUG_POSTFIX=
             -H<SOURCE_DIR>/cmake
             -B<BINARY_DIR>
-        BUILD_COMMAND ${CMAKE_COMMAND}
-                      --build
-                      <BINARY_DIR>
-                      ${PARALLEL}
+        BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> ${PARALLEL}
         LOG_DOWNLOAD ON
         LOG_CONFIGURE ON
         LOG_BUILD ON

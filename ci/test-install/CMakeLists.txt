@@ -31,6 +31,5 @@ find_package(google_cloud_cpp_grpc_utils REQUIRED)
 find_package(google_cloud_cpp_common REQUIRED)
 
 add_executable(common_install_test common_install_test.cc)
-target_link_libraries(common_install_test
-                      PRIVATE google_cloud_cpp_grpc_utils
-                              google_cloud_cpp_common)
+target_link_libraries(common_install_test PRIVATE google_cloud_cpp_grpc_utils
+                                                  google_cloud_cpp_common)

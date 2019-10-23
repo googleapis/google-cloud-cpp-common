@@ -19,12 +19,11 @@
 # We use a function to define the property so it can be called multiple times
 # without introducing the property over and over.
 function (google_cloud_cpp_add_protos_property)
-    set_property(TARGET
-                 PROPERTY PROTO_SOURCES
-                          BRIEF_DOCS
-                          "The list of .proto files for a target."
-                          FULL_DOCS
-                          "List of .proto files specified for a target.")
+    set_property(
+        TARGET
+        PROPERTY PROTO_SOURCES BRIEF_DOCS
+                 "The list of .proto files for a target." FULL_DOCS
+                 "List of .proto files specified for a target.")
 endfunction ()
 
 # Generate C++ for .proto files preserving the directory hierarchy
@@ -54,11 +53,7 @@ endfunction ()
 # `foo/bar/baz.proto` then the directory containing `foo` must be in the search
 # path.
 function (google_cloud_cpp_generate_proto SRCS)
-    cmake_parse_arguments(_opt
-                          ""
-                          ""
-                          "PROTO_PATH_DIRECTORIES"
-                          ${ARGN})
+    cmake_parse_arguments(_opt "" "" "PROTO_PATH_DIRECTORIES" ${ARGN})
     if (NOT _opt_UNPARSED_ARGUMENTS)
         message(SEND_ERROR "Error: google_cloud_cpp_generate_proto() called"
                            " without any proto files")
@@ -89,11 +84,7 @@ function (google_cloud_cpp_generate_proto SRCS)
         set(D "${file_directory}")
         if (DEFINED _opt_PROTO_PATH_DIRECTORIES)
             foreach (P ${_opt_PROTO_PATH_DIRECTORIES})
-                string(REGEX
-                       REPLACE "^${P}"
-                               ""
-                               T
-                               "${D}")
+                string(REGEX REPLACE "^${P}" "" T "${D}")
                 set(D ${T})
             endforeach ()
         endif ()
@@ -102,19 +93,18 @@ function (google_cloud_cpp_generate_proto SRCS)
         list(APPEND ${SRCS} "${pb_cc}" "${pb_h}")
         add_custom_command(
             OUTPUT "${pb_cc}" "${pb_h}"
-            COMMAND $<TARGET_FILE:protobuf::protoc> ARGS
-                    --cpp_out "${CMAKE_CURRENT_BINARY_DIR}"
-                              ${protobuf_include_path} "${filename}"
+            COMMAND $<TARGET_FILE:protobuf::protoc> ARGS --cpp_out
+                    "${CMAKE_CURRENT_BINARY_DIR}" ${protobuf_include_path}
+                    "${filename}"
             DEPENDS "${filename}" protobuf::protoc
             COMMENT "Running C++ protocol buffer compiler on ${filename}"
             VERBATIM)
     endforeach ()
 
-    set_source_files_properties(${${SRCS}}
-                                PROPERTIES
-                                GENERATED
-                                TRUE)
-    set(${SRCS} ${${SRCS}} PARENT_SCOPE)
+    set_source_files_properties(${${SRCS}} PROPERTIES GENERATED TRUE)
+    set(${SRCS}
+        ${${SRCS}}
+        PARENT_SCOPE)
 endfunction ()
 
 # Generate gRPC C++ files from .proto files preserving the directory hierarchy.
@@ -144,11 +134,7 @@ endfunction ()
 # `foo/bar/baz.proto` then the directory containing `foo` must be in the search
 # path.
 function (google_cloud_cpp_generate_grpcpp SRCS)
-    cmake_parse_arguments(_opt
-                          ""
-                          ""
-                          "PROTO_PATH_DIRECTORIES"
-                          ${ARGN})
+    cmake_parse_arguments(_opt "" "" "PROTO_PATH_DIRECTORIES" ${ARGN})
     if (NOT _opt_UNPARSED_ARGUMENTS)
         message(
             SEND_ERROR "Error: google_cloud_cpp_generate_grpc() called without"
@@ -180,11 +166,7 @@ function (google_cloud_cpp_generate_grpcpp SRCS)
         set(D "${file_directory}")
         if (DEFINED _opt_PROTO_PATH_DIRECTORIES)
             foreach (P ${_opt_PROTO_PATH_DIRECTORIES})
-                string(REGEX
-                       REPLACE "^${P}"
-                               ""
-                               T
-                               "${D}")
+                string(REGEX REPLACE "^${P}" "" T "${D}")
                 set(D ${T})
             endforeach ()
         endif ()
@@ -197,20 +179,18 @@ function (google_cloud_cpp_generate_grpcpp SRCS)
             COMMAND
                 $<TARGET_FILE:protobuf::protoc> ARGS
                 --plugin=protoc-gen-grpc=$<TARGET_FILE:gRPC::grpc_cpp_plugin>
-                    "--grpc_out=${CMAKE_CURRENT_BINARY_DIR}"
-                    "--cpp_out=${CMAKE_CURRENT_BINARY_DIR}"
-                    ${protobuf_include_path}
-                    "${filename}"
+                "--grpc_out=${CMAKE_CURRENT_BINARY_DIR}"
+                "--cpp_out=${CMAKE_CURRENT_BINARY_DIR}" ${protobuf_include_path}
+                "${filename}"
             DEPENDS "${filename}" protobuf::protoc gRPC::grpc_cpp_plugin
             COMMENT "Running gRPC C++ protocol buffer compiler on ${filename}"
             VERBATIM)
     endforeach ()
 
-    set_source_files_properties(${${SRCS}}
-                                PROPERTIES
-                                GENERATED
-                                TRUE)
-    set(${SRCS} ${${SRCS}} PARENT_SCOPE)
+    set_source_files_properties(${${SRCS}} PROPERTIES GENERATED TRUE)
+    set(${SRCS}
+        ${${SRCS}}
+        PARENT_SCOPE)
 endfunction ()
 
 include(GNUInstallDirs)
@@ -223,10 +203,7 @@ function (google_cloud_cpp_install_proto_library_headers target)
         if (NOT "${header}" MATCHES "\\.h$")
             continue()
         endif ()
-        string(REPLACE "${CMAKE_CURRENT_BINARY_DIR}/"
-                       ""
-                       relative
-                       "${header}")
+        string(REPLACE "${CMAKE_CURRENT_BINARY_DIR}/" "" relative "${header}")
         get_filename_component(dir "${relative}" DIRECTORY)
         install(FILES "${header}"
                 DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${dir}")
@@ -241,10 +218,7 @@ function (google_cloud_cpp_install_proto_library_protos target)
         if (NOT "${header}" MATCHES "\\.proto$")
             continue()
         endif ()
-        string(REPLACE "${CMAKE_CURRENT_BINARY_DIR}/"
-                       ""
-                       relative
-                       "${header}")
+        string(REPLACE "${CMAKE_CURRENT_BINARY_DIR}/" "" relative "${header}")
         get_filename_component(dir "${relative}" DIRECTORY)
         # This is modeled after the Protobuf library, it installs the basic
         # protos (think google/protobuf/any.proto) in the include directory for
@@ -255,27 +229,22 @@ function (google_cloud_cpp_install_proto_library_protos target)
 endfunction ()
 
 function (google_cloud_cpp_proto_library libname)
-    cmake_parse_arguments(_opt
-                          ""
-                          ""
-                          "PROTO_PATH_DIRECTORIES"
-                          ${ARGN})
+    cmake_parse_arguments(_opt "" "" "PROTO_PATH_DIRECTORIES" ${ARGN})
     if (NOT _opt_UNPARSED_ARGUMENTS)
         message(SEND_ERROR "Error: google_cloud_cpp_proto_library() called"
                            " without any proto files")
         return()
     endif ()
 
-    google_cloud_cpp_generate_proto(proto_sources
-                                    ${_opt_UNPARSED_ARGUMENTS}
-                                    PROTO_PATH_DIRECTORIES
-                                    ${_opt_PROTO_PATH_DIRECTORIES})
+    google_cloud_cpp_generate_proto(
+        proto_sources ${_opt_UNPARSED_ARGUMENTS} PROTO_PATH_DIRECTORIES
+        ${_opt_PROTO_PATH_DIRECTORIES})
 
     add_library(${libname} ${proto_sources})
-    set_property(TARGET ${libname}
-                 PROPERTY PROTO_SOURCES ${_opt_UNPARSED_ARGUMENTS})
-    target_link_libraries(${libname}
-                          PUBLIC gRPC::grpc++ gRPC::grpc protobuf::libprotobuf)
+    set_property(TARGET ${libname} PROPERTY PROTO_SOURCES
+                                            ${_opt_UNPARSED_ARGUMENTS})
+    target_link_libraries(${libname} PUBLIC gRPC::grpc++ gRPC::grpc
+                                            protobuf::libprotobuf)
     # We want to treat the generated code as "system" headers so they get
     # ignored by the more aggressive warnings.
     target_include_directories(
@@ -286,24 +255,18 @@ function (google_cloud_cpp_proto_library libname)
 endfunction ()
 
 function (google_cloud_cpp_grpcpp_library libname)
-    cmake_parse_arguments(_opt
-                          ""
-                          ""
-                          "PROTO_PATH_DIRECTORIES"
-                          ${ARGN})
+    cmake_parse_arguments(_opt "" "" "PROTO_PATH_DIRECTORIES" ${ARGN})
     if (NOT _opt_UNPARSED_ARGUMENTS)
         message(SEND_ERROR "Error: google_cloud_cpp_proto_library() called"
                            " without any proto files")
         return()
     endif ()
 
-    google_cloud_cpp_generate_grpcpp(grpcpp_sources
-                                     ${_opt_UNPARSED_ARGUMENTS}
-                                     PROTO_PATH_DIRECTORIES
-                                     ${_opt_PROTO_PATH_DIRECTORIES})
-    google_cloud_cpp_proto_library(${libname}
-                                   ${_opt_UNPARSED_ARGUMENTS}
-                                   PROTO_PATH_DIRECTORIES
-                                   ${_opt_PROTO_PATH_DIRECTORIES})
+    google_cloud_cpp_generate_grpcpp(
+        grpcpp_sources ${_opt_UNPARSED_ARGUMENTS} PROTO_PATH_DIRECTORIES
+        ${_opt_PROTO_PATH_DIRECTORIES})
+    google_cloud_cpp_proto_library(
+        ${libname} ${_opt_UNPARSED_ARGUMENTS} PROTO_PATH_DIRECTORIES
+        ${_opt_PROTO_PATH_DIRECTORIES})
     target_sources(${libname} PRIVATE ${grpcpp_sources})
 endfunction ()

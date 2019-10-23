@@ -24,9 +24,10 @@ else ()
     if (${CMAKE_VERSION} VERSION_LESS "3.8")
         message(WARNING "clang-tidy exit code ignored in this version of cmake")
     endif ()
-    find_program(GOOGLE_CLOUD_CPP_CLANG_TIDY_PROGRAM
-                 NAMES "clang-tidy"
-                 DOC "Path to clang-tidy executable")
+    find_program(
+        GOOGLE_CLOUD_CPP_CLANG_TIDY_PROGRAM
+        NAMES "clang-tidy"
+        DOC "Path to clang-tidy executable")
     mark_as_advanced(GOOGLE_CLOUD_CPP_CLANG_TIDY_PROGRAM)
     if (NOT GOOGLE_CLOUD_CPP_CLANG_TIDY_PROGRAM)
         message(STATUS "clang-tidy not found.")
