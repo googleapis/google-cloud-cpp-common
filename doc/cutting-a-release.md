@@ -17,12 +17,14 @@ project.
 
 Assuming you are working on your own fork of the `google-cloud-cpp-common`
 project, and `upstream` points to the `googleapis/google-cloud-cpp-common`
-remote, these commands should be useful in identifying important changes:
+remote, and N is the current version, these commands should be useful in
+identifying important changes:
 
 Update `google/cloud/README.md` based on the release notes:
 
 ```bash
-git log upstream/master -- google/cloud
+git log --no-merges --format="format:* %s" v0.N.0..HEAD \
+    upstream/master -- google/cloud
 ```
 
 It is not recommended that you create the release branch before this PR is
