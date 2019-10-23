@@ -47,7 +47,7 @@ fi
 if [[ -z "${PROJECT_ROOT+x}" ]]; then
   readonly PROJECT_ROOT="$(cd "$(dirname "$0")/../../.."; pwd)"
 fi
-source "${PROJECT_ROOT}/ci/kokoro/docker/define-docker-variables.sh"
+source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
 
 echo "================================================================"
 echo "Change working directory to project root $(date)."
@@ -71,7 +71,6 @@ if [[ -f "${KOKORO_GFILE_DIR:-}/gcr-service-account.json" ]]; then
 fi
 gcloud auth configure-docker
 
-readonly README_IMAGE="${DOCKER_IMAGE_PREFIX}/test-readme-${DISTRO}"
 echo "================================================================"
 echo "Download existing image (if available) for ${DISTRO} $(date)."
 has_cache="false"
