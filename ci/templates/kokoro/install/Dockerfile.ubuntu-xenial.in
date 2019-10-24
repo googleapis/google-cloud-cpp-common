@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+@WARNING_GENERATED_FILE_FRAGMENT@
+
 ARG DISTRO_VERSION=xenial
 FROM ubuntu:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
-
-# This is an automatically generated file, do not modify it directly, see
-#   https://github.com/googleapis/google-cloud-cpp-common/ci/templates
 
 ## [START INSTALL.md]
 

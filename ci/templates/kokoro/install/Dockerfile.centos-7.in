@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+@WARNING_GENERATED_FILE_FRAGMENT@
+
 ARG DISTRO_VERSION=7
 FROM centos:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
-
-# This is an automatically generated file, do not modify it directly, see
-#   https://github.com/googleapis/google-cloud-cpp-common/ci/templates
 
 ## [START INSTALL.md]
 
@@ -64,7 +63,7 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
 ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
 # ```
 
-# Then we install it using using:
+# Then we install it using:
 
 # ```bash
 @INSTALL_GRPC_FROM_SOURCE@

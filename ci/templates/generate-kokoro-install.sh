@@ -44,19 +44,20 @@ BUILD_NAMES=(
 )
 readonly BUILD_NAMES
 
-set +e
+# shellcheck source=../../ci/etc/kokoro/install/docker-fragments.sh
+source "${PROJECT_ROOT}/ci/templates/kokoro/install/docker-fragments-functions.sh"
+# shellcheck source=../../ci/etc/kokoro/install/docker-fragments.sh
 source "${PROJECT_ROOT}/ci/templates/kokoro/install/docker-fragments.sh"
+# shellcheck source=../../ci/etc/kokoro/install/project-config.sh
 source "${DESTINATION_ROOT}/ci/etc/kokoro/install/project-config.sh"
-set -e
 
 generate_dockerfile() {
   local -r build="$1"
 
   target="${DESTINATION_ROOT}/ci/kokoro/install/Dockerfile.${build}"
-  echo "Generating ${target} "
-  # We cannot use simple shell expansion in the next fragment because the
-  # backticks (needed for formatting) are interpreted as "launch shell".
+  echo "Generating ${target}"
   replace_fragments \
+        "WARNING_GENERATED_FILE_FRAGMENT" \
         "INSTALL_PROTOBUF_FROM_SOURCE" \
         "INSTALL_C_ARES_FROM_SOURCE" \
         "INSTALL_GRPC_FROM_SOURCE" \
@@ -69,18 +70,21 @@ generate_dockerfile() {
     >"${target}"
 }
 
-# Remove all files, any files we want to preserve will be created again.
-git -C "${DESTINATION_ROOT}" rm -fr "ci/kokoro/install" || true
-
-mkdir -p "${DESTINATION_ROOT}/ci/kokoro/install"
-
-cp "${PROJECT_ROOT}/ci/templates/kokoro/install/build.sh" \
-   "${DESTINATION_ROOT}/ci/kokoro/install/build.sh"
-
+# Remove all files except common.cfg; any other files we want to preserve will be created again.
+git -C "${DESTINATION_ROOT}" rm -fr --ignore-unmatch "ci/kokoro/install"
 git -C "${DESTINATION_ROOT}" reset HEAD "ci/kokoro/install/common.cfg"
 git -C "${DESTINATION_ROOT}" checkout -- "ci/kokoro/install/common.cfg"
 
+mkdir -p "${DESTINATION_ROOT}/ci/kokoro/install"
+
+replace_fragments \
+    "WARNING_GENERATED_FILE_FRAGMENT" \
+    <"${PROJECT_ROOT}/ci/templates/kokoro/install/build.sh.in" \
+    >"${DESTINATION_ROOT}/ci/kokoro/install/build.sh"
+chmod 755 "${DESTINATION_ROOT}/ci/kokoro/install/build.sh"
+
 for build in "${BUILD_NAMES[@]}"; do
+  # We need these empty files because Kokoro does not work unless they exist.
   touch "${DESTINATION_ROOT}/ci/kokoro/install/${build}.cfg"
   touch "${DESTINATION_ROOT}/ci/kokoro/install/${build}-presubmit.cfg"
   generate_dockerfile "${build}"
