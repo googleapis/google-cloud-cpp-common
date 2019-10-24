@@ -29,9 +29,12 @@ replace_fragments() {
   local sed_args=("-e" "s,@GOOGLE_CLOUD_CPP_REPOSITORY@,${GOOGLE_CLOUD_CPP_REPOSITORY},")
   for fragment in "${fragment_names[@]}"; do
     sed_args+=("-e" "s,@${fragment}@,$(/bin/echo -n "${!fragment}" |
-        tr '\n' '^' |
+        # Note the use of \003 ("End of Text") as the magic character to
+        # represent newlines. This must match the invert `tr` call below. It
+        # allows us to escape newlines in the sed expression.
+        tr '\n' '\003' |
         sed -e 's,\\,\\\\,g' -e 's/&/\\&/g' -e 's/,/\\,/g' -e 's/`/\\`/' ),")
   done
 
-  sed "${sed_args[@]}" | tr '^' '\n'
+  sed "${sed_args[@]}" | tr '\003' '\n'
 }
