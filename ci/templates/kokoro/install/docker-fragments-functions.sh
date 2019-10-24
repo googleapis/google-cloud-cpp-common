@@ -24,9 +24,9 @@ read_into_variable() {
 # complicated because the text may contain newlines, and sed special characters.
 # With enough escaping things work for our purposes.
 replace_fragments() {
-  local fragment_names=("$@")
+  local fragment_names=("$@" "GOOGLE_CLOUD_CPP_REPOSITORY")
 
-  local sed_args=("-e" "s,@GOOGLE_CLOUD_CPP_REPOSITORY@,${GOOGLE_CLOUD_CPP_REPOSITORY},")
+  local sed_args=()
   for fragment in "${fragment_names[@]}"; do
     sed_args+=("-e" "s,@${fragment}@,$(/bin/echo -n "${!fragment}" |
         # Note the use of \003 ("End of Text") as the magic character to
