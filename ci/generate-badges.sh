@@ -26,7 +26,6 @@ source "${PROJECT_ROOT}/ci/etc/repo-config.sh"
 CI_DIR="${PROJECT_ROOT}/ci"
 readonly CI_DIR
 
-echo "<!-- Start of automatically generated content by ci/$(basename "$0") -->"
 echo
 echo '**Core Builds**'
 find "${CI_DIR}/kokoro/macos" \
@@ -84,7 +83,6 @@ cat <<_EOF_
 [doxygen-shield]: https://img.shields.io/badge/documentation-master-brightgreen.svg
 [doxygen-link]: https://googleapis.github.io/${GOOGLE_CLOUD_CPP_REPOSITORY}/latest/
 
-<!-- End of automatically generated content -->
 _EOF_
 
 exit 0

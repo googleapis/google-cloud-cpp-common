@@ -19,6 +19,8 @@ Assuming you are working on your own fork of the `google-cloud-cpp-common`
 project, and `upstream` points to the `googleapis/google-cloud-cpp-common`
 remote, these commands should be useful in identifying important changes:
 
+### Update google/cloud/README.md
+
 Update `google/cloud/README.md` based on the release notes:
 
 ```bash
@@ -26,6 +28,24 @@ git log --no-merges --format="format:* %s" \
     $(git describe --tags --abbrev=0 upstream/master)..HEAD \
     upstream/master -- google/cloud
 ```
+
+### Update README.md
+
+Update the instructions to build the library for development:
+
+```bash
+./ci/test-readme/generate-install.sh >INSTALL.md
+```
+
+### Update INSTALL.md
+
+Update the instructions to install the library:
+
+```bash
+./ci/test-readme/generate-install.sh >INSTALL.md
+```
+
+### Send a PR with all these changes
 
 It is not recommended that you create the release branch before this PR is
 ready, but in some circumstances it might be needed, for example, if a large
