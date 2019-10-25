@@ -43,7 +43,7 @@ FROM devtools AS install
 WORKDIR /home/build/project
 COPY . /home/build/project
 RUN cmake -H. -B/o
-RUN cmake --build /o -- -j ${NCPU:-4}
+RUN cmake --build /o -- -j "${NCPU:-4}"
 WORKDIR /o
 RUN ctest -LE integration-tests --output-on-failure
 WORKDIR /home/build/project
@@ -66,6 +66,6 @@ COPY google/cloud/samples/common_install_test.cc /home/build/test-install-cmake
 # Always unset PKG_CONFIG_PATH before building with CMake, this is to ensure
 # that CMake does not depend on pkg-config to discover the project.
 RUN env -u PKG_CONFIG_PATH cmake -H. -B/i
-RUN cmake --build /i -- -j ${NCPU:-4}
+RUN cmake --build /i -- -j "${NCPU:-4}"
 _EOF_
 )
