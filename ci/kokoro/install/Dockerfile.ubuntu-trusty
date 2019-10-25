@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#
+# WARNING: This is an automatically generated file. Consider changing the
+#     sources instead. You can find the source templates and scripts at:
+#         https://github.com/googleapis/google-cloud-cpp-common/ci/templates
+#
+
 ARG DISTRO_VERSION=trusty
 FROM ubuntu:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
-
-# Please keep the formatting below, it is used by `extract-readme.sh` and
-# `extract-install.md` to generate the contents of the top-level README.md and
-# INSTALL.md files.
 
 ## [START INSTALL.md]
 
@@ -29,9 +31,11 @@ ARG NCPU=4
 RUN apt update && apt install -y software-properties-common
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y
 RUN apt update && \
-    apt install -y cmake3 git gcc g++ make pkg-config tar wget \
-        zlib1g-dev
+    apt install -y automake cmake3 git gcc g++ libtool make pkg-config \
+        tar wget zlib1g-dev
 # ```
+
+# #### OpenSSL
 
 # Ubuntu:14.04 ships with a very old version of OpenSSL, this version is not
 # supported by gRPC. We need to compile and install OpenSSL-1.0.2 from source.
@@ -61,33 +65,16 @@ ENV OPENSSL_ROOT_DIR=/usr/local/ssl
 ENV PKG_CONFIG_PATH=/usr/local/ssl/lib/pkgconfig
 # ```
 
-# #### libcurl.
-
-# Because google-cloud-cpp uses both gRPC and curl, we need to compile libcurl
-# against the same version of OpenSSL:
-
-# ```bash
-WORKDIR /var/tmp/build
-RUN wget -q https://curl.haxx.se/download/curl-7.61.0.tar.gz
-RUN tar xf curl-7.61.0.tar.gz
-WORKDIR /var/tmp/build/curl-7.61.0
-RUN ./configure --prefix=/usr/local/curl
-RUN make -j ${NCPU:-4}
-RUN make install
-RUN ldconfig
-# ```
-
 # #### Protobuf
 
-# While protobuf-2.5 is distributed with Ubuntu:trusty, the Google Cloud Plaform
-# proto files require more recent versions (circa 3.4.x). To manually install a
-# more recent version use:
+# We need to install a version of Protobuf, recent enough that it supports the
+# Google Cloud Platform proto files:
 
 # ```bash
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/google/protobuf/archive/v3.6.1.tar.gz
-RUN tar -xf v3.6.1.tar.gz
-WORKDIR /var/tmp/build/protobuf-3.6.1/cmake
+RUN wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
+RUN tar -xf v3.9.1.tar.gz
+WORKDIR /var/tmp/build/protobuf-3.9.1/cmake
 RUN cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -99,17 +86,8 @@ RUN ldconfig
 
 # #### c-ares
 
-# Recent versions of gRPC require c-ares >= 1.11, while Ubuntu-16.04
-# distributes c-ares-1.10. We need some additional development tools to compile
-# this library:
-
-# ```bash
-RUN apt update && \
-    apt install -y automake libtool
-# ```
-
-# After installing these tools we can manually install a newer version
-# of c-ares:
+# Recent versions of gRPC require c-ares >= 1.11, while Ubuntu 14.04
+# distributes c-ares-1.10. Manually install a newer version:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -118,26 +96,27 @@ RUN tar -xf cares-1_14_0.tar.gz
 WORKDIR /var/tmp/build/c-ares-cares-1_14_0
 RUN ./buildconf && ./configure && make -j ${NCPU:-4}
 RUN make install
+RUN ldconfig
 # ```
 
 # #### gRPC
 
-# Ubuntu:trusty does not provide a package for gRPC. Manually install this
-# library:
+# We also need a version of gRPC that is recent enough to support the Google
+# Cloud Platform proto files. We can install gRPC from source using:
 
 # ```bash
-ENV PKG_CONFIG_PATH=/usr/local/ssl/lib/pkgconfig:/usr/local/curl/lib/pkgconfig
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/grpc/grpc/archive/v1.19.1.tar.gz
-RUN tar -xf v1.19.1.tar.gz
-WORKDIR /var/tmp/build/grpc-1.19.1
+RUN wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
+RUN tar -xf v1.23.1.tar.gz
+WORKDIR /var/tmp/build/grpc-1.23.1
 RUN make -j ${NCPU:-4}
 RUN make install
+RUN ldconfig
 # ```
 
 # #### googleapis
 
-# There is no Ubuntu package for this library. To install it, use:
+# We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -150,8 +129,6 @@ RUN cmake \
 RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
 RUN ldconfig
 # ```
-
-FROM devtools AS install
 
 # #### googletest
 
@@ -171,22 +148,26 @@ RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
 RUN ldconfig
 # ```
 
-# #### google-cloud-cpp
+FROM devtools AS install
 
-# We can now compile and install `google-cloud-cpp`.
+# #### Compile and install the main project
+
+# We can now compile, test, and install `google-cloud-cpp-common`.
 
 # ```bash
-WORKDIR /home/build/google-cloud-cpp
-COPY . /home/build/google-cloud-cpp
-RUN cmake -H. -Bcmake-out \
-    -DCMAKE_FIND_ROOT_PATH="/usr/local/curl;/usr/local/ssl"
-RUN cmake --build cmake-out -- -j ${NCPU:-4}
-WORKDIR /home/build/google-cloud-cpp/cmake-out
-RUN ctest --output-on-failure
-RUN cmake --build . --target install
+WORKDIR /home/build/project
+COPY . /home/build/project
+RUN cmake -H. -B/o
+RUN cmake --build /o -- -j "${NCPU:-4}"
+WORKDIR /o
+RUN ctest -LE integration-tests --output-on-failure
+WORKDIR /home/build/project
+RUN cmake --build /o --target install
 # ```
 
 ## [END INSTALL.md]
+
+ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-plain-make
@@ -197,5 +178,7 @@ RUN make
 WORKDIR /home/build/test-install-cmake
 COPY ci/test-install /home/build/test-install-cmake
 COPY google/cloud/samples/common_install_test.cc /home/build/test-install-cmake
-RUN cmake -H. -Bcmake-out
-RUN cmake --build cmake-out -- -j ${NCPU:-4}
+# Always unset PKG_CONFIG_PATH before building with CMake, this is to ensure
+# that CMake does not depend on pkg-config to discover the project.
+RUN env -u PKG_CONFIG_PATH cmake -H. -B/i
+RUN cmake --build /i -- -j "${NCPU:-4}"
