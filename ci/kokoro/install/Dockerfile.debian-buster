@@ -12,31 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#
+# WARNING: This is an automatically generated file. Consider changing the
+#     sources instead. You can find the source templates and scripts at:
+#         https://github.com/googleapis/google-cloud-cpp-common/ci/templates
+#
+
 ARG DISTRO_VERSION=buster
 FROM debian:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
 
-# Please keep the formatting in these commands, it is optimized to cut & paste
-# into the README.md file.
-
 ## [START INSTALL.md]
 
-# First install the development tools. Debian 10 includes sufficiently recent
-# versions of gRPC and Protobuf, so we use the pre-built versions.
+# Install the minimal development tools, libcurl, and OpenSSL:
 
 # ```bash
 RUN apt update && \
     apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libgrpc++-dev \
-        libprotobuf-dev libssl-dev make pkg-config \
-        protobuf-compiler protobuf-compiler-grpc tar wget zlib1g-dev
+        libcurl4-openssl-dev libssl-dev make pkg-config tar wget zlib1g-dev
 # ```
 
-FROM devtools AS install
+# Debian 10 includes versions of gRPC and Protobuf that support the
+# Google Cloud Platform proto files. We simply install these pre-built versions:
+
+# ```bash
+RUN apt update && \
+    apt install -y libgrpc++-dev libprotobuf-dev \
+        protobuf-compiler protobuf-compiler-grpc
+# ```
 
 # #### googleapis
 
-# There is no Debian package for this library. To install it, use:
+# We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -70,25 +77,27 @@ RUN ldconfig
 
 FROM devtools AS install
 
-# #### google-cloud-cpp
+# #### Compile and install the main project
 
-# Finally we can install `google-cloud-cpp`.
+# We can now compile, test, and install `google-cloud-cpp-common`.
 
 # ```bash
-WORKDIR /home/build/google-cloud-cpp
-COPY . /home/build/google-cloud-cpp
-RUN cmake -H. -Bcmake-out
-RUN cmake --build cmake-out -- -j ${NCPU:-4}
-WORKDIR /home/build/google-cloud-cpp/cmake-out
-RUN ctest --output-on-failure
-RUN cmake --build . --target install
+WORKDIR /home/build/project
+COPY . /home/build/project
+RUN cmake -H. -B/o
+RUN cmake --build /o -- -j "${NCPU:-4}"
+WORKDIR /o
+RUN ctest -LE integration-tests --output-on-failure
+WORKDIR /home/build/project
+RUN cmake --build /o --target install
 # ```
 
 ## [END INSTALL.md]
 
+ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-plain-make
-ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 COPY ci/test-install /home/build/test-install-plain-make
 COPY google/cloud/samples/common_install_test.cc /home/build/test-install-plain-make
 RUN make
@@ -96,5 +105,7 @@ RUN make
 WORKDIR /home/build/test-install-cmake
 COPY ci/test-install /home/build/test-install-cmake
 COPY google/cloud/samples/common_install_test.cc /home/build/test-install-cmake
-RUN env -u PKG_CONFIG_PATH cmake -H. -Bcmake-out
-RUN cmake --build cmake-out -- -j ${NCPU:-4}
+# Always unset PKG_CONFIG_PATH before building with CMake, this is to ensure
+# that CMake does not depend on pkg-config to discover the project.
+RUN env -u PKG_CONFIG_PATH cmake -H. -B/i
+RUN cmake --build /i -- -j "${NCPU:-4}"

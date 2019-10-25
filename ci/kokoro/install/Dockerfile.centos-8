@@ -12,17 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#
+# WARNING: This is an automatically generated file. Consider changing the
+#     sources instead. You can find the source templates and scripts at:
+#         https://github.com/googleapis/google-cloud-cpp-common/ci/templates
+#
+
 ARG DISTRO_VERSION=8
 FROM centos:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
 
-# Please keep the formatting below, it is used by `extract-readme.sh` and
-# `extract-install.md` to generate the contents of the top-level README.md and
-# INSTALL.md files.
-
 ## [START INSTALL.md]
 
-# Install the minimal development tools:
+# Install the minimal development tools, libcurl, OpenSSL, and the c-ares
+# library (required by gRPC):
 
 # ```bash
 RUN dnf makecache && \
@@ -32,7 +35,8 @@ RUN dnf makecache && \
 
 # #### Protobuf
 
-# Likewise, manually install Protobuf:
+# We need to install a version of Protobuf, recent enough that it supports the
+# Google Cloud Platform proto files:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -50,23 +54,21 @@ RUN ldconfig
 
 # #### gRPC
 
-# gRPC also requires a manual install. gRPC uses `pkg-config` to find protobuf,
-# as we installed this library in `/usr/local/*` we need to change the
-# environment variables used by `pkg-config` to find modules:
+# To install gRPC we first need to configure pkg-config to find the version of
+# Protobuf we just installed in `/usr/local`:
 
 # ```bash
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
 ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
-ENV PATH=/usr/local/bin:${PATH}
 # ```
 
-# Once the environment is setup, we can compile gRPC:
+# Then we install it using:
 
 # ```bash
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/grpc/grpc/archive/v1.24.3.tar.gz
-RUN tar -xf v1.24.3.tar.gz
-WORKDIR /var/tmp/build/grpc-1.24.3
+RUN wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
+RUN tar -xf v1.23.1.tar.gz
+WORKDIR /var/tmp/build/grpc-1.23.1
 RUN make -j ${NCPU:-4}
 RUN make install
 RUN ldconfig
@@ -74,7 +76,7 @@ RUN ldconfig
 
 # #### googleapis
 
-# There is no Fedora package for this library. To install it, use:
+# We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -108,21 +110,24 @@ RUN ldconfig
 
 FROM devtools AS install
 
-# #### google-cloud-cpp
+# #### Compile and install the main project
 
-# We can now compile and install `google-cloud-cpp`.
+# We can now compile, test, and install `google-cloud-cpp-common`.
 
 # ```bash
-WORKDIR /home/build/google-cloud-cpp
-COPY . /home/build/google-cloud-cpp
-RUN cmake -H. -Bcmake-out
-RUN cmake --build cmake-out -- -j ${NCPU:-4}
-WORKDIR /home/build/google-cloud-cpp/cmake-out
-RUN ctest --output-on-failure
-RUN cmake --build . --target install
+WORKDIR /home/build/project
+COPY . /home/build/project
+RUN cmake -H. -B/o
+RUN cmake --build /o -- -j "${NCPU:-4}"
+WORKDIR /o
+RUN ctest -LE integration-tests --output-on-failure
+WORKDIR /home/build/project
+RUN cmake --build /o --target install
 # ```
 
 ## [END INSTALL.md]
+
+ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-plain-make
@@ -133,5 +138,7 @@ RUN make
 WORKDIR /home/build/test-install-cmake
 COPY ci/test-install /home/build/test-install-cmake
 COPY google/cloud/samples/common_install_test.cc /home/build/test-install-cmake
-RUN env -u PKG_CONFIG_PATH cmake -H. -Bcmake-out
-RUN cmake --build cmake-out -- -j ${NCPU:-4}
+# Always unset PKG_CONFIG_PATH before building with CMake, this is to ensure
+# that CMake does not depend on pkg-config to discover the project.
+RUN env -u PKG_CONFIG_PATH cmake -H. -B/i
+RUN cmake --build /i -- -j "${NCPU:-4}"
