@@ -67,7 +67,7 @@ ENV PKG_CONFIG_PATH=/usr/local/ssl/lib/pkgconfig
 
 # #### Protobuf
 
-# We need to install a version of Protobuf, recent enough that it supports the
+# We need to install a version of Protobuf that is recent enough to support the
 # Google Cloud Platform proto files:
 
 # ```bash
@@ -157,12 +157,11 @@ FROM devtools AS install
 # ```bash
 WORKDIR /home/build/project
 COPY . /home/build/project
-RUN cmake -H. -B/o
-RUN cmake --build /o -- -j "${NCPU:-4}"
-WORKDIR /o
+RUN cmake -H. -Bcmake-out
+RUN cmake --build cmake-out -- -j "${NCPU:-4}"
+WORKDIR /home/build/project/cmake-out
 RUN ctest -LE integration-tests --output-on-failure
-WORKDIR /home/build/project
-RUN cmake --build /o --target install
+RUN cmake --build . --target install
 # ```
 
 ## [END INSTALL.md]
