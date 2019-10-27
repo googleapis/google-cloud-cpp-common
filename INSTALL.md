@@ -172,6 +172,7 @@ cd $HOME/Downloads/cpp-cmakefiles-0.1.5
 cmake \
     -DBUILD_SHARED_LIBS=YES \
     -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -190,6 +191,7 @@ cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
       -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -238,6 +240,7 @@ cd $HOME/Downloads/cpp-cmakefiles-0.1.5
 cmake \
     -DBUILD_SHARED_LIBS=YES \
     -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -256,6 +259,7 @@ cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
       -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -313,6 +317,7 @@ cmake \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
         -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -359,6 +364,7 @@ cd $HOME/Downloads/cpp-cmakefiles-0.1.5
 cmake \
     -DBUILD_SHARED_LIBS=YES \
     -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -377,6 +383,7 @@ cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
       -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -421,6 +428,7 @@ cmake \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
         -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -452,6 +460,7 @@ cd $HOME/Downloads/cpp-cmakefiles-0.1.5
 cmake \
     -DBUILD_SHARED_LIBS=YES \
     -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -470,6 +479,7 @@ cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
       -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -514,6 +524,7 @@ cmake \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
         -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -560,6 +571,7 @@ cd $HOME/Downloads/cpp-cmakefiles-0.1.5
 cmake \
     -DBUILD_SHARED_LIBS=YES \
     -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -578,6 +590,7 @@ cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
       -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -654,6 +667,7 @@ cmake \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
         -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -700,6 +714,7 @@ cd $HOME/Downloads/cpp-cmakefiles-0.1.5
 cmake \
     -DBUILD_SHARED_LIBS=YES \
     -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -718,6 +733,7 @@ cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
       -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -767,6 +783,7 @@ cd $HOME/Downloads/cpp-cmakefiles-0.1.5
 cmake \
     -DBUILD_SHARED_LIBS=YES \
     -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -785,6 +802,7 @@ cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
       -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -836,6 +854,7 @@ cmake \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
         -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -867,6 +886,7 @@ cd $HOME/Downloads/cpp-cmakefiles-0.1.5
 cmake \
     -DBUILD_SHARED_LIBS=YES \
     -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -885,6 +905,7 @@ cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
       -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -941,6 +962,7 @@ cmake \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
         -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -972,6 +994,7 @@ cd $HOME/Downloads/cpp-cmakefiles-0.1.5
 cmake \
     -DBUILD_SHARED_LIBS=YES \
     -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -990,6 +1013,7 @@ cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
       -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -1052,6 +1076,7 @@ cmake \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
         -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -1098,6 +1123,7 @@ cd $HOME/Downloads/cpp-cmakefiles-0.1.5
 cmake \
     -DBUILD_SHARED_LIBS=YES \
     -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```
@@ -1116,6 +1142,7 @@ cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
       -H. -Bcmake-out
+cmake --build cmake-out -- -j ${NCPU:-4}
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
 sudo ldconfig
 ```

@@ -60,6 +60,7 @@ RUN cmake \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
         -H. -Bcmake-out
+RUN cmake --build cmake-out -- -j ${NCPU:-4}
 RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
 RUN ldconfig
 # ```
@@ -91,6 +92,7 @@ WORKDIR /var/tmp/build/cpp-cmakefiles-0.1.5
 RUN cmake \
     -DBUILD_SHARED_LIBS=YES \
     -H. -Bcmake-out
+RUN cmake --build cmake-out -- -j ${NCPU:-4}
 RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
 RUN ldconfig
 # ```
@@ -109,6 +111,7 @@ RUN cmake \
       -DCMAKE_BUILD_TYPE="Release" \
       -DBUILD_SHARED_LIBS=yes \
       -H. -Bcmake-out
+RUN cmake --build cmake-out -- -j ${NCPU:-4}
 RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
 RUN ldconfig
 # ```
