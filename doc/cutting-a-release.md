@@ -34,7 +34,7 @@ git log --no-merges --format="format:* %s" \
 Update the instructions to build the library for development:
 
 ```bash
-./ci/test-readme/generate-install.sh >INSTALL.md
+./ci/test-readme/generate-readme.sh >README.md
 ```
 
 ### Update INSTALL.md
