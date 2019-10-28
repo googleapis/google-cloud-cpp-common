@@ -20,7 +20,11 @@ Documentation for the common utilities is available [online][doxygen-link].
 
 ## Release Notes
 
-### v0.16.x - TBD
+### v0.17.x - TBD
+
+### v0.16.x - 2019-10
+
+* fix: std::apply doesn't work for std::tuple<>& (#85)
 
 ### v0.15.x - 2019-10
 
