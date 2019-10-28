@@ -3,22 +3,12 @@ you a quicker answer.  Thank you!
 
 If one or more of these questions are not applicable, feel free to remove them.
 
-### Does this issue affect the `google-cloud-cpp` project?
+### Does this issue affect the `google-cloud-cpp-common` project?
 
-If the problem is with the service exposed by the `google-cloud-cpp` APIs
-instead of the client libraries you may consider opening a support request
-instead.  The `google-cloud-cpp` developers cannot help you troubleshoot
-problems with the service itself.
+If the problem is with one of the client libraries (bigtable, spanner, etc),
+please file an issue under the corresponding repository.
 
-### What component of `google-cloud-cpp` is this related to?
-
-Remove the ones that do not apply.
-
-- Cloud Bigtable.
-- Cloud Storage.
-- Cloud Firestore (commnunity supported).
-
-### What version of `google-cloud-cpp` are you using?
+### What version of `google-cloud-cpp-common` are you using?
 
 Please include the output from `git rev-parse HEAD` if you are compiling from
 source, or the version number from the applicable `*/version.h` file.
