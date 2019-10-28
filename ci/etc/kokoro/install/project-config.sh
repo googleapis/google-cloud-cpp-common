@@ -24,7 +24,6 @@ declare -A ORIGINAL_COPYRIGHT_YEAR=(
   [ubuntu-trusty]=2018
   [ubuntu-xenial]=2018
   [ubuntu-bionic]=2018
-
 )
 
 BUILD_AND_TEST_PROJECT_FRAGMENT=$(replace_fragments \
@@ -56,12 +55,11 @@ FROM devtools AS install
 # ```bash
 WORKDIR /home/build/project
 COPY . /home/build/project
-RUN cmake -H. -B/o
-RUN cmake --build /o -- -j "${NCPU:-4}"
-WORKDIR /o
+RUN cmake -H. -Bcmake-out
+RUN cmake --build cmake-out -- -j "${NCPU:-4}"
+WORKDIR /home/build/project/cmake-out
 RUN ctest -LE integration-tests --output-on-failure
-WORKDIR /home/build/project
-RUN cmake --build /o --target install
+RUN cmake --build . --target install
 # ```
 
 ## [END INSTALL.md]
