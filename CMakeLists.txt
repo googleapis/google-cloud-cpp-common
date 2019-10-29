@@ -122,13 +122,6 @@ option(GOOGLE_CLOUD_CPP_ENABLE_GRPC_UTILS
        "Enable building the gRPC utilities library." ON)
 mark_as_advanced(GOOGLE_CLOUD_CPP_ENABLE_GRPC_UTILS)
 
-# There are a number of targets that are pure dependencies, i.e., do not contain
-# our own code. These targets can be skipped when using static analysis tools.
-# Can be built earlier in the CI environment (for example to warm up the cache).
-# And in general can receive special treatment. This custom target collects all
-# these special targets with a single name.
-add_custom_target(google-cloud-cpp-dependencies)
-
 # Enable testing in this directory so we can do a top-level `make test`. This
 # also includes the BUILD_TESTING option, which is on by default.
 include(CTest)
