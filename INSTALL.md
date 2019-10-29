@@ -166,14 +166,12 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-tar -xf v0.1.5.tar.gz
-cd $HOME/Downloads/cpp-cmakefiles-0.1.5
-cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -184,15 +182,12 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-tar -xf release-1.10.0.tar.gz
-cd $HOME/Downloads/googletest-release-1.10.0
-cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -234,14 +229,12 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-tar -xf v0.1.5.tar.gz
-cd $HOME/Downloads/cpp-cmakefiles-0.1.5
-cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -252,15 +245,12 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-tar -xf release-1.10.0.tar.gz
-cd $HOME/Downloads/googletest-release-1.10.0
-cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -309,16 +299,16 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
-tar -xf v3.9.1.tar.gz
-cd $HOME/Downloads/protobuf-3.9.1/cmake
-cmake \
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
-        -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -329,11 +319,11 @@ distributes c-ares-1.9. Manually install a newer version:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz
-tar -xf cares-1_14_0.tar.gz
-cd $HOME/Downloads/c-ares-cares-1_14_0
-./buildconf && ./configure && make -j ${NCPU:-4}
-sudo make install
+wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz && \
+    tar -xf cares-1_14_0.tar.gz && \
+    cd c-ares-cares-1_14_0 && \
+    ./buildconf && ./configure && make -j ${NCPU:-4} && \
+sudo make install && \
 sudo ldconfig
 ```
 
@@ -344,11 +334,11 @@ Cloud Platform proto files. We manually install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
-tar -xf v1.23.1.tar.gz
-cd $HOME/Downloads/grpc-1.23.1
-make -j ${NCPU:-4}
-sudo make install
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
 sudo ldconfig
 ```
 
@@ -358,14 +348,12 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-tar -xf v0.1.5.tar.gz
-cd $HOME/Downloads/cpp-cmakefiles-0.1.5
-cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -376,15 +364,12 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-tar -xf release-1.10.0.tar.gz
-cd $HOME/Downloads/googletest-release-1.10.0
-cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -420,16 +405,16 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
-tar -xf v3.9.1.tar.gz
-cd $HOME/Downloads/protobuf-3.9.1/cmake
-cmake \
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
-        -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -440,11 +425,11 @@ Cloud Platform proto files. We install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
-tar -xf v1.23.1.tar.gz
-cd $HOME/Downloads/grpc-1.23.1
-make -j ${NCPU:-4}
-sudo make install
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
 sudo ldconfig
 ```
 
@@ -454,14 +439,12 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-tar -xf v0.1.5.tar.gz
-cd $HOME/Downloads/cpp-cmakefiles-0.1.5
-cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -472,15 +455,12 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-tar -xf release-1.10.0.tar.gz
-cd $HOME/Downloads/googletest-release-1.10.0
-cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -516,16 +496,16 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
-tar -xf v3.9.1.tar.gz
-cd $HOME/Downloads/protobuf-3.9.1/cmake
-cmake \
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
-        -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -536,11 +516,11 @@ distributes c-ares-1.10. Manually install a newer version:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz
-tar -xf cares-1_14_0.tar.gz
-cd $HOME/Downloads/c-ares-cares-1_14_0
-./buildconf && ./configure && make -j ${NCPU:-4}
-sudo make install
+wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz && \
+    tar -xf cares-1_14_0.tar.gz && \
+    cd c-ares-cares-1_14_0 && \
+    ./buildconf && ./configure && make -j ${NCPU:-4} && \
+sudo make install && \
 sudo ldconfig
 ```
 
@@ -551,11 +531,11 @@ Cloud Platform proto files. We can install gRPC from source using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
-tar -xf v1.23.1.tar.gz
-cd $HOME/Downloads/grpc-1.23.1
-make -j ${NCPU:-4}
-sudo make install
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
 sudo ldconfig
 ```
 
@@ -565,14 +545,12 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-tar -xf v0.1.5.tar.gz
-cd $HOME/Downloads/cpp-cmakefiles-0.1.5
-cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -583,15 +561,12 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-tar -xf release-1.10.0.tar.gz
-cd $HOME/Downloads/googletest-release-1.10.0
-cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -659,16 +634,16 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
-tar -xf v3.9.1.tar.gz
-cd $HOME/Downloads/protobuf-3.9.1/cmake
-cmake \
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
-        -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -679,11 +654,11 @@ distributes c-ares-1.10. Manually install a newer version:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz
-tar -xf cares-1_14_0.tar.gz
-cd $HOME/Downloads/c-ares-cares-1_14_0
-./buildconf && ./configure && make -j ${NCPU:-4}
-sudo make install
+wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz && \
+    tar -xf cares-1_14_0.tar.gz && \
+    cd c-ares-cares-1_14_0 && \
+    ./buildconf && ./configure && make -j ${NCPU:-4} && \
+sudo make install && \
 sudo ldconfig
 ```
 
@@ -694,11 +669,11 @@ Cloud Platform proto files. We can install gRPC from source using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
-tar -xf v1.23.1.tar.gz
-cd $HOME/Downloads/grpc-1.23.1
-make -j ${NCPU:-4}
-sudo make install
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
 sudo ldconfig
 ```
 
@@ -708,14 +683,12 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-tar -xf v0.1.5.tar.gz
-cd $HOME/Downloads/cpp-cmakefiles-0.1.5
-cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -726,15 +699,12 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-tar -xf release-1.10.0.tar.gz
-cd $HOME/Downloads/googletest-release-1.10.0
-cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -777,14 +747,12 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-tar -xf v0.1.5.tar.gz
-cd $HOME/Downloads/cpp-cmakefiles-0.1.5
-cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -795,15 +763,12 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-tar -xf release-1.10.0.tar.gz
-cd $HOME/Downloads/googletest-release-1.10.0
-cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -846,16 +811,16 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
-tar -xf v3.9.1.tar.gz
-cd $HOME/Downloads/protobuf-3.9.1/cmake
-cmake \
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
-        -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -866,11 +831,11 @@ Protobuf we just installed in `/usr/local`:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
-tar -xf v1.23.1.tar.gz
-cd $HOME/Downloads/grpc-1.23.1
-make -j ${NCPU:-4}
-sudo make install
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
 sudo ldconfig
 ```
 
@@ -880,14 +845,12 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-tar -xf v0.1.5.tar.gz
-cd $HOME/Downloads/cpp-cmakefiles-0.1.5
-cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -898,15 +861,12 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-tar -xf release-1.10.0.tar.gz
-cd $HOME/Downloads/googletest-release-1.10.0
-cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -954,16 +914,16 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
-tar -xf v3.9.1.tar.gz
-cd $HOME/Downloads/protobuf-3.9.1/cmake
-cmake \
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
-        -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -974,11 +934,11 @@ Cloud Platform proto files. We manually install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
-tar -xf v1.23.1.tar.gz
-cd $HOME/Downloads/grpc-1.23.1
-make -j ${NCPU:-4}
-sudo make install
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
 sudo ldconfig
 ```
 
@@ -988,14 +948,12 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-tar -xf v0.1.5.tar.gz
-cd $HOME/Downloads/cpp-cmakefiles-0.1.5
-cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -1006,15 +964,12 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-tar -xf release-1.10.0.tar.gz
-cd $HOME/Downloads/googletest-release-1.10.0
-cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -1068,16 +1023,16 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
-tar -xf v3.9.1.tar.gz
-cd $HOME/Downloads/protobuf-3.9.1/cmake
-cmake \
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
         -Dprotobuf_BUILD_TESTS=OFF \
-        -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -1088,11 +1043,11 @@ distributes c-ares-1.10. Manually install a newer version:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz
-tar -xf cares-1_14_0.tar.gz
-cd $HOME/Downloads/c-ares-cares-1_14_0
-./buildconf && ./configure && make -j ${NCPU:-4}
-sudo make install
+wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz && \
+    tar -xf cares-1_14_0.tar.gz && \
+    cd c-ares-cares-1_14_0 && \
+    ./buildconf && ./configure && make -j ${NCPU:-4} && \
+sudo make install && \
 sudo ldconfig
 ```
 
@@ -1103,11 +1058,11 @@ Cloud Platform proto files. We manually install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
-tar -xf v1.23.1.tar.gz
-cd $HOME/Downloads/grpc-1.23.1
-make -j ${NCPU:-4}
-sudo make install
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
 sudo ldconfig
 ```
 
@@ -1117,14 +1072,12 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-tar -xf v0.1.5.tar.gz
-cd $HOME/Downloads/cpp-cmakefiles-0.1.5
-cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -1135,15 +1088,12 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-tar -xf release-1.10.0.tar.gz
-cd $HOME/Downloads/googletest-release-1.10.0
-cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-cmake --build cmake-out -- -j ${NCPU:-4}
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
