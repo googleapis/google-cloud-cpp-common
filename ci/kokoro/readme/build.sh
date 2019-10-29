@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+@WARNING_GENERATED_FILE_FRAGMENT@
+
 set -eu
 
 if [[ $# -eq 1 ]]; then
