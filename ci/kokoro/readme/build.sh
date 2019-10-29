@@ -14,6 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#
+# WARNING: This is an automatically generated file. Consider changing the
+#     sources instead. You can find the source templates and scripts at:
+#         https://github.com/googleapis/google-cloud-cpp-common/ci/templates
+#
+
 set -eu
 
 if [[ $# -eq 1 ]]; then
