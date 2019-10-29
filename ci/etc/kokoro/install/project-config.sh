@@ -47,6 +47,7 @@ BUILD_AND_TEST_PROJECT_FRAGMENT=$(replace_fragments \
 # ```
 
 FROM devtools AS install
+ARG NCPU=4
 
 # #### Compile and install the main project
 

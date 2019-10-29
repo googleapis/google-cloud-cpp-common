@@ -147,6 +147,7 @@ RUN wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz &
 # ```
 
 FROM devtools AS install
+ARG NCPU=4
 
 # #### Compile and install the main project
 
