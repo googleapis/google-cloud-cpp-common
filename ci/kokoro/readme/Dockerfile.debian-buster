@@ -21,9 +21,6 @@
 ARG DISTRO_VERSION=buster
 FROM debian:${DISTRO_VERSION} AS devtools
 
-# Please keep the formatting in these commands, it is optimized to cut & paste
-# into the README.md file.
-
 ## [START README.md]
 
 # First install the development tools.

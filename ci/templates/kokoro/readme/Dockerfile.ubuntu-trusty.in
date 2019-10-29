@@ -18,10 +18,6 @@ ARG DISTRO_VERSION=trusty
 FROM ubuntu:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
 
-# Please keep the formatting below, it is used by `extract-readme.sh` and
-# `extract-install.md` to generate the contents of the top-level README.md and
-# INSTALL.md files.
-
 ## [START README.md]
 
 # Install the minimal development tools.

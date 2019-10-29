@@ -17,9 +17,6 @@
 ARG DISTRO_VERSION=7
 FROM centos:${DISTRO_VERSION} AS devtools
 
-# Please keep the formatting in these commands, it is optimized to cut & paste
-# into the README.md file.
-
 ## [START README.md]
 
 # Install the development tools and OpenSSL. The development tools distributed

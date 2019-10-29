@@ -21,9 +21,6 @@
 ARG DISTRO_VERSION=xenial
 FROM ubuntu:${DISTRO_VERSION} AS devtools
 
-# Please keep the formatting in these commands, it is optimized to cut & paste
-# into the README.md file.
-
 ## [START README.md]
 
 # Install the minimal development tools:
