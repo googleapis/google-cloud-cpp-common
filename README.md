@@ -195,19 +195,19 @@ sudo dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
 [kokoro-readme-centos-7-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos-7.svg
 [kokoro-readme-centos-7-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/centos-7-link.html
 
-First install the development tools and OpenSSL.
-The development tools distributed with CentOS (notably CMake) are too old to
-build `google-cloud-cpp-common`. In these instructions, we use `cmake3`
-obtained from [Software Collections](https://www.softwarecollections.org/).
+Install the development tools and OpenSSL. The development tools distributed
+with CentOS (notably CMake) are too old to build the
+`google-cloud-cpp-common` project. We recommend you install cmake3 from
+[Software Collections](https://www.softwarecollections.org/).
 
 ```bash
-rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sudo yum install -y centos-release-scl
 sudo yum-config-manager --enable rhel-server-rhscl-7-rpms
 sudo yum makecache && \
 sudo yum install -y automake cmake3 curl-devel gcc gcc-c++ git libtool \
         make openssl-devel pkgconfig tar wget which zlib-devel
-ln -sf /usr/bin/cmake3 /usr/bin/cmake && ln -sf /usr/bin/ctest3 /usr/bin/ctest
+sudo ln -sf /usr/bin/cmake3 /usr/bin/cmake && sudo ln -sf /usr/bin/ctest3 /usr/bin/ctest
 ```
 
 ### Debian (10 - Buster)
