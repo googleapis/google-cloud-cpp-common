@@ -95,4 +95,11 @@ for build in "${BUILD_NAMES[@]}"; do
   generate_dockerfile "${build}"
 done
 
+# The project-config.sh file may specify a number of files to keep frozen.
+for file in "${FROZEN_FILES[@]}"; do
+  echo "Restoring ... ${file}"
+  git -C "${DESTINATION_ROOT}" reset HEAD "${file}"
+  git -C "${DESTINATION_ROOT}" checkout -- "${file}"
+done
+
 git -C "${DESTINATION_ROOT}" add "ci/kokoro/readme"

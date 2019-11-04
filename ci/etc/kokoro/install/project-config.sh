@@ -26,6 +26,8 @@ declare -A ORIGINAL_COPYRIGHT_YEAR=(
   [ubuntu-bionic]=2018
 )
 
+declare -a FROZEN_FILES=()
+
 BUILD_AND_TEST_PROJECT_FRAGMENT=$(replace_fragments \
       "INSTALL_CPP_CMAKEFILES_FROM_SOURCE" \
       "INSTALL_GOOGLETEST_FROM_SOURCE" <<'_EOF_'
