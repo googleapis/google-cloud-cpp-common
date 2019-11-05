@@ -44,7 +44,8 @@ if [[ "${SCAN_BUILD}" == "yes" ]]; then
 fi
 
 echo
-echo "${COLOR_YELLOW}Starting docker build $(date) with ${NCPU} cores${COLOR_RESET}"
+echo "${COLOR_YELLOW}Starting docker build $(date) with ${NCPU}" \
+    "cores${COLOR_RESET}"
 echo
 
 echo "${COLOR_YELLOW}Started CMake config at: $(date)${COLOR_RESET}"
@@ -166,8 +167,8 @@ if [[ "${TEST_INSTALL:-}" = "yes" ]]; then
   # Also verify that the install directory does not get unexpected files or
   # directories installed.
   echo
-  echo "${COLOR_YELLOW}Verify installed headers created only" \
-      " expected directories.${COLOR_RESET}"
+  echo "${COLOR_YELLOW}Verify installed headers created only expected" \
+      "directories.${COLOR_RESET}"
   if comm -23 \
       <(find /var/tmp/staging/include/google/cloud -type d | sort) \
       <(echo /var/tmp/staging/include/google/cloud ; \
@@ -176,7 +177,8 @@ if [[ "${TEST_INSTALL:-}" = "yes" ]]; then
         echo /var/tmp/staging/include/google/cloud/internal ; \
         echo /var/tmp/staging/include/google/cloud/testing_util ; \
         /bin/true) | grep -q /var/tmp; then
-      echo "${COLOR_YELLOW}Installed directories do not match expectation.${COLOR_RESET}"
+      echo "${COLOR_YELLOW}Installed directories do not match" \
+          "expectation.${COLOR_RESET}"
       echo "${COLOR_RED}Found:"
       find /var/tmp/staging/include/google/cloud -type d | sort
       echo "${COLOR_RESET}"
@@ -193,6 +195,7 @@ fi
 # If document generation is enabled, run it now.
 if [[ "${GENERATE_DOCS}" == "yes" ]]; then
   echo
-  echo "${COLOR_YELLOW}Generating Doxygen documentation at: $(date).${COLOR_RESET}"
+  echo "${COLOR_YELLOW}Generating Doxygen documentation at:" \
+      "$(date).${COLOR_RESET}"
   cmake --build "${BINARY_DIR}" --target doxygen-docs
 fi
