@@ -195,6 +195,7 @@ fi
 # If document generation is enabled, run it now.
 if [[ "${GENERATE_DOCS}" == "yes" ]]; then
   echo
-  echo "${COLOR_YELLOW}Generating Doxygen documentation at: $(date).${COLOR_RESET}"
+  echo "${COLOR_YELLOW}Generating Doxygen documentation at:" \
+      "$(date).${COLOR_RESET}"
   cmake --build "${BINARY_DIR}" --target doxygen-docs
 fi
