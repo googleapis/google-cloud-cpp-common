@@ -38,7 +38,6 @@ Google Cloud C++ Client Libraries.
 [![CI status install/opensuse-leap][install/opensuse-leap-shield]][install/opensuse-leap-link]
 [![CI status install/opensuse-tumbleweed][install/opensuse-tumbleweed-shield]][install/opensuse-tumbleweed-link]
 [![CI status install/ubuntu-bionic][install/ubuntu-bionic-shield]][install/ubuntu-bionic-link]
-[![CI status install/ubuntu-trusty][install/ubuntu-trusty-shield]][install/ubuntu-trusty-link]
 [![CI status install/ubuntu-xenial][install/ubuntu-xenial-shield]][install/ubuntu-xenial-link]
 
 [docker/asan-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/docker/asan-link.html
@@ -87,8 +86,6 @@ Google Cloud C++ Client Libraries.
 [install/opensuse-tumbleweed-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/opensuse-tumbleweed.svg
 [install/ubuntu-bionic-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-bionic-link.html
 [install/ubuntu-bionic-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-bionic.svg
-[install/ubuntu-trusty-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-trusty-link.html
-[install/ubuntu-trusty-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-trusty.svg
 [install/ubuntu-xenial-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-xenial-link.html
 [install/ubuntu-xenial-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/install/ubuntu-xenial.svg
 [macos/bazel-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/macos/bazel-link.html
@@ -121,7 +118,6 @@ Google Cloud C++ Client Libraries.
   - [openSuSE (Leap)](#opensuse-leap)
   - [Ubuntu (18.04 - Bionic Beaver)](#ubuntu-1804---bionic-beaver)
   - [Ubuntu (16.04 - Xenial Xerus)](#ubuntu-1604---xenial-xerus)
-  - [Ubuntu (14.04 - Trusty Tahr)](#ubuntu-1404---trusty-tahr)
   - [macOS (using brew)](#macos-using-brew)
   - [Windows](#windows-using-vcpkg)
 - [Build](#build)
@@ -317,53 +313,6 @@ sudo apt update && \
 sudo apt install -y build-essential cmake git gcc g++ cmake \
         libcurl4-openssl-dev libssl-dev make \
         pkg-config tar wget zlib1g-dev
-```
-
-### Ubuntu (14.04 - Trusty Tahr)
-
-[![Kokoro readme ubuntu-trusty status][kokoro-readme-ubuntu-trusty-shield]][kokoro-readme-ubuntu-trusty-link]
-
-[kokoro-readme-ubuntu-trusty-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-trusty.svg
-[kokoro-readme-ubuntu-trusty-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/common/readme/ubuntu-trusty-link.html
-
-Install the minimal development tools.
-
-We use the `ubuntu-toolchain-r` PPA to get a modern version of CMake:
-
-```bash
-sudo apt update && sudo apt install -y software-properties-common
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-sudo apt update && \
-sudo apt install -y cmake3 git gcc g++ make pkg-config tar wget \
-        zlib1g-dev
-```
-
-Ubuntu:14.04 ships with a very old version of OpenSSL, this version is not
-supported by gRPC. We need to compile and install OpenSSL-1.0.2 from source.
-
-```bash
-cd $HOME/Downloads
-wget -q https://www.openssl.org/source/openssl-1.0.2n.tar.gz
-tar xf openssl-1.0.2n.tar.gz
-cd $HOME/Downloads/openssl-1.0.2n
-./config --shared
-make -j ${NCPU:-4}
-sudo make install
-```
-
-Note that by default OpenSSL installs itself in `/usr/local/ssl`. Installing
-on a more conventional location, such as `/usr/local` or `/usr`, can break
-many programs in your system. OpenSSL 1.0.2 is actually incompatible with
-with OpenSSL 1.0.0 which is the version expected by the programs already
-installed by Ubuntu 14.04.
-
-In any case, as the library installs itself in this non-standard location, we
-also need to configure CMake and other build program to find this version of
-OpenSSL:
-
-```bash
-export OPENSSL_ROOT_DIR=/usr/local/ssl
-export PKG_CONFIG_PATH=/usr/local/ssl/lib/pkgconfig
 ```
 
 #### macOS (using brew)

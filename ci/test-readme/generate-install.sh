@@ -156,7 +156,6 @@ these dependencies.
 - [openSUSE (Leap)](#opensuse-leap)
 - [Ubuntu (18.04 - Bionic Beaver)](#ubuntu-1804---bionic-beaver)
 - [Ubuntu (16.04 - Xenial Xerus)](#ubuntu-1604---xenial-xerus)
-- [Ubuntu (14.04 - Trusty Tahr)](#ubuntu-1404---trusty-tahr)
 - [Debian (10 Buster)](#debian-10---buster)
 - [Debian (9 Stretch)](#debian-9---stretch)
 - [CentOS 7](#centos-7)
@@ -183,10 +182,6 @@ echo "### Ubuntu (18.04 - Bionic Beaver)"
 echo
 echo "### Ubuntu (16.04 - Xenial Xerus)"
 "${BINDIR}/extract-install.sh" "${DOCKERFILES_DIR}/Dockerfile.ubuntu-xenial"
-
-echo
-echo "### Ubuntu (14.04 - Trusty Tahr)"
-"${BINDIR}/extract-install.sh" "${DOCKERFILES_DIR}/Dockerfile.ubuntu-trusty"
 
 echo
 echo "### Debian (10 - Buster)"

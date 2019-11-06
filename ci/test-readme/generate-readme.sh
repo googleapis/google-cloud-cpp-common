@@ -61,7 +61,6 @@ cat <<'_EOF_'
   - [openSuSE (Leap)](#opensuse-leap)
   - [Ubuntu (18.04 - Bionic Beaver)](#ubuntu-1804---bionic-beaver)
   - [Ubuntu (16.04 - Xenial Xerus)](#ubuntu-1604---xenial-xerus)
-  - [Ubuntu (14.04 - Trusty Tahr)](#ubuntu-1404---trusty-tahr)
   - [macOS (using brew)](#macos-using-brew)
   - [Windows](#windows-using-vcpkg)
 - [Build](#build)
@@ -150,10 +149,6 @@ badge ubuntu-bionic
 echo "### Ubuntu (16.04 - Xenial Xerus)"
 badge ubuntu-xenial
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.ubuntu-xenial"
-
-echo "### Ubuntu (14.04 - Trusty Tahr)"
-badge ubuntu-trusty
-"${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.ubuntu-trusty"
 
 cat <<'_EOF_'
 #### macOS (using brew)
