@@ -598,7 +598,7 @@ Google Cloud Platform proto files. We simply install these pre-built versions:
 
 ```bash
 sudo apt update && \
-sudo apt install -y libgrpc++-dev libprotobuf-dev \
+sudo apt install -y libgrpc++-dev libprotobuf-dev libc-ares-dev \
         protobuf-compiler protobuf-compiler-grpc
 ```
 
