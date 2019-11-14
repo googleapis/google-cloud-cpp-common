@@ -28,16 +28,15 @@ include(external/googleapis)
 include(external/googletest)
 
 include(ExternalProjectHelper)
-set_external_project_prefix_vars()
-
 set_external_project_build_parallel_level(PARALLEL)
+set_external_project_vars()
 
-set(GOOGLE_CLOUD_CPP_DEPENDENCIES_LIST grpc_project googleapis_project
-                                       googletest_project)
+set(GOOGLE_CLOUD_CPP_DEPENDENCIES_LIST grpc-project googleapis-project
+                                       googletest-project)
 
 include(ExternalProject)
 ExternalProject_Add(
-    google_cloud_cpp_project
+    google-cloud-cpp-project
     DEPENDS ${GOOGLE_CLOUD_CPP_DEPENDENCIES_LIST}
     EXCLUDE_FROM_ALL OFF
     PREFIX "${CMAKE_BINARY_DIR}/build/google-cloud-cpp"
@@ -46,7 +45,7 @@ ExternalProject_Add(
         SOURCE_DIR
         "${GOOGLE_CLOUD_CPP_ROOT}"
     LIST_SEPARATOR |
-    CMAKE_ARGS -G${CMAKE_GENERATOR}
+    CMAKE_ARGS ${GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CMAKE_FLAGS}
                -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
