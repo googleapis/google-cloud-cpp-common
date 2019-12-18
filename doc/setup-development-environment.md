@@ -122,7 +122,11 @@ in a `cmd.exe` shell, running as the `Administrator`:
 Then you can install the dependencies in the same shell:
 ```console
 > choco install -y cmake git cmake.portable activeperl ninja golang yasm putty
+> refreshenv
+> choco install -y bazel msys2
+> refreshenv
 > choco install -y visualstudio2019community visualstudio2019-workload-nativedesktop microsoft-build-tools
+> refreshenv
 ```
 
 ### Connecting to GitHub with PuTTY
@@ -151,6 +155,10 @@ and use the menu to load the private key you generated above. Test the keys
 with:
 
 ```console
+# Set the GIT_SSH enviroment variable for the current session
+> set GIT_SSH=plink
+# and for future sessions
+> setx GIT_SSH plink
 > plink -T git@github.com
 ```
 
@@ -171,12 +179,25 @@ for how to do this.  Then you can clone the code:
 > cd google-cloud-cpp-common
 ```
 
-### Compile using the CI build script
+### Compile using the CI build script and Bazel
 
 Once you are in the `google-cloud-cpp-common` directory you can use the build script:
 
 ```console
 > call "c:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+> powershell -exec bypass ci\kokoro\windows\build.ps1 bazel
+```
+
+### Compile using the CI build script and CMake
+
+Once you are in the `google-cloud-cpp-common` directory you can use the build script:
+
+```console
+# If you have not called this already
+> call "c:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+> cd \Users\%USERNAME%
+> git clone --depth 10 https://github.com/Microsoft/vcpkg.git
+> cd google-cloud-cpp-common
 > powershell -exec bypass ci\kokoro\windows\build.ps1 cmake
 ```
 
@@ -309,7 +330,10 @@ $ VM=... # e.g. VM=my-windows-devbox
 Then create the virtual machine using:
 
 ```console
+$ IMAGE_PROJECT=windows-cloud
 $ IMAGE=$(gcloud compute images list \
+    --project=${IMAGE_PROJECT} \
+    --filter="family=windows-2019 AND NOT family:windows-2019-" \
     --sort-by=~name \
     --format="value(name)" \
     --limit=1)
@@ -319,7 +343,7 @@ $ PROJECT_NUMBER=$(gcloud projects list \
     --limit=1)
 $ gcloud compute --project "${PROJECT_ID}" instances create "${VM}" \
   --zone "${ZONE}" \
-  --image "${IMAGE}" --image-project "windows-cloud" \
+  --image "${IMAGE}" --image-project "${IMAGE_PROJECT}" \
   --boot-disk-size "1024" --boot-disk-type "pd-standard" \
   --boot-disk-device-name "${VM}" \
   --service-account "${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
