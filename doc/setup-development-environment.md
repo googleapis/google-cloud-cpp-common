@@ -121,12 +121,8 @@ in a `cmd.exe` shell, running as the `Administrator`:
 
 Then you can install the dependencies in the same shell:
 ```console
-> choco install -y cmake git cmake.portable activeperl ninja golang yasm putty
-> refreshenv
-> choco install -y bazel msys2
-> refreshenv
+> choco install -y cmake git cmake.portable activeperl ninja golang yasm putty bazel msys2
 > choco install -y visualstudio2019community visualstudio2019-workload-nativedesktop microsoft-build-tools
-> refreshenv
 ```
 
 ### Connecting to GitHub with PuTTY
