@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Usage:
-#   $ release.sh [-f] <project-name>
+#   $ release.sh [-f] <organization/project-name>
 #
 #   Options:
 #     -f     Force; actually make and push the changes
@@ -9,10 +9,10 @@
 # Example:
 #
 #   # Shows what commands would be run. NO CHANGES ARE PUSHED
-#   $ release.sh google-cloud-cpp-spanner
+#   $ release.sh googleapis/google-cloud-cpp-spanner
 #
 #   # Shows commands AND PUSHES changes when -f is specified
-#   $ release.sh -f google-cloud-cpp-spanner
+#   $ release.sh -f googleapis/google-cloud-cpp-spanner
 # 
 # This script creates a "release" on github by doing the following:
 #
@@ -53,8 +53,8 @@ if [[ $# -ne 1 ]]; then
 fi
 
 readonly PROJECT="$1"
-readonly CLONE_URL="git@github.com:googleapis/${PROJECT}.git"
-readonly TMP_DIR="$(mktemp -d /tmp/${PROJECT}-release.XXXXXXXX)"
+readonly CLONE_URL="git@github.com:${PROJECT}.git"
+readonly TMP_DIR="$(mktemp -d /tmp/${PROJECT//\//-}-release.XXXXXXXX)"
 readonly REPO_DIR="${TMP_DIR}/repo"
 
 function banner() {
@@ -79,12 +79,13 @@ function exit_handler() {
 }
 trap exit_handler EXIT
 
-banner "Starting release for ${PROJECT}"
+banner "Starting release for ${PROJECT} (${CLONE_URL})"
 git clone "${CLONE_URL}" "${REPO_DIR}"
 cd "${REPO_DIR}"
 
 # Figures out the most recent tagged version, and computes the next version.
-readonly CUR_TAG="$(git describe --tags --abbrev=0 origin/master)"
+readonly TAG="$(git describe --tags --abbrev=0 origin/master)"
+readonly CUR_TAG="$(test -n "${TAG}" && echo "${TAG}" || echo "v0.0.0")"
 readonly NEW_RELEASE="$(perl -pe 's/v0.(\d+).0/"v0.${\($1+1)}"/e' <<<"${CUR_TAG}")"
 readonly NEW_TAG="${NEW_RELEASE}.0"
 readonly NEW_BRANCH="${NEW_RELEASE}.x"
