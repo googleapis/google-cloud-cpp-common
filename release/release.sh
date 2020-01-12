@@ -5,6 +5,7 @@
 #
 #   Options:
 #     -f     Force; actually make and push the changes
+#     -h     Print help message
 #
 # Example:
 #   # Shows what commands would be run. NO CHANGES ARE PUSHED
