@@ -1,3 +1,42 @@
+# Creating a release
+
+The Google Cloud C++ client libraries generally live in separate repos,
+however, they follow most of the same conventions and processes. Each repo
+should be released every month if it contains changes. Each repo is released
+and versioned separately, so the process described in this document should be
+followed for each repo.
+
+This document describes the process for releasing the following projects:
+
+* https://github.com/googleapis/google-cloud-cpp-common (this repo)
+* https://github.com/googleapis/google-cloud-cpp
+* https://github.com/googleapis/google-cloud-cpp-spanner
+
+# Step 1: Add release notes to README.md on master
+
+For the repo being released, the release engineer should create the release
+notes, add them to the `README.md` file for the appropriate project, and send
+this PR for review just like a normal PR. Do not proceed until this PR is
+*merged*.
+
+In your own fork of the repo, the following commands may be helpful for
+identifying important changes:
+
+```bash
+git log --no-merges --format="format:* %s" \
+    $(git describe --tags --abbrev=0 upstream/master)..HEAD \
+    upstream/master -- google/cloud
+```
+
+**NOTE:** Currently the https://github.com/googleapis/google-cloud-cpp project
+contains both the "Bigtable" code and the "GCS" code. So for these projects
+you'll want to update TWO `README.md` files in each of
+`google/cloud/bigtable/README.md` and `google/cloud/storage/README.md`
+respectively. **You should also adjust the path in the above command to include
+only bigtable/storage changes as appropriate.**
+
+---
+
 # Creating a new release of google-cloud-cpp-common
 
 Unless there are no changes, we create releases for `google-cloud-cpp-common`

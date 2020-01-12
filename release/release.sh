@@ -64,7 +64,7 @@ function banner() {
 }
 
 function run() {
-  echo "[ $@ ]"
+  echo "# $@" | paste -d' ' -s -
   if [[ "${FORCE_FLAG}" == "yes" ]]; then
     "$@"
   fi
