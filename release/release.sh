@@ -7,7 +7,6 @@
 #     -f     Force; actually make and push the changes
 #
 # Example:
-#
 #   # Shows what commands would be run. NO CHANGES ARE PUSHED
 #   $ release.sh googleapis/google-cloud-cpp-spanner
 #
@@ -15,19 +14,16 @@
 #   $ release.sh -f googleapis/google-cloud-cpp-spanner
 # 
 # This script creates a "release" on github by doing the following:
-#
 #   1. Computes the next version to use
 #   2. Creates and pushes the tag w/ the new version
 #   3. Creates and pushes a new branch w/ the new version
+#   4. Creates the "Pre-Release" in the GitHub UI.
 #
 # Before running this script the user should make sure the README.md on master
 # is up-to-date with the release notes for the new release that will happen.
-# Then run this script. After running this script, the user must still go
-# create the Release in the GitHub web UI using the new tag name that was
-# created by this script.
-#
-# TODO: Consider using github's `hub` command (apt install hub) to automate the
-# creation of the actual Release on GitHub. This shouldn't be too difficult.
+# Then run this script. After running this script, the user must still go to
+# the GH UI where the new release will exist as a "pre-release", and edit the
+# release notes.
 
 set -eu
 
@@ -35,10 +31,13 @@ set -eu
 readonly USAGE="$(sed -n '3,/^$/s/^# \?//p' $0)"
 
 FORCE_FLAG="no"
-while getopts "f" opt "$@"; do
+while getopts "fh" opt "$@"; do
   case "$opt" in
-    [f]) 
+    [f])
       FORCE_FLAG="yes";;
+    [h])
+      echo "$USAGE"
+      exit 0;;
     *)
       echo "$USAGE"
       exit 1;;
@@ -48,6 +47,7 @@ shift $((OPTIND - 1))
 declare -r FORCE_FLAG
 
 if [[ $# -ne 1 ]]; then
+  echo "Missing repo name, example googleapis/google-cloud-cpp-spanner"
   echo "$USAGE"
   exit 1;
 fi
@@ -66,7 +66,7 @@ function banner() {
 function run() {
   echo "[ $@ ]"
   if [[ "${FORCE_FLAG}" == "yes" ]]; then
-    $@
+    "$@"
   fi
 }
 
@@ -79,8 +79,19 @@ function exit_handler() {
 }
 trap exit_handler EXIT
 
+# We use github's "hub" command to create the release on on the GH website, so
+# we make sure it's installed early on so we don't fail after completing part
+# of the release. We also use 'hub' to do the clone so that the user is asked
+# to authenticate at the beginning of the process rather than at the end.
+if ! which hub > /dev/null; then
+  echo "Can't find 'hub' command"
+  echo "Maybe run: sudo apt install hub"
+  echo "Or build it from https://github.com/github/hub"
+  exit 1
+fi
+
 banner "Starting release for ${PROJECT} (${CLONE_URL})"
-git clone "${CLONE_URL}" "${REPO_DIR}"
+hub clone "${PROJECT}" "${REPO_DIR}"  # May force login to GH at this point
 cd "${REPO_DIR}"
 
 # Figures out the most recent tagged version, and computes the next version.
@@ -103,7 +114,29 @@ banner "Creating and pushing branch ${NEW_BRANCH}"
 run git checkout -b "${NEW_BRANCH}" "${NEW_TAG}"
 run git push --set-upstream origin "${NEW_BRANCH}"
 
+# Maybe todo: generate the tarball/zipball sha256 sums and add them to the body.
+# Maybe todo: extract the release notes from the README.md file and stick them
+#             in the release body.
+banner "Creating release"
+run hub release create \
+  --prerelease \
+  --message="${NEW_TAG} Release" \
+  --message="*Paste release notes here*" \
+  "${NEW_TAG}"
+
 banner "Success!"
+readonly release_fmt="
+   date: %cI
+    url: %U
+tarball: %uT
+zipball: %uZ
+  state: %S
+  title: %t
+   body: %b
+"
+run hub release show --format="${release_fmt}" "${NEW_TAG}"
+
+# Clean up
 if [[ "${TMP_DIR}" == /tmp/* ]]; then
   rm -rf "${TMP_DIR}"
 fi
