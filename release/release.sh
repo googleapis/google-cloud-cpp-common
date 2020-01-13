@@ -59,8 +59,10 @@ readonly TMP_DIR="$(mktemp -d "/tmp/${PROJECT//\//-}-release.XXXXXXXX")"
 readonly REPO_DIR="${TMP_DIR}/repo"
 
 function banner() {
-  local color=$(tput bold; tput setaf 4; tput rev)
-  local reset=$(tput sgr0)
+  local color
+  color=$(tput bold; tput setaf 4; tput rev)
+  local reset
+  reset=$(tput sgr0)
   echo "${color}$*${reset}"
 }
 
