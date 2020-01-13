@@ -13,7 +13,7 @@
 #
 #   # Shows commands AND PUSHES changes when -f is specified
 #   $ release.sh -f googleapis/google-cloud-cpp-spanner
-# 
+#
 # This script creates a "release" on github by doing the following:
 #   1. Computes the next version to use
 #   2. Creates and pushes the tag w/ the new version
