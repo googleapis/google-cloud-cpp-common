@@ -56,7 +56,16 @@ fi
 cp -r /v/ci/test-install /var/tmp/test-bazel-dependency
 cp /v/google/cloud/samples/common_install_test.cc /var/tmp/test-bazel-dependency
 cd /var/tmp/test-bazel-dependency
-ls -l
+
+echo "================================================================"
+echo "Fetching dependencies $(date)"
+echo "================================================================"
+"${PROJECT_ROOT}/ci/retry-command.sh" \
+    "${BAZEL_BIN}" fetch -- //...:all
+
+echo "================================================================"
+echo "Building project $(date)"
+echo "================================================================"
 "${BAZEL_BIN}" build  "${bazel_args[@]}" \
     -- //...:all
 
