@@ -51,6 +51,12 @@ fi
 
 echo
 echo "================================================================"
+echo "Fetching dependencies $(date)"
+"${PROJECT_ROOT}/ci/retry-command.sh" \
+    "${BAZEL_BIN}" fetch -- //...:all
+
+echo
+echo "================================================================"
 echo "Build and run unit tests at $(date)."
 "${BAZEL_BIN}" test \
     "${bazel_args[@]}" "--test_tag_filters=-integration-tests" \
