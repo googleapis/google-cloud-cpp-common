@@ -1,24 +1,4 @@
-# Google Cloud C++ Client Libraries
-
-[![Documentation][doxygen-shield]][doxygen-link]
-
-[doxygen-shield]: https://img.shields.io/badge/documentation-master-brightgreen.svg
-[doxygen-link]: https://googleapis.dev/cpp/google-cloud-common/latest/
-
-This directory contains the following C++ client libraries:
-
-* [Cloud Bigtable](bigtable/README.md)
-* [Google Cloud Storage](storage/README.md)
-
-In addition some utilities shared across these libraries are also found here.
-Most of these utilities are in the `google::cloud::internal` namespace, and are
-not intended for direct use by consumers of the C++ client libraries.
-
-## Documentation
-
-Documentation for the common utilities is available [online][doxygen-link].
-
-## Release Notes
+# Changelog
 
 ### v0.18.x - TBD
 
