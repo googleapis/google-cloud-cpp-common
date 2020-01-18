@@ -20,11 +20,11 @@
 #   3. Creates and pushes a new branch w/ the new version
 #   4. Creates the "Pre-Release" in the GitHub UI.
 #
-# Before running this script the user should make sure the README.md on master
-# is up-to-date with the release notes for the new release that will happen.
-# Then run this script. After running this script, the user must still go to
-# the GH UI where the new release will exist as a "pre-release", and edit the
-# release notes.
+# Before running this script the user should make sure the CHANGELOG.md on
+# master is up-to-date with the release notes for the new release that will
+# happen. Then run this script. After running this script, the user must still
+# go to the GH UI where the new release will exist as a "pre-release", and edit
+# the release notes.
 
 set -eu
 
@@ -118,8 +118,8 @@ run git checkout -b "${NEW_BRANCH}" "${NEW_TAG}"
 run git push --set-upstream origin "${NEW_BRANCH}"
 
 # Maybe todo: generate the tarball/zipball sha256 sums and add them to the body.
-# Maybe todo: extract the release notes from the README.md file and stick them
-#             in the release body.
+# Maybe todo: extract the release notes from the CHANGELOG.md file and stick
+#             them in the release body.
 banner "Creating release"
 run hub release create \
   --prerelease \
