@@ -11,17 +11,14 @@ audience is expected to be familiar with the project itself, [git][git-docs],
 
 ## Preparing for a release
 
-First you should collect and update the release notes for the project. Prepare
-a pull request (PR) with the necessary changes to the README files in each
-project.
-
 Assuming you are working on your own fork of the `google-cloud-cpp-common`
 project, and `upstream` points to the `googleapis/google-cloud-cpp-common`
-remote, these commands should be useful in identifying important changes:
+remote, these commands should be useful in identifying important changes for
+inclusion in the release notes:
 
-### Update google/cloud/README.md
+### Update CHANGELOG.md
 
-Update `google/cloud/README.md` based on the release notes:
+Update `CHANGELOG.md` based on the release notes:
 
 ```bash
 git log --no-merges --format="format:* %s" \
