@@ -46,12 +46,15 @@ void CompletionQueueImpl::Run(CompletionQueue& cq) {
       ForgetOperation(tag);
     }
     std::unique_lock<std::mutex> lk(mu_);
-    if (shutdown_.load() && pending_ops_.empty()) break;
+    if (shutdown_ && pending_ops_.empty()) break;
   }
 }
 
 void CompletionQueueImpl::Shutdown() {
-  shutdown_.store(true);
+  {
+    std::lock_guard<std::mutex> lk(mu_);
+    shutdown_ = true;
+  }
   cq_.Shutdown();
 }
 

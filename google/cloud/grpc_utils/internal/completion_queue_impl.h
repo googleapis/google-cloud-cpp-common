@@ -284,8 +284,8 @@ class CompletionQueueImpl {
 
  private:
   grpc::CompletionQueue cq_;
-  std::atomic<bool> shutdown_;
   mutable std::mutex mu_;
+  bool shutdown_;
   std::unordered_map<std::intptr_t, std::shared_ptr<AsyncGrpcOperation>>
       pending_ops_;
 };
