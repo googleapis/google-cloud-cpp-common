@@ -256,7 +256,8 @@ class CompletionQueueImpl {
   grpc::CompletionQueue& cq() { return cq_; }
 
   /// Add a new asynchronous operation to the completion queue.
-  void* RegisterOperation(std::shared_ptr<AsyncGrpcOperation> op);
+  void* RegisterOperation(CompletionQueue& cq,
+                          std::shared_ptr<AsyncGrpcOperation> op);
 
  protected:
   /// Return the asynchronous operation associated with @p tag.

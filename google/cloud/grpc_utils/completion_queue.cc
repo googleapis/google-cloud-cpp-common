@@ -86,8 +86,10 @@ google::cloud::future<std::chrono::system_clock::time_point>
 CompletionQueue::MakeDeadlineTimer(
     std::chrono::system_clock::time_point deadline) {
   auto op = std::make_shared<AsyncTimerFuture>(impl_->CreateAlarm());
-  void* tag = impl_->RegisterOperation(op);
-  op->Set(impl_->cq(), deadline, tag);
+  void* tag = impl_->RegisterOperation(*this, op);
+  if (tag != nullptr) {
+    op->Set(impl_->cq(), deadline, tag);
+  }
   return op->GetFuture();
 }
 

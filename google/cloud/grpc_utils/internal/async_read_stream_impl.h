@@ -157,8 +157,10 @@ class AsyncReadStreamImpl
     cq_ = std::move(cq);
     reader_ = async_call(context_.get(), request, &cq_->cq());
     auto callback = std::make_shared<NotifyStart>(this->shared_from_this());
-    void* tag = cq_->RegisterOperation(std::move(callback));
-    reader_->StartCall(tag);
+    void* tag = cq_->RegisterOperation(*this, std::move(callback));
+    if (tag != nullptr) {
+      reader_->StartCall(tag);
+    }
   }
 
   /// Cancel the current streaming read RPC.
@@ -195,8 +197,10 @@ class AsyncReadStreamImpl
 
     auto callback = std::make_shared<NotifyRead>(this->shared_from_this());
     auto response = &callback->response;
-    void* tag = cq_->RegisterOperation(std::move(callback));
-    reader_->Read(response, tag);
+    void* tag = cq_->RegisterOperation(*this, std::move(callback));
+    if (tag != nullptr) {
+      reader_->Read(response, tag);
+    }
   }
 
   /// Handle the result of a `Read()` call.
@@ -243,8 +247,10 @@ class AsyncReadStreamImpl
 
     auto callback = std::make_shared<NotifyFinish>(this->shared_from_this());
     auto status = &callback->status;
-    void* tag = cq_->RegisterOperation(std::move(callback));
-    reader_->Finish(status, tag);
+    void* tag = cq_->RegisterOperation(*this, std::move(callback));
+    if (tag != nullptr) {
+      reader_->Finish(status, tag);
+    }
   }
 
   /// Handle the result of a Finish() request.
@@ -278,8 +284,10 @@ class AsyncReadStreamImpl
 
     auto callback = std::make_shared<NotifyDiscard>(this->shared_from_this());
     auto response = &callback->response;
-    void* tag = cq_->RegisterOperation(std::move(callback));
-    reader_->Read(response, tag);
+    void* tag = cq_->RegisterOperation(*this, std::move(callback));
+    if (tag != nullptr) {
+      reader_->Read(response, tag);
+    }
   }
 
   /// Handle the result of a Discard() call.
