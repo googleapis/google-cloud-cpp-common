@@ -231,7 +231,7 @@ using AsyncCallResponseType = AsyncCallResponseTypeUnwrap<
  */
 class CompletionQueueImpl {
  public:
-  CompletionQueueImpl() = default;
+  CompletionQueueImpl() : cq_(), shutdown_(false) {}
   virtual ~CompletionQueueImpl() = default;
 
   /**
@@ -284,6 +284,7 @@ class CompletionQueueImpl {
  private:
   grpc::CompletionQueue cq_;
   mutable std::mutex mu_;
+  bool shutdown_;  // GUARDED_BY(mu_)
   std::unordered_map<std::intptr_t, std::shared_ptr<AsyncGrpcOperation>>
       pending_ops_;  // GUARDED_BY(mu_)
 };

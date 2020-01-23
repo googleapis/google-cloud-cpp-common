@@ -48,7 +48,13 @@ void CompletionQueueImpl::Run(CompletionQueue& cq) {
   }
 }
 
-void CompletionQueueImpl::Shutdown() { cq_.Shutdown(); }
+void CompletionQueueImpl::Shutdown() {
+  {
+    std::lock_guard<std::mutex> lk(mu_);
+    shutdown_ = true;
+  }
+  cq_.Shutdown();
+}
 
 void CompletionQueueImpl::CancelAll() {
   // Cancel all operations. We need to make a copy of the operations because
