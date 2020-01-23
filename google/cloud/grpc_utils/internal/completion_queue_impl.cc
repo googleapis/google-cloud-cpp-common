@@ -45,18 +45,10 @@ void CompletionQueueImpl::Run(CompletionQueue& cq) {
     if (op->Notify(cq, ok)) {
       ForgetOperation(tag);
     }
-    std::unique_lock<std::mutex> lk(mu_);
-    if (shutdown_ && pending_ops_.empty()) break;
   }
 }
 
-void CompletionQueueImpl::Shutdown() {
-  {
-    std::lock_guard<std::mutex> lk(mu_);
-    shutdown_ = true;
-  }
-  cq_.Shutdown();
-}
+void CompletionQueueImpl::Shutdown() { cq_.Shutdown(); }
 
 void CompletionQueueImpl::CancelAll() {
   // Cancel all operations. We need to make a copy of the operations because
