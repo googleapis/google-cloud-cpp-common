@@ -114,6 +114,39 @@ TEST(CompletionQueueTest, CanCancelAllEvents) {
   runner.join();
 }
 
+// Sets up a timer that reschedules itself and verfies we can shut down
+// cleanly whether we call `CancelAll()` on the queue first or not.
+namespace {
+void RunAndReschedule(CompletionQueue& cq, bool ok) {
+  if (ok) {
+    cq.MakeRelativeTimer(std::chrono::seconds(1))
+        .then([&cq](future<StatusOr<std::chrono::system_clock::time_point>>
+                        result) { RunAndReschedule(cq, result.get().ok()); });
+  }
+}
+}  // namespace
+
+TEST(CompletionQueueTest, ShutdownWithReschedulingTimer) {
+  CompletionQueue cq;
+  std::thread t([&cq] { cq.Run(); });
+
+  RunAndReschedule(cq, /*ok=*/true);
+
+  cq.Shutdown();
+  t.join();
+}
+
+TEST(CompletionQueueTest, CancelAndShutdownWithReschedulingTimer) {
+  CompletionQueue cq;
+  std::thread t([&cq] { cq.Run(); });
+
+  RunAndReschedule(cq, /*ok=*/true);
+
+  cq.CancelAll();
+  cq.Shutdown();
+  t.join();
+}
+
 }  // namespace
 }  // namespace GOOGLE_CLOUD_CPP_GRPC_UTILS_NS
 }  // namespace grpc_utils

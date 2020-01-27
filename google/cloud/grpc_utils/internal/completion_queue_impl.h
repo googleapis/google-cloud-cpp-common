@@ -54,8 +54,6 @@ class AsyncGrpcOperation : public AsyncOperation {
    * Derived classes wrap the callbacks provided by the application and invoke
    * the callback when this virtual member function is called.
    *
-   * @param cq the completion queue sending the notification, this is useful in
-   *   case the callback needs to retry the operation.
    * @param ok opaque parameter returned by grpc::CompletionQueue.  The
    *   semantics defined by gRPC depend on the type of operation, therefore the
    *   operation needs to interpret this parameter based on those semantics.
