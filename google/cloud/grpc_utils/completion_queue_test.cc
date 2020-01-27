@@ -73,7 +73,6 @@ TEST(CompletionQueueTest, ShutdownWithPending) {
   using ms = std::chrono::milliseconds;
 
   future<void> timer;
-  future<void> timer2;
   {
     CompletionQueue cq;
     std::thread runner([&cq] { cq.Run(); });

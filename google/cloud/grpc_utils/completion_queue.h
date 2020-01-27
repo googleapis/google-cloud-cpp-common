@@ -54,8 +54,8 @@ class CompletionQueue {
    * @param deadline when should the timer expire.
    *
    * @return a future that becomes satisfied after @p deadline.
-   * The result of the future is the time at which it expired, or an error
-   * Status if the timer did not run to expiration(e.g. it was Cancelled).
+   *     The result of the future is the time at which it expired, or an error
+   *     Status if the timer did not run to expiration (e.g. it was cancelled).
    */
   google::cloud::future<StatusOr<std::chrono::system_clock::time_point>>
   MakeDeadlineTimer(std::chrono::system_clock::time_point deadline);
@@ -77,8 +77,8 @@ class CompletionQueue {
    * @param duration when should the timer expire relative to the current time.
    *
    * @return a future that becomes satisfied after @p duration time has elapsed.
-   * The result of the future is the time at which it expired, or an error
-   * Status if the timer did not run to expiration(e.g. it was Cancelled).
+   *     The result of the future is the time at which it expired, or an error
+   *     Status if the timer did not run to expiration (e.g. it was cancelled).
    */
   template <typename Rep, typename Period>
   future<StatusOr<std::chrono::system_clock::time_point>> MakeRelativeTimer(
