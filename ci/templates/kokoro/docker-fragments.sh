@@ -43,7 +43,7 @@ RUN wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz &
     ldconfig
 _EOF_
 
-read_into_variable INSTALL_BENCHMARK_FROM_SOURCE <<'_EOF_'
+read_into_variable INSTALL_GOOGLE_BENCHMARK_FROM_SOURCE <<'_EOF_'
 WORKDIR /var/tmp/build
 RUN wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     tar -xf v1.5.0.tar.gz && \
