@@ -254,8 +254,8 @@ echo "    docker build " "${docker_build_flags[@]}" ci
 # flag. Later, we will want to print out the emulator(s) logs *only* if there
 # is an error, so disabling from this point on is the right choice.
 set +e
-if timeout 3600s docker build "${docker_build_flags[@]}" ci > \
-   "${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
+if timeout 3600s docker build "${docker_build_flags[@]}" ci \
+   >"${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
   update_cache="true"
   echo "Docker image successfully rebuilt"
 else
