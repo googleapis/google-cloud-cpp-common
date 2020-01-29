@@ -267,6 +267,25 @@ TEST(CompletionQueueTest, MakeStreamingReadRpc) {
   runner.join();
 }
 
+TEST(CompletionQueueTest, RunAsync) {
+  using ms = std::chrono::milliseconds;
+  CompletionQueue cq;
+
+  std::thread runner([&cq] { cq.Run(); });
+
+  std::promise<void> done_promise;
+  cq.RunAsync([&done_promise](CompletionQueue&) {
+    done_promise.set_value();
+  });
+
+  auto done = done_promise.get_future();
+  EXPECT_EQ(std::future_status::ready, done.wait_for(ms(10)));
+  done.get();
+
+  cq.Shutdown();
+  runner.join();
+}
+
 }  // namespace
 }  // namespace GOOGLE_CLOUD_CPP_GRPC_UTILS_NS
 }  // namespace grpc_utils
