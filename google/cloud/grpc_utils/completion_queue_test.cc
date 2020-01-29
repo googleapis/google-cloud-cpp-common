@@ -274,9 +274,7 @@ TEST(CompletionQueueTest, RunAsync) {
   std::thread runner([&cq] { cq.Run(); });
 
   std::promise<void> done_promise;
-  cq.RunAsync([&done_promise](CompletionQueue&) {
-    done_promise.set_value();
-  });
+  cq.RunAsync([&done_promise](CompletionQueue&) { done_promise.set_value(); });
 
   auto done = done_promise.get_future();
   EXPECT_EQ(std::future_status::ready, done.wait_for(ms(10)));
