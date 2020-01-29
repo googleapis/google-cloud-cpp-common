@@ -249,18 +249,27 @@ fi
 echo "================================================================"
 echo "Creating Docker image with all the development tools $(date)."
 echo "Logging to ${BUILD_OUTPUT}/create-build-docker-image.log"
+echo "    docker build " "${docker_build_flags[@]}" ci
 # We do not want to print the log unless there is an error, so disable the -e
 # flag. Later, we will want to print out the emulator(s) logs *only* if there
 # is an error, so disabling from this point on is the right choice.
 set +e
 mkdir -p "${BUILD_OUTPUT}"
 if timeout 3600s docker build "${docker_build_flags[@]}" ci \
-    >"${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
-   update_cache="true"
-fi
-if [[ "$?" != 0 ]]; then
+   >"${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
+  update_cache="true"
+  echo "Docker image successfully rebuilt"
+else
+  echo "Error updating Docker image, using cached image for this build"
   dump_log "${BUILD_OUTPUT}/create-build-docker-image.log"
 fi
+
+echo "================================================================"
+echo "Capture Docker state after build to troubleshoot $(date)."
+sudo docker version
+echo "================================================================"
+docker image ls
+echo "================================================================"
 
 if "${update_cache}" && [[ "${RUNNING_CI:-}" == "yes" ]] &&
    [[ -z "${KOKORO_GITHUB_PULL_REQUEST_NUMBER:-}" ]]; then
