@@ -249,19 +249,13 @@ fi
 echo "================================================================"
 echo "Creating Docker image with all the development tools $(date)."
 echo "Logging to ${BUILD_OUTPUT}/create-build-docker-image.log"
+echo "    docker build " "${docker_build_flags[@]}" ci
 # We do not want to print the log unless there is an error, so disable the -e
 # flag. Later, we will want to print out the emulator(s) logs *only* if there
 # is an error, so disabling from this point on is the right choice.
 set +e
-mkdir -p "${BUILD_OUTPUT}"
-echo DEBUG DEBUG DEBUG
-echo "================================================================"
-echo "Capture Docker version to troubleshoot $(date)."
-echo "    docker build " "${docker_build_flags[@]}"
-echo "================================================================"
-echo DEBUG DEBUG DEBUG
-if timeout 3600s docker build "${docker_build_flags[@]}" ci 2>&1 </dev/null | \
-   tee "${BUILD_OUTPUT}/create-build-docker-image.log"; then
+if timeout 3600s docker build "${docker_build_flags[@]}" ci > \
+   "${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
   update_cache="true"
   echo "Docker image successfully rebuilt"
 else
@@ -269,18 +263,12 @@ else
   dump_log "${BUILD_OUTPUT}/create-build-docker-image.log"
 fi
 
-echo DEBUG DEBUG DEBUG
 echo "================================================================"
-echo "Capture Docker version to troubleshoot $(date)."
-echo "    docker build " "${docker_build_flags[@]}"
-echo "================================================================"
+echo "Capture Docker state after build to troubleshoot $(date)."
 sudo docker version
 echo "================================================================"
 docker image ls
 echo "================================================================"
-cat "${BUILD_OUTPUT}/create-build-docker-image.log"
-echo "================================================================"
-echo DEBUG DEBUG DEBUG
 
 if "${update_cache}" && [[ "${RUNNING_CI:-}" == "yes" ]] &&
    [[ -z "${KOKORO_GITHUB_PULL_REQUEST_NUMBER:-}" ]]; then
