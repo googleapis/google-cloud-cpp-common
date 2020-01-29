@@ -256,11 +256,25 @@ set +e
 mkdir -p "${BUILD_OUTPUT}"
 if timeout 3600s docker build "${docker_build_flags[@]}" ci \
     >"${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
-   update_cache="true"
-fi
-if [[ "$?" != 0 ]]; then
+  update_cache="true"
+  echo "Docker image successfully rebuilt"
+else
+  echo "Error updating Docker image, using cached image for this build"
   dump_log "${BUILD_OUTPUT}/create-build-docker-image.log"
 fi
+
+echo DEBUG DEBUG DEBUG
+echo "================================================================"
+echo "Capture Docker version to troubleshoot $(date)."
+echo "    docker build " "${docker_build_flags[@]}"
+echo "================================================================"
+sudo docker version
+echo "================================================================"
+docker image ls
+echo "================================================================"
+cat "${BUILD_OUTPUT}/create-build-docker-image.log"
+echo "================================================================"
+echo DEBUG DEBUG DEBUG
 
 if "${update_cache}" && [[ "${RUNNING_CI:-}" == "yes" ]] &&
    [[ -z "${KOKORO_GITHUB_PULL_REQUEST_NUMBER:-}" ]]; then
