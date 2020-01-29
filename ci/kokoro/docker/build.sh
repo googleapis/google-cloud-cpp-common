@@ -254,8 +254,14 @@ echo "Logging to ${BUILD_OUTPUT}/create-build-docker-image.log"
 # is an error, so disabling from this point on is the right choice.
 set +e
 mkdir -p "${BUILD_OUTPUT}"
-if timeout 3600s docker build "${docker_build_flags[@]}" ci \
-    >"${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
+echo DEBUG DEBUG DEBUG
+echo "================================================================"
+echo "Capture Docker version to troubleshoot $(date)."
+echo "    docker build " "${docker_build_flags[@]}"
+echo "================================================================"
+echo DEBUG DEBUG DEBUG
+if timeout 3600s docker build "${docker_build_flags[@]}" ci 2>&1 </dev/null | \
+   tee "${BUILD_OUTPUT}/create-build-docker-image.log"; then
   update_cache="true"
   echo "Docker image successfully rebuilt"
 else
