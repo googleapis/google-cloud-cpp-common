@@ -103,10 +103,10 @@ class AsyncUnaryRpcFuture : public AsyncGrpcOperation {
  private:
   bool Notify(bool ok) override {
     if (!ok) {
-      // This would mean a bug in gRPC. The documentation states that Finish()
-      // always returns `true` for unary RPCs.
+      // `Finish()` always returns `true` for unary RPCs, so the only time we
+      // get `!ok` is after `Shutdown()` was called; treat that as "cancelled".
       promise_.set_value(::google::cloud::Status(
-          google::cloud::StatusCode::kUnknown, "Finish() returned false"));
+          google::cloud::StatusCode::kCancelled, "call cancelled"));
       return true;
     }
     if (!status_.ok()) {

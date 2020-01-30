@@ -37,6 +37,7 @@ namespace btadmin = ::google::bigtable::admin::v2;
 namespace btproto = ::google::bigtable::v2;
 using ::testing::_;
 using ::testing::Invoke;
+using ::testing::StrictMock;
 
 class MockClient {
  public:
@@ -264,6 +265,54 @@ TEST(CompletionQueueTest, MakeStreamingReadRpc) {
   EXPECT_EQ(1, on_finish_counter);
 
   cq.Shutdown();
+  runner.join();
+}
+
+TEST(CompletionQueueTest, MakeRpcsAfterShutdown) {
+  using ms = std::chrono::milliseconds;
+
+  auto mock_cq = std::make_shared<MockCompletionQueue>();
+  CompletionQueue cq(mock_cq);
+
+  // Use `StrictMock` to enforce that there are no calls made on the client.
+  StrictMock<MockClient> mock_client;
+  std::thread runner([&cq] { cq.Run(); });
+  cq.Shutdown();
+
+  btadmin::GetTableRequest get_table_request;
+  get_table_request.set_name("test-table-name");
+  future<void> done =
+      cq.MakeUnaryRpc(
+            [&mock_client](grpc::ClientContext* context,
+                           btadmin::GetTableRequest const& request,
+                           grpc::CompletionQueue* cq) {
+              return mock_client.AsyncGetTable(context, request, cq);
+            },
+            get_table_request,
+            google::cloud::internal::make_unique<grpc::ClientContext>())
+          .then([](future<StatusOr<btadmin::Table>> f) {
+            EXPECT_EQ(StatusCode::kCancelled, f.get().status().code());
+          });
+
+  btproto::ReadRowsRequest read_request;
+  read_request.set_table_name("test-table-name");
+  (void)cq.MakeStreamingReadRpc(
+      [&mock_client](grpc::ClientContext* context,
+                     btproto::ReadRowsRequest const& request,
+                     grpc::CompletionQueue* cq) {
+        return mock_client.AsyncReadRows(context, request, cq);
+      },
+      read_request, google::cloud::internal::make_unique<grpc::ClientContext>(),
+      [](btproto::ReadRowsResponse const&) {
+        ADD_FAILURE() << "OnReadHandler unexpectedly called";
+        return make_ready_future(true);
+      },
+      [](Status const& status) {
+        EXPECT_EQ(StatusCode::kCancelled, status.code());
+      });
+
+  mock_cq->SimulateCompletion(true);
+  EXPECT_EQ(std::future_status::ready, done.wait_for(ms(0)));
   runner.join();
 }
 

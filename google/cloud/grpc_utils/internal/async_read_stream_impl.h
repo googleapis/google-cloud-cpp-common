@@ -155,10 +155,10 @@ class AsyncReadStreamImpl
 
     context_ = std::move(context);
     cq_ = std::move(cq);
-    reader_ = async_call(context_.get(), request, &cq_->cq());
     auto callback = std::make_shared<NotifyStart>(this->shared_from_this());
     void* tag = cq_->RegisterOperation(std::move(callback));
     if (tag != nullptr) {
+      reader_ = async_call(context_.get(), request, &cq_->cq());
       reader_->StartCall(tag);
     }
   }
@@ -254,7 +254,10 @@ class AsyncReadStreamImpl
   }
 
   /// Handle the result of a Finish() request.
-  void OnFinish(bool, Status status) { on_finish_(std::move(status)); }
+  void OnFinish(bool ok, Status status) {
+    on_finish_(ok ? std::move(status)
+                  : Status(StatusCode::kCancelled, "call cancelled"));
+  }
 
   /**
    * Discard all the messages until OnRead() receives a failure.
