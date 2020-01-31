@@ -47,6 +47,8 @@ find "${BUILD_OUTPUT}" -name 'src_compat_report.html' \
     -exec bash -c 'dump_report "$1"' _ {} \; 2>/dev/null || \
   echo "No ABI compatibility reports found."
 
-find scan-cmake-out/ -name '*.html' \
-    -exec bash -c 'dump_report "$1"' _ {} \; 2>/dev/null || \
-  echo "No static analysis reports found."
+if [[ "${SCAN_BUILD:-}" == "yes" ]]; then
+  find scan-cmake-out/ -name '*.html' \
+      -exec bash -c 'dump_report "$1"' _ {} \; 2>/dev/null || \
+    echo "No static analysis reports found."
+fi
