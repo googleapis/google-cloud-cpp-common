@@ -157,6 +157,10 @@ class AsyncReadStreamImpl
     cq_ = std::move(cq);
     auto callback = std::make_shared<NotifyStart>(this->shared_from_this());
     void* tag = cq_->RegisterOperation(std::move(callback));
+    // @note If `tag == nullptr` the `CompletionQueue` has been `Shutdown()`.
+    //     We leave `reader_` null in this case; other methods must make the
+    //     same `tag != nullptr` check prior to accessing `reader_`.  This is
+    //     safe since `Shutdown()` cannot be undone.
     if (tag != nullptr) {
       reader_ = async_call(context_.get(), request, &cq_->cq());
       reader_->StartCall(tag);
