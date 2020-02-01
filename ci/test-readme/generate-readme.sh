@@ -41,7 +41,7 @@ Google Cloud C++ Client Libraries.
 
 _EOF_
 
-${BINDIR}/../generate-badges.sh
+"${BINDIR}/../generate-badges.sh"
 
 cat <<'_EOF_'
 ## Table of Contents
