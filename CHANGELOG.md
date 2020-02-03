@@ -1,6 +1,20 @@
 # Changelog
 
-## v0.18.x - TBD
+## v0.19.x - TBD
+
+## v0.18.x - 2020-02
+
+* fix: google/cloud/grpc_utils/examples does not exist (#149)
+* feat: gracefully fail adding to the `CompletionQueue` after `Shutdown` (#138)
+* chore: simpler include guard style (#144)
+* fix: make test not flaky (#143)
+* test: implement unit tests for async RPCs (#142)
+* chore: remove `CompletionQueue` parameter to `AsyncGrpcOperation::Notify` (#136)
+* feat!: change the result type for timers to StatusOr (#134)
+* fix: remove the redundant conditions in the `Run()` loop (#131)
+* fix: crashes with non-empty CompletionQueue shutdown (#127)
+* chore: move release notes to CHANGELOG.md (#128)
+* chore: bump version numbers for next release (#118)
 
 ## v0.17.x - 2019-12
 
