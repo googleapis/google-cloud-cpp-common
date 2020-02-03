@@ -12,6 +12,9 @@
 @REM See the License for the specific language governing permissions and
 @REM limitations under the License.
 
+REM Install Bazel using Chocolatey
+choco install -y bazel --version 2.0.0
+
 REM Configure the environment to use MSVC 2019 and then switch to PowerShell.
 call "c:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
 
