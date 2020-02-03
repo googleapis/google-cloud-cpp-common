@@ -10,11 +10,11 @@
   now return a `future<StatusOr<std::chrono::system_clock::time_point>>`.
   This change is needed because now these operations may fail if the completion
   queue is shutdown before the timer is set.
+* chore: remove `CompletionQueue` parameter to `AsyncGrpcOperation::Notify` (#136)
 
 **Other Changes:**
 * fix: google/cloud/grpc_utils/examples does not exist (#149)
 * feat: gracefully fail adding to the `CompletionQueue` after `Shutdown` (#138)
-* chore: remove `CompletionQueue` parameter to `AsyncGrpcOperation::Notify` (#136)
 * fix: remove the redundant conditions in the `Run()` loop (#131)
 * fix: crashes with non-empty CompletionQueue shutdown (#127)
 * chore: move release notes to CHANGELOG.md (#128)
