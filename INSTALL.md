@@ -298,9 +298,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -404,9 +404,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -495,9 +495,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -672,9 +672,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -775,9 +775,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -884,9 +884,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
