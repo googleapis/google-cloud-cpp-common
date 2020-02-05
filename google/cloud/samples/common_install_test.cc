@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "google/cloud/grpc_utils/completion_queue.h"
 #include "google/cloud/grpc_utils/grpc_error_delegate.h"
 #include "google/cloud/grpc_utils/version.h"
 #include "google/cloud/version.h"
-#include "google/cloud/grpc_utils/completion_queue.h"
 #include <iostream>
 
 int main() {
