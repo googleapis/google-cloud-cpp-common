@@ -144,7 +144,9 @@ class future_base {
 template <typename T>
 class promise_base {
  public:
-  promise_base() : shared_state_(std::make_shared<shared_state_type>()) {}
+  promise_base(std::function<void()> cancellation_callback = [] {})
+      : shared_state_(
+            std::make_shared<shared_state_type>(cancellation_callback)) {}
   promise_base(promise_base&&) noexcept = default;
 
   ~promise_base() {

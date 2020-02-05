@@ -76,6 +76,11 @@ class future final : private internal::future_base<T> {
     return tmp->get();
   }
 
+  /**
+   * Cancel the future by invoking cancel() on the shared state.
+   */
+  void cancel() { this->shared_state_->cancel(); }
+
   using internal::future_base<T>::is_ready;
   using internal::future_base<T>::valid;
   using internal::future_base<T>::wait;
@@ -132,7 +137,8 @@ template <typename T>
 class promise final : private internal::promise_base<T> {
  public:
   /// Creates a promise with an unsatisfied shared state.
-  promise() = default;
+  promise(std::function<void()> cancellation_callback = [] {})
+      : internal::promise_base<T>(cancellation_callback) {}
 
   /// Constructs a new promise and transfer any shared state from @p rhs.
   promise(promise&&) noexcept = default;
@@ -169,6 +175,11 @@ class promise final : private internal::promise_base<T> {
     internal::future_shared_state<T>::mark_retrieved(this->shared_state_);
     return future<T>(this->shared_state_);
   }
+
+  /**
+   * Returns if it is "cancelled".
+   */
+  bool cancelled() { return this->shared_state_->cancelled_; }
 
   /**
    * Satisfies the shared state.

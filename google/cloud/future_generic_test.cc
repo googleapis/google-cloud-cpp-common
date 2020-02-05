@@ -635,6 +635,19 @@ TEST(FutureTestInt, conform_30_6_6_25_3) {
 // raise too. We do not need to test for that, exceptions are always propagated,
 // this is just giving implementors freedom.
 
+/// @test Verify the behavior around cancellation.
+TEST(FutureTestInt, cancellation) {
+  bool cancelled = false;
+  promise<int> p0([&cancelled] { cancelled = true; });
+  auto f0 = p0.get_future();
+  f0.cancel();
+  auto s = f0.wait_until(std::chrono::system_clock::now());
+  EXPECT_EQ(std::future_status::timeout, s);
+  ASSERT_NE(std::future_status::ready, f0.wait_for(0_ms));
+  ASSERT_EQ(true, p0.cancelled());
+  ASSERT_EQ(true, cancelled);
+}
+
 }  // namespace
 }  // namespace GOOGLE_CLOUD_CPP_NS
 }  // namespace cloud

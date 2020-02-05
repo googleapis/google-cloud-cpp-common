@@ -68,8 +68,11 @@ class continuation_base {
  */
 class future_shared_state_base {
  public:
-  future_shared_state_base() : mu_(), cv_(), current_state_(state::not_ready) {}
-
+  future_shared_state_base(std::function<void()> cancellation_callback = [] {})
+      : mu_(),
+        cv_(),
+        current_state_(state::not_ready),
+        cancellation_callback_(cancellation_callback) {}
   /// Return true if the shared state has a value or an exception.
   bool is_ready() const {
     std::unique_lock<std::mutex> lk(mu_);
@@ -197,6 +200,14 @@ class future_shared_state_base {
     continuation_ = std::move(c);
   }
 
+  void cancel() {
+    if (cancelled_) {
+      return;
+    }
+    cancellation_callback_();
+    cancelled_ = true;
+  }
+
  protected:
   bool is_ready_unlocked() const { return current_state_ != state::not_ready; }
 
@@ -279,6 +290,10 @@ class future_shared_state_base {
    * member variable and does not satisfy the shared state.
    */
   std::unique_ptr<continuation_base> continuation_;
+
+  // Allow users "cancel" the future with the given callback.
+  std::atomic<bool> cancelled_ = ATOMIC_VAR_INIT(false);
+  std::function<void()> cancellation_callback_;
 };
 
 /**
@@ -306,6 +321,8 @@ template <typename T>
 class future_shared_state final : private future_shared_state_base {
  public:
   future_shared_state() : future_shared_state_base(), buffer_() {}
+  future_shared_state(std::function<void()> cancellation_callback)
+      : future_shared_state_base(cancellation_callback), buffer_() {}
   ~future_shared_state() {
     if (current_state_ == state::has_value) {
       // Recall that state::has_value is a terminal state, once a value is
@@ -318,6 +335,8 @@ class future_shared_state final : private future_shared_state_base {
   }
 
   using future_shared_state_base::abandon;
+  using future_shared_state_base::cancel;
+  using future_shared_state_base::cancelled_;
   using future_shared_state_base::is_ready;
   using future_shared_state_base::set_continuation;
   using future_shared_state_base::set_exception;
@@ -441,8 +460,12 @@ template <>
 class future_shared_state<void> final : private future_shared_state_base {
  public:
   future_shared_state() : future_shared_state_base() {}
+  future_shared_state(std::function<void()> cancellation_callback)
+      : future_shared_state_base(cancellation_callback) {}
 
   using future_shared_state_base::abandon;
+  using future_shared_state_base::cancel;
+  using future_shared_state_base::cancelled_;
   using future_shared_state_base::is_ready;
   using future_shared_state_base::set_continuation;
   using future_shared_state_base::set_exception;
