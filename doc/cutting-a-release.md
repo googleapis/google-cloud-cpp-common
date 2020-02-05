@@ -96,9 +96,6 @@ doxygen documentation to the staging bucket for googleapis.dev hosting. The
 uploaded documentation will generally be live in an hour at the
 [googleapis.dev site](https://googleapis.dev/cpp/google-cloud-common/latest/).
 
-You are now finished with this "releases" clone of the repo that we created in
-the instructions above. You may now remove this directory.
-
 ## Bump the version numbers in `master`
 
 Working in your fork of `gooogle-cloud-cpp-common`: bump the version numbers
