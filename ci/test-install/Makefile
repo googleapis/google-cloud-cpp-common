@@ -21,14 +21,14 @@
 # The CXX, CXXFLAGS and CXXLD variables are hard-coded. These values work for
 # our tests, but applications would typically make them configurable parameters.
 CXX=g++
-CXXFLAGS=-std=c++11
+CXXFLAGS=-std=c++11 -pthread
 CXXLD=$(CXX)
 
 all: common_install_test
 
 # Configuration variables to compile and link against the Cloud C++ common
 # library.
-GCPP_DEPS := google_cloud_cpp_grpc_utils google_cloud_cpp_common
+GCPP_DEPS := google_cloud_cpp_grpc_utils google_cloud_cpp_common grpc++ grpc
 GCPP_CXXFLAGS   := $(shell pkg-config $(GCPP_DEPS) --cflags)
 GCPP_CXXLDFLAGS := $(shell pkg-config $(GCPP_DEPS) --libs-only-L)
 GCPP_LIBS       := $(shell pkg-config $(GCPP_DEPS) --libs-only-l)
