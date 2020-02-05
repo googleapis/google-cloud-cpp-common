@@ -39,7 +39,7 @@ sudo wget -q -O /usr/bin/buildifier https://github.com/bazelbuild/buildtools/rel
 sudo chmod 755 /usr/bin/buildifier
 ```
 
-Install cmake_format to automatically format the CMake list files. We pin this
+Install `cmake_format` to automatically format the CMake list files. We pin this
 tool to a specific version because the formatting changes when the "latest"
 version is updated, and we do not want the builds to break just
 because some third party changed something.
@@ -47,7 +47,7 @@ because some third party changed something.
 ```console
 sudo apt install -y python python-pip
 pip install --upgrade pip
-pip install numpy cmake_format==0.4.0
+pip install numpy cmake_format==0.6.8
 ```
 
 Install the Python modules used in the integration tests:
