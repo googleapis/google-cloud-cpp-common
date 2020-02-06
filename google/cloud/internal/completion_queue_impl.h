@@ -47,7 +47,7 @@ class CompletionQueueImpl;
  */
 class AsyncGrpcOperation : public AsyncOperation {
  private:
-  friend class internal::CompletionQueueImpl;
+  friend class CompletionQueueImpl;
   /**
    * Notifies the application that the operation completed.
    *

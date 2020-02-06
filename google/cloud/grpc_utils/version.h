@@ -25,11 +25,11 @@ namespace cloud {
  */
 namespace grpc_utils {
 inline namespace GOOGLE_CLOUD_CPP_NS {
-using google::cloud::version;
-using google::cloud::version_major;
-using google::cloud::version_minor;
-using google::cloud::version_patch;
-using google::cloud::version_string;
+using ::google::cloud::version;
+using ::google::cloud::version_major;
+using ::google::cloud::version_minor;
+using ::google::cloud::version_patch;
+using ::google::cloud::version_string;
 }  // namespace GOOGLE_CLOUD_CPP_NS
 }  // namespace grpc_utils
 }  // namespace cloud
