@@ -68,7 +68,8 @@ class continuation_base {
  */
 class future_shared_state_base {
  public:
-  future_shared_state_base(std::function<void()> cancellation_callback = [] {})
+  future_shared_state_base() : future_shared_state_base([] {}) {}
+  future_shared_state_base(std::function<void()> cancellation_callback)
       : mu_(),
         cv_(),
         current_state_(state::not_ready),
@@ -78,6 +79,9 @@ class future_shared_state_base {
     std::unique_lock<std::mutex> lk(mu_);
     return is_ready_unlocked();
   }
+
+  /// Return true if the shared state can be cancelled.
+  bool cancellable() const { return !is_ready() && !cancelled_; }
 
   /// Block until is_ready() returns true ...
   void wait() {
@@ -200,12 +204,25 @@ class future_shared_state_base {
     continuation_ = std::move(c);
   }
 
-  void cancel() {
-    if (cancelled_) {
-      return;
+  // Try to cancel the task by invoking the cancellation_callback. When it
+  // throws, it returns false. This cancellation is best effort by nature, so
+  // currently we throw away the exception.
+  bool cancel() {
+    if (!cancellable()) {
+      return false;
     }
+#ifdef GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
+    try {
+      cancellation_callback_();
+    } catch (...) {
+      // We ignore exceptions, but return false.
+      return false;
+    }
+#else
     cancellation_callback_();
+#endif  // GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
     cancelled_ = true;
+    return true;
   }
 
  protected:
@@ -336,7 +353,6 @@ class future_shared_state final : private future_shared_state_base {
 
   using future_shared_state_base::abandon;
   using future_shared_state_base::cancel;
-  using future_shared_state_base::cancelled_;
   using future_shared_state_base::is_ready;
   using future_shared_state_base::set_continuation;
   using future_shared_state_base::set_exception;
@@ -465,7 +481,6 @@ class future_shared_state<void> final : private future_shared_state_base {
 
   using future_shared_state_base::abandon;
   using future_shared_state_base::cancel;
-  using future_shared_state_base::cancelled_;
   using future_shared_state_base::is_ready;
   using future_shared_state_base::set_continuation;
   using future_shared_state_base::set_exception;

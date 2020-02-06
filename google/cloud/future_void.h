@@ -73,11 +73,7 @@ class future<void> final : private internal::future_base<void> {
     return tmp->get();
   }
 
-  /**
-   * Cancel the future by invoking cancel() on the shared state.
-   */
-  void cancel() { shared_state_->cancel(); }
-
+  using future_base::cancel;
   using future_base::is_ready;
   using future_base::valid;
   using future_base::wait;
@@ -171,11 +167,6 @@ class promise<void> final : private internal::promise_base<void> {
     shared_state_type::mark_retrieved(shared_state_);
     return future<void>(shared_state_);
   }
-
-  /**
-   * Returns if it is "cancelled".
-   */
-  bool cancelled() { return shared_state_->cancelled_; }
 
   /**
    * Satisfies the shared state.

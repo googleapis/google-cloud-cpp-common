@@ -645,16 +645,35 @@ TEST(FutureTestVoid, conform_30_6_6_25_3) {
 // this is just giving implementors freedom.
 
 /// @test Verify the behavior around cancellation.
-TEST(FutureTestVoid, cancellation) {
+TEST(FutureTestVoid, cancellation_without_satisfaction) {
   bool cancelled = false;
   promise<void> p0([&cancelled] { cancelled = true; });
   auto f0 = p0.get_future();
-  f0.cancel();
+  ASSERT_TRUE(f0.cancel());
   auto s = f0.wait_until(std::chrono::system_clock::now());
   EXPECT_EQ(std::future_status::timeout, s);
   ASSERT_NE(std::future_status::ready, f0.wait_for(0_ms));
-  ASSERT_EQ(true, p0.cancelled());
   ASSERT_EQ(true, cancelled);
+}
+
+TEST(FutureTestVoid, cancellation_and_satisfaction) {
+  bool cancelled = false;
+  promise<void> p0([&cancelled] { cancelled = true; });
+  auto f0 = p0.get_future();
+  ASSERT_TRUE(f0.cancel());
+  p0.set_value();
+  ASSERT_EQ(std::future_status::ready, f0.wait_for(0_ms));
+  ASSERT_EQ(true, cancelled);
+}
+
+/// @test Verify the cancel fails on satisfied promise.
+TEST(FutureTestVoid, cancellation_after_satisfaction) {
+  bool cancelled = false;
+  promise<void> p0([&cancelled] { cancelled = true; });
+  auto f0 = p0.get_future();
+  p0.set_value();
+  ASSERT_FALSE(f0.cancel());
+  ASSERT_FALSE(cancelled);
 }
 
 }  // namespace
