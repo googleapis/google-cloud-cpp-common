@@ -204,23 +204,15 @@ class future_shared_state_base {
     continuation_ = std::move(c);
   }
 
-  // Try to cancel the task by invoking the cancellation_callback. When it
-  // throws, it returns false. This cancellation is best effort by nature, so
-  // currently we throw away the exception.
+  // Try to cancel the task by invoking the cancellation_callback.
   bool cancel() {
     if (!cancellable()) {
       return false;
     }
-#ifdef GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
-    try {
-      cancellation_callback_();
-    } catch (...) {
-      // We ignore exceptions, but return false.
-      return false;
-    }
-#else
     cancellation_callback_();
-#endif  // GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
+    // If the callback fails with an exception we assume it had no effect.
+    // Incidentally this means we provide the strong exception guarantee for
+    // this function.
     cancelled_ = true;
     return true;
   }

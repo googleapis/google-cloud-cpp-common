@@ -636,16 +636,16 @@ TEST(FutureTestInt, conform_30_6_6_25_3) {
 // this is just giving implementors freedom.
 
 /// @test Verify the behavior around cancellation.
-TEST(FutureTestInt, cancellation) {
+TEST(FutureTestInt, cancellation_without_satisfaction) {
   bool cancelled = false;
   promise<int> p0([&cancelled] { cancelled = true; });
   auto f0 = p0.get_future();
   ASSERT_TRUE(f0.cancel());
-  ASSERT_EQ(true, cancelled);
+  ASSERT_TRUE(cancelled);
 }
 
-/// @test Verify the behavior around cancellation.
-TEST(FutureTestInt, cancellation_and_sdatisfaction) {
+/// @test Verify the case for cancel then satisfy.
+TEST(FutureTestInt, cancellation_and_satisfaction) {
   bool cancelled = false;
   promise<int> p0([&cancelled] { cancelled = true; });
   auto f0 = p0.get_future();
@@ -653,10 +653,10 @@ TEST(FutureTestInt, cancellation_and_sdatisfaction) {
   p0.set_value(1);
   ASSERT_EQ(std::future_status::ready, f0.wait_for(0_ms));
   ASSERT_EQ(1, f0.get());
-  ASSERT_EQ(true, cancelled);
+  ASSERT_TRUE(cancelled);
 }
 
-/// @test Verify the cancel fails on satisfied promise.
+/// @test Verify the cancellation fails on satisfied promise.
 TEST(FutureTestInt, cancellation_after_satisfaction) {
   bool cancelled = false;
   promise<int> p0([&cancelled] { cancelled = true; });

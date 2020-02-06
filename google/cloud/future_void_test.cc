@@ -650,12 +650,10 @@ TEST(FutureTestVoid, cancellation_without_satisfaction) {
   promise<void> p0([&cancelled] { cancelled = true; });
   auto f0 = p0.get_future();
   ASSERT_TRUE(f0.cancel());
-  auto s = f0.wait_until(std::chrono::system_clock::now());
-  EXPECT_EQ(std::future_status::timeout, s);
-  ASSERT_NE(std::future_status::ready, f0.wait_for(0_ms));
-  ASSERT_EQ(true, cancelled);
+  ASSERT_TRUE(cancelled);
 }
 
+/// @test Verify the case for cancel then satisfy.
 TEST(FutureTestVoid, cancellation_and_satisfaction) {
   bool cancelled = false;
   promise<void> p0([&cancelled] { cancelled = true; });
@@ -663,10 +661,10 @@ TEST(FutureTestVoid, cancellation_and_satisfaction) {
   ASSERT_TRUE(f0.cancel());
   p0.set_value();
   ASSERT_EQ(std::future_status::ready, f0.wait_for(0_ms));
-  ASSERT_EQ(true, cancelled);
+  ASSERT_TRUE(cancelled);
 }
 
-/// @test Verify the cancel fails on satisfied promise.
+/// @test Verify the cancellation fails on satisfied promise.
 TEST(FutureTestVoid, cancellation_after_satisfaction) {
   bool cancelled = false;
   promise<void> p0([&cancelled] { cancelled = true; });
