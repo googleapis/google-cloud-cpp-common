@@ -42,6 +42,13 @@ RUN dnf makecache && \
         libcurl-devel protobuf-compiler tar wget zlib-devel
 # ```
 
+# The following steps will install libraries and tools in `/usr/local`. By
+# default pkg-config does not search in these directories.
+
+# ```bash
+ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+# ```
+
 # #### googleapis
 
 # We need a recent version of the Google Cloud Platform proto C++ libraries:
@@ -91,8 +98,6 @@ RUN cmake --build . --target install
 # ```
 
 ## [END INSTALL.md]
-
-ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-plain-make

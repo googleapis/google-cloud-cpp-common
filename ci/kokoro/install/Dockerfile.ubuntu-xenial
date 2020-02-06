@@ -133,8 +133,6 @@ RUN cmake --build . --target install
 
 ## [END INSTALL.md]
 
-ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
-
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-plain-make
 COPY ci/test-install /home/build/test-install-plain-make
