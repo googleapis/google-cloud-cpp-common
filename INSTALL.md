@@ -225,6 +225,13 @@ sudo zypper refresh && \
 sudo zypper install -y grpc-devel
 ```
 
+The following steps will install libraries and tools in `/usr/local`. By
+default pkg-config does not search in these directories.
+
+```bash
+export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+```
+
 #### googleapis
 
 We need a recent version of the Google Cloud Platform proto C++ libraries:
