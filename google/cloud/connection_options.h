@@ -21,6 +21,7 @@
 #include "google/cloud/tracing_options.h"
 #include <grpcpp/grpcpp.h>
 #include <functional>
+#include <map>
 #include <memory>
 #include <set>
 #include <string>
@@ -36,7 +37,7 @@ std::unique_ptr<BackgroundThreads> DefaultBackgroundThreads();
 }  // namespace internal
 
 /**
- * The configuration parameters for spanner connections.
+ * The configuration parameters for client connections.
  */
 template <typename ConnectionTraits>
 class ConnectionOptions {
@@ -44,7 +45,7 @@ class ConnectionOptions {
   /// The default options, using `grpc::GoogleDefaultCredentials()`.
   ConnectionOptions() : ConnectionOptions(grpc::GoogleDefaultCredentials()) {}
 
-  /// Default parameters, using an explicit credentials object.
+  /// The default options, using an explicit credentials object.
   explicit ConnectionOptions(
       std::shared_ptr<grpc::ChannelCredentials> credentials)
       : credentials_(std::move(credentials)),
@@ -57,8 +58,7 @@ class ConnectionOptions {
     internal::DefaultLogging();
   }
 
-  /// Change the gRPC credentials from the default of
-  /// `grpc::GoogleDefaultCredentials()`.
+  /// Change the gRPC credentials value.
   ConnectionOptions& set_credentials(
       std::shared_ptr<grpc::ChannelCredentials> v) {
     credentials_ = std::move(v);
@@ -71,11 +71,13 @@ class ConnectionOptions {
   }
 
   /**
-   * Change the gRPC endpoint used to contact the Cloud Spanner service.
+   * Change the gRPC endpoint.
    *
-   * In almost all cases the default ("spanner.googleapis.com") is the correct
-   * endpoint to use. It may need to be changed to (1) test against a fake or
+   * In almost all cases the default is the correct endpoint to use.
+   * Applications may need to be changed to (1) test against a fake or
    * simulator, or (2) to use a beta or EAP version of the service.
+   *
+   * The default value is set by `ConnectionTraits::default_endpoint()`.
    */
   ConnectionOptions& set_endpoint(std::string v) {
     endpoint_ = std::move(v);
@@ -93,7 +95,7 @@ class ConnectionOptions {
    * thus increases the number of operations that can be in progress in
    * parallel.
    *
-   * The default value is 4.
+   * The default value is set by `ConnectionTraits::default_num_channels()`.
    */
   int num_channels() const { return num_channels_; }
 
@@ -106,13 +108,9 @@ class ConnectionOptions {
   /**
    * Return whether tracing is enabled for the given @p component.
    *
-   * The Cloud Spanner C++ client can log interesting events to help library and
-   * application developers troubleshoot problems with the library or their
-   * configuration. This flag returns true if tracing should be enabled by
-   * clients configured with this option.
-   *
-   * Currently only the `rpc` component is supported, which enables logging of
-   * each RPC, including its parameters and any responses.
+   * The C++ clients can log interesting events to help library and application
+   * developers troubleshoot problems. This flag returns true if tracing should
+   * be enabled by clients configured with this option.
    */
   bool tracing_enabled(std::string const& component) const {
     return tracing_components_.find(component) != tracing_components_.end();
@@ -131,7 +129,7 @@ class ConnectionOptions {
   }
 
   /// Return the options for use when tracing RPCs.
-  TracingOptions tracing_options() const { return tracing_options_; }
+  TracingOptions const& tracing_options() const { return tracing_options_; }
 
   /**
    * Define the gRPC channel domain for clients configured with this object.
@@ -162,10 +160,9 @@ class ConnectionOptions {
   /**
    * Prepend @p prefix to the user-agent string.
    *
-   * Libraries or services that use the Cloud Spanner C++ client may want to
-   * set their own user-agent prefix. This can help them develop telemetry
-   * information about number of users running particular versions of their
-   * system or library.
+   * Libraries or services that use Cloud C++ clients may want to set their own
+   * user-agent prefix. This can help them develop telemetry information about
+   * number of users running particular versions of their system or library.
    */
   ConnectionOptions& add_user_agent_prefix(std::string prefix) {
     prefix += " ";

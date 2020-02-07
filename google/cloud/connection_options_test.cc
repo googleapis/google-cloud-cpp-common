@@ -217,7 +217,7 @@ TEST(ConnectionOptionsTest, DefaultTracingOptionsNoEnvironment) {
   EXPECT_EQ(expected.use_short_repeated_primitives(),
             actual.use_short_repeated_primitives());
   EXPECT_EQ(expected.truncate_string_field_longer_than(),
-            expected.truncate_string_field_longer_than());
+            actual.truncate_string_field_longer_than());
 }
 
 TEST(ConnectionOptionsTest, DefaultTracingOptionsWithValue) {
