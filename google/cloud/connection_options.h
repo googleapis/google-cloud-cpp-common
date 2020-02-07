@@ -21,7 +21,6 @@
 #include "google/cloud/tracing_options.h"
 #include <grpcpp/grpcpp.h>
 #include <functional>
-#include <map>
 #include <memory>
 #include <set>
 #include <string>

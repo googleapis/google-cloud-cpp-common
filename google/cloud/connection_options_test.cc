@@ -18,6 +18,7 @@
 #include "google/cloud/log.h"
 #include "google/cloud/testing_util/environment_variable_restore.h"
 #include <gmock/gmock.h>
+#include <map>
 
 namespace google {
 namespace cloud {
