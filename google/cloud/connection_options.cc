@@ -13,6 +13,8 @@
 // limitations under the License.
 
 #include "google/cloud/connection_options.h"
+#include "google/cloud/internal/getenv.h"
+#include "google/cloud/internal/make_unique.h"
 #include "google/cloud/log.h"
 #include <sstream>
 
@@ -45,6 +47,11 @@ void DefaultLogging() {
           .has_value()) {
     google::cloud::LogSink::EnableStdClog();
   }
+}
+
+std::unique_ptr<BackgroundThreads> DefaultBackgroundThreads() {
+  return google::cloud::internal::make_unique<
+      AutomaticallyCreatedBackgroundThreads>();
 }
 
 }  // namespace internal

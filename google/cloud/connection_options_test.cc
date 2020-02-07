@@ -251,6 +251,11 @@ TEST(ConnectionOptionsTest, DefaultLoggingWithValue) {
   EXPECT_EQ(0, LogSink::Instance().BackendCount());
 }
 
+TEST(ConnectionOptionsTest, DefaultBackgroundThreads) {
+  auto actual = internal::DefaultBackgroundThreads();
+  EXPECT_TRUE(actual);
+}
+
 }  // namespace
 }  // namespace GOOGLE_CLOUD_CPP_NS
 }  // namespace cloud

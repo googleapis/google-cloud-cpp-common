@@ -15,10 +15,8 @@
 #ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_CONNECTION_OPTIONS_H
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_CONNECTION_OPTIONS_H
 
-#include "google/cloud/background_threads.h"
 #include "google/cloud/completion_queue.h"
 #include "google/cloud/internal/background_threads_impl.h"
-#include "google/cloud/internal/getenv.h"
 #include "google/cloud/status_or.h"
 #include "google/cloud/tracing_options.h"
 #include <grpcpp/grpcpp.h>
@@ -34,6 +32,7 @@ namespace internal {
 std::set<std::string> DefaultTracingComponents();
 TracingOptions DefaultTracingOptions();
 void DefaultLogging();
+std::unique_ptr<BackgroundThreads> DefaultBackgroundThreads();
 }  // namespace internal
 
 /**
@@ -54,10 +53,7 @@ class ConnectionOptions {
         tracing_components_(internal::DefaultTracingComponents()),
         tracing_options_(internal::DefaultTracingOptions()),
         user_agent_prefix_(ConnectionTraits::user_agent_prefix()),
-        background_threads_factory_([] {
-          return google::cloud::internal::make_unique<
-              internal::AutomaticallyCreatedBackgroundThreads>();
-        }) {
+        background_threads_factory_(internal::DefaultBackgroundThreads) {
     internal::DefaultLogging();
   }
 
