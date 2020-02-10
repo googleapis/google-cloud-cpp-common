@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,11 +18,13 @@ licenses(["notice"])  # Apache 2.0
 
 cc_test(
     name = "common_install_test",
-    srcs = [
-        "common_install_test.cc",
-    ],
+    srcs = ["common_install_test.cc"],
     deps = [
-        "@com_github_googleapis_google_cloud_cpp_common//google/cloud:google_cloud_cpp_common",
-        "@com_github_googleapis_google_cloud_cpp_common//google/cloud/grpc_utils:google_cloud_cpp_grpc_utils",
+        "//google/cloud:google_cloud_cpp_common",
+        "//google/cloud:google_cloud_cpp_grpc_utils",
+        "//google/cloud/grpc_utils:google_cloud_cpp_grpc_utils",
+        "@com_github_grpc_grpc//:grpc++",
+        "@com_google_googleapis//:grpc_utils_protos",
+        "@com_google_googletest//:gtest",
     ],
 )
