@@ -53,12 +53,7 @@ TEST(RangeFromPagination, Empty) {
 
   TestedRange range(Request{}, [&](Request const& r) { return mock.Loader(r); },
                     GetItems);
-  std::vector<std::string> names;
-  for (auto& p : range) {
-    if (!p) break;
-    names.push_back(p->name());
-  }
-  EXPECT_TRUE(names.empty());
+  EXPECT_TRUE(range.begin() == range.end());
 }
 
 TEST(RangeFromPagination, SinglePage) {
@@ -148,6 +143,39 @@ TEST(RangeFromPagination, TwoPagesWithError) {
     names.push_back(p->name());
   }
   EXPECT_THAT(names, ElementsAre("p1", "p2", "p3", "p4"));
+}
+
+TEST(RangeFromPagination, IteratorCoverage) {
+  MockRpc mock;
+  EXPECT_CALL(mock, Loader(_))
+      .WillOnce(Invoke([](Request const& request) {
+        EXPECT_TRUE(request.page_token().empty());
+        Response response;
+        response.set_next_page_token("t1");
+        response.add_app_profiles()->set_name("p1");
+        return response;
+      }))
+      .WillOnce(Invoke([](Request const& request) {
+        EXPECT_EQ("t1", request.page_token());
+        return Status(StatusCode::kAborted, "bad-luck");
+      }));
+
+  TestedRange range(Request{}, [&](Request const& r) { return mock.Loader(r); },
+                    GetItems);
+  auto i0 = range.begin();
+  auto i1 = i0;
+  EXPECT_TRUE(i0 == i1);
+  EXPECT_FALSE(i1 == range.end());
+  ++i1;
+  auto i2 = i1;
+  EXPECT_FALSE(i0 == i1);
+  EXPECT_TRUE(i1 == i2);
+  ASSERT_FALSE(i1 == range.end());
+  auto& item = *i1;
+  EXPECT_EQ(StatusCode::kAborted, item.status().code());
+  EXPECT_THAT(item.status().message(), HasSubstr("bad-luck"));
+  ++i1;
+  EXPECT_TRUE(i1 == range.end());
 }
 
 }  // namespace
