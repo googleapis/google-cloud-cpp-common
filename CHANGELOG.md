@@ -1,6 +1,19 @@
 # Changelog
 
-## v0.19.x - TBD
+## v0.20.x - TBD
+
+## v0.19.x - 2020-02
+
+**BREAKING CHANGES:**
+* refactor!: remove grpc_utils namespace; left aliases for backward compat (#158)
+
+**Other Changes:**
+* feat: cancel futures returned by .then() (#166)
+* feat: support cancellation for long running operations (#160)
+* refactor: copy PaginationRange from spanner (#168)
+* refactor: copy ConnectionOptions from spanner (#165)
+* refactor: Copy `BackgroundThreads` from `google::cloud::spanner`
+* refactor: copy TracingOptions from spanner (#161)
 
 ## v0.18.x - 2020-02
 
