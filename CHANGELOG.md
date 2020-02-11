@@ -6,6 +6,12 @@
 
 **BREAKING CHANGES:**
 * refactor!: remove grpc_utils namespace; left aliases for backward compat (#158)
+  **POTENTIALLY BREAKING CHANGE:** Refactor the types and functions from
+  `google::cloud::grpc_utils` to `google::cloud::`. The old header files and
+  types should continue to work, as we kept aliases for them, but there is some
+  risk we missed something. The library name (the physical .a and/or .so file)
+  is not changed, the target names for CMake are not changed, the target name
+  for Bazel moved to the new location.
 
 **Other Changes:**
 * feat: cancel futures returned by .then() (#166)
