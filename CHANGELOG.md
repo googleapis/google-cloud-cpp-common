@@ -1,6 +1,26 @@
 # Changelog
 
-## v0.19.x - TBD
+## v0.20.x - TBD
+
+## v0.19.x - 2020-02
+
+**BREAKING CHANGES:**
+* refactor!: remove grpc_utils namespace; left aliases for backward compat (#158)
+  **POTENTIALLY BREAKING CHANGE:** Refactor the types and functions from
+  `google::cloud::grpc_utils` to `google::cloud::`. The old header files and
+  types should continue to work, as we kept aliases for them, but there is some
+  risk we missed something. The library name (the physical .a and/or .so file)
+  is not changed, the target names for CMake are not changed. For Bazel, the
+  old targets continue to work, but you might want to move to newer targets
+  that do not expose the backwards compatibility headers.
+
+**Other Changes:**
+* feat: cancel futures returned by .then() (#166)
+* feat: support cancellation for long running operations (#160)
+* refactor: copy PaginationRange from spanner (#168)
+* refactor: copy ConnectionOptions from spanner (#165)
+* refactor: Copy `BackgroundThreads` from `google::cloud::spanner`
+* refactor: copy TracingOptions from spanner (#161)
 
 ## v0.18.x - 2020-02
 
