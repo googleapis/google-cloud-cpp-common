@@ -10,8 +10,9 @@
   `google::cloud::grpc_utils` to `google::cloud::`. The old header files and
   types should continue to work, as we kept aliases for them, but there is some
   risk we missed something. The library name (the physical .a and/or .so file)
-  is not changed, the target names for CMake are not changed, the target name
-  for Bazel moved to the new location.
+  is not changed, the target names for CMake are not changed. For Bazel, the
+  old targets continue to work, but you might want to move to newer targets
+  that do not expose the backwards compatibility headers.
 
 **Other Changes:**
 * feat: cancel futures returned by .then() (#166)
