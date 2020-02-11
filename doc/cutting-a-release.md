@@ -9,7 +9,7 @@ The intended audience of this document are developers in the
 audience is expected to be familiar with the project itself, [git][git-docs],
 [GitHub][github-guides], [semantic versioning](https://semver.org).
 
-## Preparing for a release
+## Preparing the release notes
 
 Assuming you are working on your own fork of the `google-cloud-cpp-common`
 project, and `upstream` points to the `googleapis/google-cloud-cpp-common`
@@ -24,22 +24,6 @@ Update `CHANGELOG.md` based on the release notes:
 git log --no-merges --format="format:* %s" \
     $(git describe --tags --abbrev=0 upstream/master)..HEAD \
     upstream/master -- google/cloud
-```
-
-### Update README.md
-
-Update the instructions to build the library for development:
-
-```bash
-./ci/test-readme/generate-readme.sh >README.md
-```
-
-### Update INSTALL.md
-
-Update the instructions to install the library:
-
-```bash
-./ci/test-readme/generate-install.sh >INSTALL.md
 ```
 
 ### Send a PR with all these changes
