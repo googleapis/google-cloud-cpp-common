@@ -82,10 +82,17 @@ uploaded documentation will generally be live in an hour at the
 
 ## Bump the version numbers in `master`
 
-Working in your fork of `gooogle-cloud-cpp-common`: bump the version numbers
-to the *next* version (i.e., one version past the release you just did above),
-and send the PR for review against `master`. For an example, look at
-[#90](https://github.com/googleapis/google-cloud-cpp-common/pull/90).
+Working in your fork of `gooogle-cloud-cpp-common`:
+
+* Bump the version numbers to the *next* version (i.e., one version past the
+  release you just did above).
+
+* Update the version of the "google-cloud-cpp-common" package in the
+  `ci/templates/kokoro/docker-fragments.sh` file to reflect the *just released
+  version*. This will make it easier for our dependent projects to update their
+  docker deps to use this new version.
+
+Send these changes in PR for review against `master`.
 
 ## Review the branch protections
 
