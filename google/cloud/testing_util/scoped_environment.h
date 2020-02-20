@@ -17,7 +17,6 @@
 
 #include "google/cloud/optional.h"
 #include "google/cloud/version.h"
-#include <map>
 #include <string>
 
 namespace google {
@@ -26,23 +25,28 @@ inline namespace GOOGLE_CLOUD_CPP_NS {
 namespace testing_util {
 
 /**
- * Helper class to restore the value of environment variables.
+ * Helper class to (un)set and restore the value of an environment variable.
  */
 class ScopedEnvironment {
  public:
-  ScopedEnvironment() = default;
+  /**
+   * Set the @p variable environment variable to @p value. If @value is
+   * an unset optional then the variable is unset. The previous value of
+   * the variable will be restored upon destruction.
+   */
+  ScopedEnvironment(std::string variable, optional<std::string> const& value);
+
   ~ScopedEnvironment();
 
-  // Not copyable.
+  // Movable, but not copyable.
   ScopedEnvironment(ScopedEnvironment const&) = delete;
+  ScopedEnvironment(ScopedEnvironment&&) = default;
   ScopedEnvironment& operator=(ScopedEnvironment const&) = delete;
-
-  /// Modifications to the environment that will be undone on destruction.
-  void SetEnv(std::string const& variable, optional<std::string> value);
-  void UnsetEnv(std::string const& variable) { SetEnv(variable, {}); }
+  ScopedEnvironment& operator=(ScopedEnvironment&&) = default;
 
  private:
-  std::map<std::string, optional<std::string>> undo_;
+  std::string variable_;
+  optional<std::string> prev_value_;
 };
 
 }  // namespace testing_util

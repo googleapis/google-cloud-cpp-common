@@ -21,19 +21,15 @@ namespace cloud {
 inline namespace GOOGLE_CLOUD_CPP_NS {
 namespace testing_util {
 
-ScopedEnvironment::~ScopedEnvironment() {
-  for (auto& undo : undo_) {
-    internal::SetEnv(undo.first.c_str(), std::move(undo.second));
-  }
+ScopedEnvironment::ScopedEnvironment(std::string variable,
+                                     optional<std::string> const& value)
+    : variable_(std::move(variable)),
+      prev_value_(internal::GetEnv(variable_.c_str())) {
+  internal::SetEnv(variable_.c_str(), value);
 }
 
-void ScopedEnvironment::SetEnv(std::string const& variable,
-                               optional<std::string> value) {
-  auto it = undo_.lower_bound(variable);
-  if (it == undo_.end() || it->first != variable) {
-    undo_.insert(it, {variable, internal::GetEnv(variable.c_str())});
-  }
-  internal::SetEnv(variable.c_str(), value);
+ScopedEnvironment::~ScopedEnvironment() {
+  internal::SetEnv(variable_.c_str(), std::move(prev_value_));
 }
 
 }  // namespace testing_util

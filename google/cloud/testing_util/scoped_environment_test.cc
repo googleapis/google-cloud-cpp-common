@@ -26,36 +26,30 @@ namespace {
 constexpr auto kVarName = "SCOPED_ENVIRONMENT_TEST";
 
 TEST(ScopedEnvironment, SetOverSet) {
-  ScopedEnvironment env_outer;
-  env_outer.SetEnv(kVarName, "foo");
+  ScopedEnvironment env_outer(kVarName, "foo");
   EXPECT_EQ(*internal::GetEnv(kVarName), "foo");
   {
-    ScopedEnvironment env_inner;
-    env_inner.SetEnv(kVarName, "bar");
+    ScopedEnvironment env_inner(kVarName, "bar");
     EXPECT_EQ(*internal::GetEnv(kVarName), "bar");
   }
   EXPECT_EQ(*internal::GetEnv(kVarName), "foo");
 }
 
 TEST(ScopedEnvironment, SetOverUnset) {
-  ScopedEnvironment env_outer;
-  env_outer.UnsetEnv(kVarName);
+  ScopedEnvironment env_outer(kVarName, {});
   EXPECT_FALSE(internal::GetEnv(kVarName).has_value());
   {
-    ScopedEnvironment env_inner;
-    env_inner.SetEnv(kVarName, "bar");
+    ScopedEnvironment env_inner(kVarName, "bar");
     EXPECT_EQ(*internal::GetEnv(kVarName), "bar");
   }
   EXPECT_FALSE(internal::GetEnv(kVarName).has_value());
 }
 
 TEST(ScopedEnvironment, UnsetOverSet) {
-  ScopedEnvironment env_outer;
-  env_outer.SetEnv(kVarName, "foo");
+  ScopedEnvironment env_outer(kVarName, "foo");
   EXPECT_EQ(*internal::GetEnv(kVarName), "foo");
   {
-    ScopedEnvironment env_inner;
-    env_inner.UnsetEnv(kVarName);
+    ScopedEnvironment env_inner(kVarName, {});
     EXPECT_FALSE(internal::GetEnv(kVarName).has_value());
   }
   EXPECT_EQ(*internal::GetEnv(kVarName), "foo");
