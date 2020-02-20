@@ -26,14 +26,14 @@ if (BUILD_TESTING OR GOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL)
         check_predicate_becomes_false.h
         chrono_literals.h
         custom_google_mock_main.cc
-        environment_restorer.cc
-        environment_restorer.h
         environment_variable_restore.cc
         environment_variable_restore.h
         expect_exception.h
         expect_future_error.h
         init_google_mock.cc
         init_google_mock.h
+        scoped_environment.cc
+        scoped_environment.h
         testing_types.cc
         testing_types.h)
     target_link_libraries(
@@ -44,7 +44,7 @@ if (BUILD_TESTING OR GOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL)
     create_bazel_config(google_cloud_cpp_testing YEAR 2019)
 
     set(google_cloud_cpp_testing_unit_tests assert_ok_test.cc
-                                            environment_restorer_test.cc)
+                                            scoped_environment_test.cc)
 
     # Export the list of unit tests so the Bazel BUILD file can pick it up.
     export_list_to_bazel("google_cloud_cpp_testing_unit_tests.bzl"

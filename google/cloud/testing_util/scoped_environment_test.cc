@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "google/cloud/testing_util/environment_restorer.h"
+#include "google/cloud/testing_util/scoped_environment.h"
 #include "google/cloud/internal/getenv.h"
 #include "google/cloud/internal/setenv.h"
 #include <gtest/gtest.h>
@@ -23,38 +23,38 @@ inline namespace GOOGLE_CLOUD_CPP_NS {
 namespace testing_util {
 namespace {
 
-constexpr auto kVarName = "ENVIRONMENT_RESTORER_TEST";
+constexpr auto kVarName = "SCOPED_ENVIRONMENT_TEST";
 
-TEST(EnvironmentRestorer, SetOverSet) {
-  EnvironmentRestorer env_outer;
+TEST(ScopedEnvironment, SetOverSet) {
+  ScopedEnvironment env_outer;
   env_outer.SetEnv(kVarName, "foo");
   EXPECT_EQ(*internal::GetEnv(kVarName), "foo");
   {
-    EnvironmentRestorer env_inner;
+    ScopedEnvironment env_inner;
     env_inner.SetEnv(kVarName, "bar");
     EXPECT_EQ(*internal::GetEnv(kVarName), "bar");
   }
   EXPECT_EQ(*internal::GetEnv(kVarName), "foo");
 }
 
-TEST(EnvironmentRestorer, SetOverUnset) {
-  EnvironmentRestorer env_outer;
+TEST(ScopedEnvironment, SetOverUnset) {
+  ScopedEnvironment env_outer;
   env_outer.UnsetEnv(kVarName);
   EXPECT_FALSE(internal::GetEnv(kVarName).has_value());
   {
-    EnvironmentRestorer env_inner;
+    ScopedEnvironment env_inner;
     env_inner.SetEnv(kVarName, "bar");
     EXPECT_EQ(*internal::GetEnv(kVarName), "bar");
   }
   EXPECT_FALSE(internal::GetEnv(kVarName).has_value());
 }
 
-TEST(EnvironmentRestorer, UnsetOverSet) {
-  EnvironmentRestorer env_outer;
+TEST(ScopedEnvironment, UnsetOverSet) {
+  ScopedEnvironment env_outer;
   env_outer.SetEnv(kVarName, "foo");
   EXPECT_EQ(*internal::GetEnv(kVarName), "foo");
   {
-    EnvironmentRestorer env_inner;
+    ScopedEnvironment env_inner;
     env_inner.UnsetEnv(kVarName);
     EXPECT_FALSE(internal::GetEnv(kVarName).has_value());
   }

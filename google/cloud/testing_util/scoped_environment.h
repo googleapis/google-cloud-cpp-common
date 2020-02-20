@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_TESTING_UTIL_ENVIRONMENT_RESTORER_H
-#define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_TESTING_UTIL_ENVIRONMENT_RESTORER_H
+#ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_TESTING_UTIL_SCOPED_ENVIRONMENT_H
+#define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_TESTING_UTIL_SCOPED_ENVIRONMENT_H
 
 #include "google/cloud/optional.h"
 #include "google/cloud/version.h"
@@ -28,14 +28,14 @@ namespace testing_util {
 /**
  * Helper class to restore the value of environment variables.
  */
-class EnvironmentRestorer {
+class ScopedEnvironment {
  public:
-  EnvironmentRestorer() = default;
-  ~EnvironmentRestorer();
+  ScopedEnvironment() = default;
+  ~ScopedEnvironment();
 
   // Not copyable.
-  EnvironmentRestorer(EnvironmentRestorer const&) = delete;
-  EnvironmentRestorer& operator=(EnvironmentRestorer const&) = delete;
+  ScopedEnvironment(ScopedEnvironment const&) = delete;
+  ScopedEnvironment& operator=(ScopedEnvironment const&) = delete;
 
   /// Modifications to the environment that will be undone on destruction.
   void SetEnv(std::string const& variable, optional<std::string> value);
@@ -50,4 +50,4 @@ class EnvironmentRestorer {
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_TESTING_UTIL_ENVIRONMENT_RESTORER_H
+#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_TESTING_UTIL_SCOPED_ENVIRONMENT_H

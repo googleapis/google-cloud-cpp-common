@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "google/cloud/testing_util/environment_restorer.h"
+#include "google/cloud/testing_util/scoped_environment.h"
 #include "google/cloud/internal/getenv.h"
 #include "google/cloud/internal/setenv.h"
 
@@ -21,14 +21,14 @@ namespace cloud {
 inline namespace GOOGLE_CLOUD_CPP_NS {
 namespace testing_util {
 
-EnvironmentRestorer::~EnvironmentRestorer() {
+ScopedEnvironment::~ScopedEnvironment() {
   for (auto& undo : undo_) {
     internal::SetEnv(undo.first.c_str(), std::move(undo.second));
   }
 }
 
-void EnvironmentRestorer::SetEnv(std::string const& variable,
-                                 optional<std::string> value) {
+void ScopedEnvironment::SetEnv(std::string const& variable,
+                               optional<std::string> value) {
   auto it = undo_.lower_bound(variable);
   if (it == undo_.end() || it->first != variable) {
     undo_.insert(it, {variable, internal::GetEnv(variable.c_str())});
