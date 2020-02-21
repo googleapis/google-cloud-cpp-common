@@ -7,7 +7,6 @@
 * feat: add new support for testing with environment variables (#180)
 * feat: logging can be enabled via env var (#181)
 * refactor: copy IsProtoEqual from spanner (#179)
-* chore: bump version numbers after v0.19 release (#174)
 
 ## v0.19.x - 2020-02
 
