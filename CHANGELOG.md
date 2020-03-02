@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.21.x - TBD
+## v0.22.x - TBD
+
+## v0.21.x - 2020-03
+
+* fix: install google_cloud_cpp_testing_grpc headers (#185)
 
 ## v0.20.x - 2020-02
 
