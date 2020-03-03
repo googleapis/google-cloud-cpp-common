@@ -168,9 +168,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -238,9 +238,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -357,9 +357,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -401,9 +401,10 @@ sudo cmake --build . --target install
 Install the minimal development tools, libcurl, OpenSSL and libc-ares:
 
 ```bash
-sudo apt update && \
-sudo apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev make \
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential cmake ca-certificates git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev m4 make \
         pkg-config tar wget zlib1g-dev
 ```
 
@@ -448,9 +449,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -492,9 +493,10 @@ sudo cmake --build . --target install
 Install the minimal development tools, OpenSSL and libcurl:
 
 ```bash
-sudo apt update && \
-sudo apt install -y automake build-essential cmake git gcc g++ \
-        libcurl4-openssl-dev libssl-dev libtool make \
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential cmake ca-certificates git gcc g++ cmake \
+        libcurl4-openssl-dev libssl-dev libtool m4 make \
         pkg-config tar wget zlib1g-dev
 ```
 
@@ -554,9 +556,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -598,17 +600,19 @@ sudo cmake --build . --target install
 Install the minimal development tools, libcurl, and OpenSSL:
 
 ```bash
-sudo apt update && \
-sudo apt install -y build-essential cmake git gcc g++ cmake \
-        libcurl4-openssl-dev libssl-dev make pkg-config tar wget zlib1g-dev
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential ca-certificates cmake git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev m4 make \
+        pkg-config tar wget zlib1g-dev
 ```
 
 Debian 10 includes versions of gRPC and Protobuf that support the
 Google Cloud Platform proto files. We simply install these pre-built versions:
 
 ```bash
-sudo apt update && \
-sudo apt install -y libgrpc++-dev libprotobuf-dev libc-ares-dev \
+apt-get update && \
+    apt-get --no-install-recommends install -y libgrpc++-dev libprotobuf-dev libc-ares-dev \
         protobuf-compiler protobuf-compiler-grpc
 ```
 
@@ -618,9 +622,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -669,10 +673,11 @@ Note that this removes libssl-dev if you have it installed already, and would
 prevent you from compiling against openssl-1.1.0.
 
 ```bash
-sudo apt update && \
-sudo apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl1.0-dev make \
-        pkg-config tar wget zlib1g-dev
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential cmake ca-certificates git gcc g++ cmake libc-ares-dev \
+        libc-ares2 libcurl4-openssl-dev libssl1.0-dev make m4 pkg-config tar \
+        wget zlib1g-dev
 ```
 
 #### Protobuf
@@ -716,9 +721,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -819,9 +824,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -943,9 +948,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \

@@ -15,12 +15,15 @@
 ARG DISTRO_VERSION=18.04
 FROM ubuntu:${DISTRO_VERSION}
 
-RUN apt update && \
-    apt install -y \
+RUN apt-get update && \
+    apt-get --no-install-recommends install -y \
         abi-compliance-checker \
         abi-dumper \
+        apt-transport-https \
+        apt-utils \
         automake \
         build-essential \
+        ca-certificates \
         ccache \
         clang \
         cmake \

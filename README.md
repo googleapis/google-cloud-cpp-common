@@ -217,9 +217,10 @@ sudo ln -sf /usr/bin/cmake3 /usr/bin/cmake && sudo ln -sf /usr/bin/ctest3 /usr/b
 First install the development tools.
 
 ```bash
-sudo apt update && \
-sudo apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev make \
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential ca-certificates cmake git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev m4 make \
         pkg-config tar wget zlib1g-dev
 ```
 
@@ -233,9 +234,10 @@ sudo apt install -y build-essential cmake git gcc g++ cmake \
 First install the development tools.
 
 ```bash
-sudo apt update && \
-sudo apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl1.0-dev make \
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential cmake ca-certificates git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl1.0-dev m4 make \
         pkg-config tar wget zlib1g-dev
 ```
 
@@ -294,9 +296,10 @@ sudo zypper install --allow-downgrade -y cmake gcc gcc-c++ git gzip \
 Install the minimal development tools:
 
 ```bash
-sudo apt update && \
-sudo apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev make \
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential cmake ca-certificates git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev m4 make \
         pkg-config tar wget zlib1g-dev
 ```
 
@@ -310,8 +313,9 @@ sudo apt install -y build-essential cmake git gcc g++ cmake \
 Install the minimal development tools:
 
 ```bash
-sudo apt update && \
-sudo apt install -y build-essential cmake git gcc g++ cmake \
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential cmake ca-certificates git gcc g++ m4 cmake \
         libcurl4-openssl-dev libssl-dev make \
         pkg-config tar wget zlib1g-dev
 ```
