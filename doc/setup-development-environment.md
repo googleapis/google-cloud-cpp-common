@@ -45,15 +45,9 @@ version is updated, and we do not want the builds to break just
 because some third party changed something.
 
 ```console
-sudo apt install -y python python-pip
-pip install --upgrade pip
-pip install numpy cmake_format==0.6.8
-```
-
-Install the Python modules used in the integration tests:
-
-```console
-pip install flask httpbin gevent gunicorn --user
+sudo apt install -y python3 python3-pip
+pip3 install --upgrade pip
+pip3 install numpy cmake_format==0.6.8
 ```
 
 Add the pip directory to your PATH:
