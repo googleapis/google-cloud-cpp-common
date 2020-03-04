@@ -39,7 +39,7 @@ RUN dnf makecache && dnf install -y \
     openssl-devel \
     pkgconfig \
     protobuf-compiler \
-    python \
+    python3 \
     shtool \
     unzip \
     wget \

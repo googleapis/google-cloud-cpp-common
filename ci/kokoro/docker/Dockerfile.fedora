@@ -35,7 +35,7 @@ RUN dnf makecache && dnf install -y \
     ncurses-term \
     openssl-devel \
     pkgconfig \
-    python \
+    python3 \
     shtool \
     unzip \
     wget \
