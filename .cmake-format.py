@@ -41,6 +41,7 @@ additional_commands = {
             "PREFIX": 1,
             "URL": 1,
             "URL_HASH": 1,
+            "BUILD_ALWAYS": 1,
         }
     }
 }
