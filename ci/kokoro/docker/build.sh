@@ -57,12 +57,16 @@ fi
 if [[ "${BUILD_NAME}" = "clang-tidy" ]]; then
   # Compile with clang-tidy(1) turned on. The build treats clang-tidy warnings
   # as errors.
-  export BUILD_TYPE=Debug
+  export DISTRO=fedora-install
+  export DISTRO_VERSION=31
   export CC=clang
   export CXX=clang++
-  export CMAKE_FLAGS="-DGOOGLE_CLOUD_CPP_CLANG_TIDY=yes"
+  export BUILD_TYPE=Debug
   export CHECK_STYLE=yes
   export GENERATE_DOCS=yes
+  export CLANG_TIDY=yes
+  export TEST_INSTALL=yes
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "publish-refdocs" ]]; then
   export BUILD_TYPE=Debug
   export CC=clang
@@ -373,6 +377,10 @@ docker_flags=(
     # If set, run the scripts to check (and fix) the code formatting (i.e.
     # clang-format, cmake-format, and buildifier).
     "--env" "CHECK_STYLE=${CHECK_STYLE:-}"
+
+    # If set to 'yes', the build script will configure clang-tidy. Currently
+    # only the CMake builds use this flag.
+    "--env" "CLANG_TIDY=${CLANG_TIDY:-}"
 
     # If set to 'no', skip the integration tests.
     "--env" "RUN_INTEGRATION_TESTS=${RUN_INTEGRATION_TESTS:-}"
