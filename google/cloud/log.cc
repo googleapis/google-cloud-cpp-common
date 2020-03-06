@@ -14,6 +14,7 @@
 
 #include "google/cloud/log.h"
 #include "google/cloud/internal/getenv.h"
+#include <array>
 
 namespace google {
 namespace cloud {
