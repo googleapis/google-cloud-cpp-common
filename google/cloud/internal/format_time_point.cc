@@ -30,16 +30,15 @@ std::string FormatFractional(std::chrono::nanoseconds ns) {
   using std::chrono::milliseconds;
   using std::chrono::nanoseconds;
   using std::chrono::seconds;
-  constexpr int kMaxNanosecondsDigits = 9;
+  auto constexpr kMaxNanosecondsDigits = 9;
   auto constexpr kBufferSize = 16;
   static_assert(kBufferSize > (kMaxNanosecondsDigits  // digits
                                + 1                    // period
-                               + 1)                   // NUL terminator
-                ,
+                               + 1),                  // NUL terminator
                 "Buffer is not large enough for printing nanoseconds");
-  constexpr int kNanosecondsPerMillisecond =
+  auto constexpr kNanosecondsPerMillisecond =
       nanoseconds(milliseconds(1)).count();
-  constexpr int kMillisecondsPerSecond = milliseconds(seconds(1)).count();
+  auto constexpr kMillisecondsPerSecond = milliseconds(seconds(1)).count();
 
   std::array<char, kBufferSize> buffer{};
   // If the fractional seconds can be just expressed as milliseconds, do that,
@@ -79,7 +78,7 @@ namespace cloud {
 inline namespace GOOGLE_CLOUD_CPP_NS {
 namespace internal {
 
-constexpr int kTimestampFormatSize = 256;
+auto constexpr kTimestampFormatSize = 256;
 static_assert(kTimestampFormatSize > ((4 + 1)    // YYYY-
                                       + (2 + 1)  // MM-
                                       + 2        // DD
@@ -87,8 +86,7 @@ static_assert(kTimestampFormatSize > ((4 + 1)    // YYYY-
                                       + (2 + 1)  // HH:
                                       + (2 + 1)  // MM:
                                       + 2        // SS
-                                      + 1)       // Z
-              ,
+                                      + 1),      // Z
               "Buffer size not large enough for YYYY-MM-DDTHH:MM:SSZ format");
 
 std::string FormatRfc3339(std::chrono::system_clock::time_point tp) {
@@ -118,11 +116,10 @@ std::string FormatV4SignedUrlTimestamp(
 std::string FormatV4SignedUrlScope(std::chrono::system_clock::time_point tp) {
   std::tm tm = AsUtcTm(tp);
 
-  constexpr int kDateFormatSize = 256;
-  static_assert(kDateFormatSize > (4     // YYYY
-                                   + 2   // MM
-                                   + 2)  // DD
-                ,
+  auto constexpr kDateFormatSize = 256;
+  static_assert(kDateFormatSize > (4      // YYYY
+                                   + 2    // MM
+                                   + 2),  // DD
                 "Buffer size not large enough for YYYYMMDD format");
   std::array<char, kTimestampFormatSize> buffer{};
   std::strftime(buffer.data(), buffer.size(), "%Y%m%d", &tm);

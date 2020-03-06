@@ -35,11 +35,11 @@ bool IsLeapYear(int year) {
   return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
 }
 
-constexpr int kMonthsInYear = 12;
-constexpr int kHoursInDay = 24;
-constexpr int kMinutesInHour =
+auto constexpr kMonthsInYear = 12;
+auto constexpr kHoursInDay = 24;
+auto constexpr kMinutesInHour =
     std::chrono::seconds(std::chrono::minutes(1)).count();
-constexpr int kSecondsInMinute =
+auto constexpr kSecondsInMinute =
     std::chrono::minutes(std::chrono::hours(1)).count();
 
 std::chrono::system_clock::time_point ParseDateTime(
@@ -56,8 +56,8 @@ std::chrono::system_clock::time_point ParseDateTime(
       std::sscanf(buffer, "%4d-%2d-%2d%c%2d:%2d:%2d%n", &year, &month, &day,
                   &date_time_separator, &hours, &minutes, &seconds, &pos);
   // All the fields up to this point have fixed width, so total width must be:
-  constexpr int kExpectedWidth = 19;
-  constexpr int kExpectedFields = 7;
+  auto constexpr kExpectedWidth = 19;
+  auto constexpr kExpectedFields = 7;
   if (count != kExpectedFields || pos != kExpectedWidth) {
     ReportError(timestamp,
                 "Invalid format for RFC 3339 timestamp detected while parsing"
@@ -67,7 +67,7 @@ std::chrono::system_clock::time_point ParseDateTime(
     ReportError(timestamp, "Invalid date-time separator, expected 'T' or 't'.");
   }
 
-  constexpr std::array<int, kMonthsInYear> kMaxDaysInMonth{
+  std::array<int, kMonthsInYear> constexpr kMaxDaysInMonth{
       31,  // January
       29,  // February (non-leap years checked below)
       31,  // March
@@ -81,7 +81,7 @@ std::chrono::system_clock::time_point ParseDateTime(
       30,  // November
       31,  // December
   };
-  constexpr int kMkTimeBaseYear = 1900;
+  auto constexpr kMkTimeBaseYear = 1900;
   if (month < 1 || month > kMonthsInYear) {
     ReportError(timestamp, "Out of range month.");
   }
@@ -131,8 +131,8 @@ std::chrono::system_clock::duration ParseFractionalSeconds(
   if (count != 1) {
     ReportError(timestamp, "Invalid fractional seconds component.");
   }
-  constexpr int kMaxNanosecondDigits = 9;
-  constexpr int kNanosecondsBase = 10;
+  auto constexpr kMaxNanosecondDigits = 9;
+  auto constexpr kNanosecondsBase = 10;
   // Normalize the fractional seconds to nanoseconds.
   for (int digits = pos; digits < kMaxNanosecondDigits; ++digits) {
     fractional_seconds *= kNanosecondsBase;
@@ -155,8 +155,8 @@ std::chrono::seconds ParseOffset(char const*& buffer,
     // Parse the HH:MM offset.
     int hours, minutes, pos;  // NOLINT(readability-isolate-declaration)
     auto count = std::sscanf(buffer, "%2d:%2d%n", &hours, &minutes, &pos);
-    constexpr int kExpectedOffsetWidth = 5;
-    constexpr int kExpectedOffsetFields = 2;
+    auto constexpr kExpectedOffsetWidth = 5;
+    auto constexpr kExpectedOffsetFields = 2;
     if (count != kExpectedOffsetFields || pos != kExpectedOffsetWidth) {
       ReportError(timestamp, "Invalid timezone offset, expected [+-]HH:MM.");
     }
