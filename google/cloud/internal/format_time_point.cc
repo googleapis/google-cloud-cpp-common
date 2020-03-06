@@ -33,9 +33,9 @@ std::string FormatFractional(std::chrono::nanoseconds ns) {
   constexpr int kMaxNanosecondsDigits = 9;
   auto constexpr kBufferSize = 16;
   static_assert(kBufferSize > (kMaxNanosecondsDigits  // digits
-                    + 1                    // period
-                    + 1)                   // NUL terminator
-      ,
+                               + 1                    // period
+                               + 1)                   // NUL terminator
+                ,
                 "Buffer is not large enough for printing nanoseconds");
   constexpr int kNanosecondsPerMillisecond =
       nanoseconds(milliseconds(1)).count();
