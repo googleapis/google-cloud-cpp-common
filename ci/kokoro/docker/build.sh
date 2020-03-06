@@ -136,7 +136,6 @@ elif [[ "${BUILD_NAME}" = "no-tests" ]]; then
   # package maintainers, where the cost of running the tests for a fixed version
   # is too high.
   export BUILD_TESTING=no
-  export CHECK_STYLE=yes
 elif [[ "${BUILD_NAME}" = "libcxx" ]]; then
   # Compile using libc++. This is easier to install on Fedora.
   export CC=clang
