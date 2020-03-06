@@ -55,13 +55,13 @@ cmake_extra_flags=(
     # Always set the build type, so it can be configured by the `build.sh`
     # script.
     "-DCMAKE_BUILD_TYPE=${BUILD_TYPE}"
-
-    # Always disable the ccache, it can make some builds flaky, and we do not
-    # preserve the cache between builds.
-    "-DGOOGLE_CLOUD_CPP_ENABLE_CCACHE=OFF"
 )
 if [[ "${BUILD_TESTING:-}" == "no" ]]; then
   cmake_extra_flags+=( "-DBUILD_TESTING=OFF" )
+fi
+
+if [[ "${CLANG_TIDY:-}" = "yes" ]]; then
+  cmake_extra_flags+=("-DGOOGLE_CLOUD_CPP_CLANG_TIDY=yes")
 fi
 
 if [[ "${GOOGLE_CLOUD_CPP_CXX_STANDARD:-}" != "" ]]; then
