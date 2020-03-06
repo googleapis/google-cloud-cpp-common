@@ -31,11 +31,17 @@ std::string FormatFractional(std::chrono::nanoseconds ns) {
   using std::chrono::nanoseconds;
   using std::chrono::seconds;
   constexpr int kMaxNanosecondsDigits = 9;
+  auto constexpr kBufferSize = 16;
+  static_assert(kBufferSize > (kMaxNanosecondsDigits  // digits
+                    + 1                    // period
+                    + 1)                   // NUL terminator
+      ,
+                "Buffer is not large enough for printing nanoseconds");
   constexpr int kNanosecondsPerMillisecond =
       nanoseconds(milliseconds(1)).count();
   constexpr int kMillisecondsPerSecond = milliseconds(seconds(1)).count();
-  // Need to leave room for the period and the NUL terminator
-  std::array<char, kMaxNanosecondsDigits + 2> buffer{};
+
+  std::array<char, kBufferSize> buffer{};
   // If the fractional seconds can be just expressed as milliseconds, do that,
   // we do not want to print 1.123000000
   auto d = std::lldiv(ns.count(), kNanosecondsPerMillisecond);
