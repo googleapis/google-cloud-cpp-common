@@ -53,14 +53,10 @@ TEST(Random, Threads) {
 
   int count = 0;
   for (auto& f : workers) {
-    try {
-      int result = f.get();
-      EXPECT_EQ(result, kIterations);
-    } catch (std::runtime_error const& ex) {
-      EXPECT_TRUE(false) << "unexpected exception throw by worker " << count
-                         << ": " << ex.what() << "\n";
-    }
-    ++count;
+    SCOPED_TRACE("testing with worker " + std::to_string(count++));
+    int result = 0;
+    EXPECT_NO_THROW(result = f.get());
+    EXPECT_EQ(result, kIterations);
   }
 }
 #endif  // GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
