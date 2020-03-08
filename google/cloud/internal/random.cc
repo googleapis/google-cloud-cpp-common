@@ -23,7 +23,7 @@ namespace internal {
 std::vector<unsigned int> FetchEntropy(std::size_t desired_bits) {
   // We use the default C++ random device to generate entropy.  The quality of
   // this source of entropy is implementation-defined. The version in
-  // Linux with libstdc++ (the most common library on Linux) it is based on
+  // Linux with libstdc++ (the most common library on Linux) is based on
   // either `/dev/urandom`, or (if available) the RDRAND, or the RDSEED CPU
   // instruction.
   //     http://en.cppreference.com/w/cpp/numeric/random/random_device/random_device
@@ -52,8 +52,7 @@ std::vector<unsigned int> FetchEntropy(std::size_t desired_bits) {
 #endif  // defined(__GLIBCXX__) && __GLIBCXX__ >= 20200128
 
   auto constexpr kWordSize = std::numeric_limits<unsigned int>::digits;
-  auto const n = desired_bits / kWordSize +
-                 static_cast<int>(desired_bits % kWordSize != 0);
+  auto const n = (desired_bits + kWordSize - 1) / kWordSize;
   std::vector<unsigned int> entropy(n);
   std::generate(entropy.begin(), entropy.end(), [&rd]() { return rd(); });
   return entropy;
