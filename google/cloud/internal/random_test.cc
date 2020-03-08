@@ -14,10 +14,12 @@
 
 #include "google/cloud/internal/random.h"
 #include <gmock/gmock.h>
+#include <future>
+#include <vector>
 
 using namespace google::cloud::internal;
 
-TEST(BenchmarksRandom, Basic) {
+TEST(Random, Basic) {
   // This is not a statistical test for PRNG, basically we want to make
   // sure that MakeDefaultPRNG uses different seeds, or at least creates
   // different series:
@@ -29,3 +31,36 @@ TEST(BenchmarksRandom, Basic) {
   std::string s1 = gen_string();
   EXPECT_NE(s0, s1);
 }
+
+// The bug the C++ standard library throws an exception when the bug is
+// triggered, without exceptions the test would just crash.
+#if GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
+// @test verify that multiple threads can call
+TEST(Random, Threads) {
+  auto constexpr kNumWorkers = 64;
+  auto constexpr kIterations = 100;
+  std::vector<std::future<int>> workers(kNumWorkers);
+
+  std::generate_n(workers.begin(), workers.size(), [&] {
+    return std::async(std::launch::async, [&] {
+      for (auto i = 0; i != kIterations; ++i) {
+        auto g = MakeDefaultPRNG();
+        (void)g();
+      }
+      return kIterations;
+    });
+  });
+
+  int count = 0;
+  for (auto& f : workers) {
+    try {
+      int result = f.get();
+      EXPECT_EQ(result, kIterations);
+    } catch (std::runtime_error const& ex) {
+      EXPECT_TRUE(false) << "unexpected exception throw by worker " << count
+                         << ": " << ex.what() << "\n";
+    }
+    ++count;
+  }
+}
+#endif  // GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
