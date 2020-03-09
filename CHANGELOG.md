@@ -6,6 +6,9 @@
 
 * fix: workaround a libstdc++ bug on `std::random_device` (#208)
 * cleanup: use same clang-tidy in all repositories (#206)
+* chore: remove EnvironmentVariableRestore (#190)
+  **NOTE:** this class (like all types and functions in the
+   `google::cloud::testing_utils` namespace) was not intended for public use.
 
 ## v0.21.x - 2020-03
 
