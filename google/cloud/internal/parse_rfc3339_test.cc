@@ -67,7 +67,6 @@ TEST(ParseRfc3339Test, ParseSimpleZulu) {
       {"2020-01-01T00:00:59Z", 1577836859L},
       {"2020-01-01T00:59:59Z", 1577840399L},
       {"2020-01-01T23:59:59Z", 1577923199L},
-
   };
   for (auto const& test : tests) {
     auto timestamp = ParseRfc3339(test.input);
