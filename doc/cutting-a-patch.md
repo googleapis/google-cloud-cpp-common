@@ -1,7 +1,7 @@
 # Creating a new patch release of google-cloud-cpp-common
 
 The intended audience of this document are developers in the
-`google-cloud-cpp-common` project that need to create a new release. The
+`google-cloud-cpp-common` project that need to create a new patch release. The
 audience is expected to be familiar with the project itself, [git][git-docs],
 [GitHub][github-guides], [semantic versioning](https://semver.org), and
 with how to [cut a release](cutting-a-release.md).
@@ -17,32 +17,41 @@ git remote add upstream https://github.com/googleapis/google-cloud-cpp-common.gi
 git fetch upstream
 ```
 
-Now you can create a branch of the release branch, we will use `v0.22.x` as an
-example, replace that with the right version:
+We will use some variables to represent the release branch and the patch
+version:
 
 ```bash
-git checkout v0.22.x
-git checkout -b prepare-v0.22.1-patch
+RELEASE_BRANCH="v0.22.x"
+PATCH_VERSION="v0.22.1"
 ```
 
-Then cherry-pick the changes you want, without committing them
+With these variables we create a branch out of the existing release branch:
+
+```bash
+git checkout "${RELEASE_BRANCH}"
+git checkout -b "prepare-${PATCH_VERSION}-patch"
+```
+
+Then cherry-pick the changes you want, without committing them, for example:
 
 ```bash
 git cherry-pick -n 140c7e3d0ad06accd639e95164f5de2c4c82642e
 ```
 
-Update the release notes to include these changes, commit these changes. You
-may want to use the same description as in the change to `master`.
+Update the release notes to include these changes, and commit them, including
+your updates to the `CHANGELOG.md` file:
 
 ```bash
 git add CHANGELOG.md
 git commit
 ```
 
-Run the usual tests, push the changes and create a PR. You must use `v0.22.x`
-as the target branch of your PR.
+You may want to use the same description as in the change to `master`.
+
+Run the usual tests, push the changes and create a PR. You must use
+"${RELEASE_BRANCH}" as the target branch of your PR.
 
 ## Creating the release
 
 As of this writing the release script always cuts releases from `master`,
-create the release manually using the GitHub website is probably best.
+so creating the release manually using the GitHub website is probably best.
