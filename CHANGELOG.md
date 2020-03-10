@@ -2,6 +2,12 @@
 
 ## v0.23.x - TBD
 
+## v0.22.1 - 2020-03
+
+* fix: correct range validation in ParseRfc3339 (#219) - the library incorrectly
+  rejected timestamps with '59' in the minutes part, the tests did not cover
+  the full range of valid inputs.
+
 ## v0.22.x - 2020-03
 
 * fix: workaround a libstdc++ bug on `std::random_device` (#208)
