@@ -38,10 +38,12 @@ $build_flags = @("--keep_going")
 
 $env:BAZEL_VC="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC"
 
-Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Downloading dependencies via Bazel"
-bazel $common_flags fetch -- //google/cloud/...:all
-if ($LastExitCode) {
-    throw "bazel fetch failed with exit code $LastExitCode"
+1..3 | ForEach-Object {
+    Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Fetch dependencies [$_]"
+    bazel $common_flags fetch -- //google/cloud/...:all
+    if ($LastExitCode -eq 0) {
+        return
+    }
 }
 
 Write-Host -ForegroundColor Yellow "`n$(Get-Date -Format o) Compiling and running unit tests"
