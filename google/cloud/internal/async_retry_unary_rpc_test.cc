@@ -112,21 +112,16 @@ TEST(AsyncRetryUnaryRpcTest, ImmediatelySucceeds) {
   btadmin::GetTableRequest request;
   request.set_name("fake/table/name/request");
 
-  auto async_call = [&mock](grpc::ClientContext* context,
-                            btadmin::GetTableRequest const& request,
-                            grpc::CompletionQueue* cq) {
-    return mock.AsyncGetTable(context, request, cq);
-  };
-
-  static_assert(google::cloud::internal::is_invocable<
-                    decltype(async_call), grpc::ClientContext*,
-                    decltype(request), grpc::CompletionQueue*>::value,
-                "");
-
   auto fut = StartRetryAsyncUnaryRpc(
       cq, __func__, RpcLimitedErrorCountRetryPolicy(3).clone(),
       RpcExponentialBackoffPolicy(10_us, 40_us, 2.0).clone(),
-      /*is_idempotent=*/true, async_call, request);
+      /*is_idempotent=*/true,
+      [&mock](grpc::ClientContext* context,
+              btadmin::GetTableRequest const& request,
+              grpc::CompletionQueue* cq) {
+        return mock.AsyncGetTable(context, request, cq);
+      },
+      request);
 
   EXPECT_EQ(1, impl->size());
   impl->SimulateCompletion(true);
@@ -167,21 +162,16 @@ TEST(AsyncRetryUnaryRpcTest, VoidImmediatelySucceeds) {
   btadmin::DeleteTableRequest request;
   request.set_name("fake/table/name/request");
 
-  auto async_call = [&mock](grpc::ClientContext* context,
-                            btadmin::DeleteTableRequest const& request,
-                            grpc::CompletionQueue* cq) {
-    return mock.AsyncDeleteTable(context, request, cq);
-  };
-
-  static_assert(google::cloud::internal::is_invocable<
-                    decltype(async_call), grpc::ClientContext*,
-                    decltype(request), grpc::CompletionQueue*>::value,
-                "");
-
   auto fut = StartRetryAsyncUnaryRpc(
       cq, __func__, RpcLimitedErrorCountRetryPolicy(3).clone(),
       RpcExponentialBackoffPolicy(10_us, 40_us, 2.0).clone(),
-      /*is_idempotent=*/true, async_call, request);
+      /*is_idempotent=*/true,
+      [&mock](grpc::ClientContext* context,
+              btadmin::DeleteTableRequest const& request,
+              grpc::CompletionQueue* cq) {
+        return mock.AsyncDeleteTable(context, request, cq);
+      },
+      request);
 
   EXPECT_EQ(1, impl->size());
   impl->SimulateCompletion(true);
@@ -192,23 +182,19 @@ TEST(AsyncRetryUnaryRpcTest, VoidImmediatelySucceeds) {
   ASSERT_STATUS_OK(result);
 }
 
-#if 0
-
 TEST(AsyncRetryUnaryRpcTest, PermanentFailure) {
   using namespace google::cloud::testing_util::chrono_literals;
 
-  MockClient client;
+  MockStub mock;
 
-  using ReaderType =
-      ::google::cloud::bigtable::testing::MockAsyncResponseReader<
-          btadmin::Table>;
+  using ReaderType = MockAsyncResponseReader<btadmin::Table>;
   auto reader = google::cloud::internal::make_unique<ReaderType>();
   EXPECT_CALL(*reader, Finish(_, _, _))
       .WillOnce(Invoke([](btadmin::Table*, grpc::Status* status, void*) {
         *status = grpc::Status(grpc::StatusCode::PERMISSION_DENIED, "uh-oh");
       }));
 
-  EXPECT_CALL(client, AsyncGetTable(_, _, _))
+  EXPECT_CALL(mock, AsyncGetTable(_, _, _))
       .WillOnce(Invoke([&reader](grpc::ClientContext*,
                                  btadmin::GetTableRequest const& request,
                                  grpc::CompletionQueue*) {
@@ -218,8 +204,8 @@ TEST(AsyncRetryUnaryRpcTest, PermanentFailure) {
             btadmin::Table>>(reader.get());
       }));
 
-  auto impl = std::make_shared<testing::MockCompletionQueue>();
-  bigtable::CompletionQueue cq(impl);
+  auto impl = std::make_shared<MockCompletionQueue>();
+  CompletionQueue cq(impl);
 
   // Do some basic initialization of the request to verify the values get
   // carried to the mock.
@@ -227,16 +213,15 @@ TEST(AsyncRetryUnaryRpcTest, PermanentFailure) {
   request.set_name("fake/table/name/request");
 
   auto fut = StartRetryAsyncUnaryRpc(
-      __func__, LimitedErrorCountRetryPolicy(3).clone(),
-      ExponentialBackoffPolicy(10_us, 40_us).clone(),
-      ConstantIdempotencyPolicy(true),
-      MetadataUpdatePolicy("resource", MetadataParamTypes::RESOURCE),
-      [&client](grpc::ClientContext* context,
-                btadmin::GetTableRequest const& request,
-                grpc::CompletionQueue* cq) {
-        return client.AsyncGetTable(context, request, cq);
+      cq, __func__, RpcLimitedErrorCountRetryPolicy(3).clone(),
+      RpcExponentialBackoffPolicy(10_us, 40_us, 2.0).clone(),
+      /*is_idempotent=*/true,
+      [&mock](grpc::ClientContext* context,
+              btadmin::GetTableRequest const& request,
+              grpc::CompletionQueue* cq) {
+        return mock.AsyncGetTable(context, request, cq);
       },
-      request, cq);
+      request);
 
   EXPECT_EQ(1, impl->size());
   impl->SimulateCompletion(true);
@@ -251,12 +236,9 @@ TEST(AsyncRetryUnaryRpcTest, PermanentFailure) {
 TEST(AsyncRetryUnaryRpcTest, TooManyTransientFailures) {
   using namespace google::cloud::testing_util::chrono_literals;
 
-  MockClient client;
+  MockStub mock;
 
-  using ReaderType =
-      ::google::cloud::bigtable::testing::MockAsyncResponseReader<
-          btadmin::Table>;
-
+  using ReaderType = MockAsyncResponseReader<btadmin::Table>;
   auto finish_failure = [](btadmin::Table*, grpc::Status* status, void*) {
     *status = grpc::Status(grpc::StatusCode::UNAVAILABLE, "try-again");
   };
@@ -268,7 +250,7 @@ TEST(AsyncRetryUnaryRpcTest, TooManyTransientFailures) {
   auto r3 = google::cloud::internal::make_unique<ReaderType>();
   EXPECT_CALL(*r3, Finish(_, _, _)).WillOnce(Invoke(finish_failure));
 
-  EXPECT_CALL(client, AsyncGetTable(_, _, _))
+  EXPECT_CALL(mock, AsyncGetTable(_, _, _))
       .WillOnce(Invoke([&r1](grpc::ClientContext*,
                              btadmin::GetTableRequest const& request,
                              grpc::CompletionQueue*) {
@@ -291,8 +273,8 @@ TEST(AsyncRetryUnaryRpcTest, TooManyTransientFailures) {
             grpc::ClientAsyncResponseReaderInterface<btadmin::Table>>(r3.get());
       }));
 
-  auto impl = std::make_shared<testing::MockCompletionQueue>();
-  bigtable::CompletionQueue cq(impl);
+  auto impl = std::make_shared<MockCompletionQueue>();
+  CompletionQueue cq(impl);
 
   // Do some basic initialization of the request to verify the values get
   // carried to the mock.
@@ -300,16 +282,15 @@ TEST(AsyncRetryUnaryRpcTest, TooManyTransientFailures) {
   request.set_name("fake/table/name/request");
 
   auto fut = StartRetryAsyncUnaryRpc(
-      __func__, LimitedErrorCountRetryPolicy(2).clone(),
-      ExponentialBackoffPolicy(10_us, 40_us).clone(),
-      ConstantIdempotencyPolicy(true),
-      MetadataUpdatePolicy("resource", MetadataParamTypes::RESOURCE),
-      [&client](grpc::ClientContext* context,
-                btadmin::GetTableRequest const& request,
-                grpc::CompletionQueue* cq) {
-        return client.AsyncGetTable(context, request, cq);
+      cq, __func__, RpcLimitedErrorCountRetryPolicy(2).clone(),
+      RpcExponentialBackoffPolicy(10_us, 40_us, 2.0).clone(),
+      /*is_idempotent=*/true,
+      [&mock](grpc::ClientContext* context,
+              btadmin::GetTableRequest const& request,
+              grpc::CompletionQueue* cq) {
+        return mock.AsyncGetTable(context, request, cq);
       },
-      request, cq);
+      request);
 
   // Because the maximum number of failures is 2 we expect 3 calls (the 3rd
   // failure is the "too many" case). In between the calls there are timers
@@ -332,7 +313,6 @@ TEST(AsyncRetryUnaryRpcTest, TooManyTransientFailures) {
   EXPECT_EQ(StatusCode::kUnavailable, result.status().code());
 }
 
-#endif
 }  // namespace
 }  // namespace internal
 }  // namespace GOOGLE_CLOUD_CPP_NS
