@@ -38,7 +38,10 @@ class RetryPolicy {
    * @name type traits
    */
 
+  /// The status type used by the retry policy
   using StatusType = StatusTypeP;
+
+  /// The traits describing which errors are permanent failures
   using RetryableTraits = RetryableTraitsP;
   ///@}
 
