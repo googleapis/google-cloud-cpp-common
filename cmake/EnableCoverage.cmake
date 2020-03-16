@@ -24,7 +24,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "^(Clang|GNU)$")
     check_cxx_compiler_flag("--coverage" CXX_SUPPORTS_COVERAGE_FLAG)
     set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS}")
     if (CXX_SUPPORTS_COVERAGE_FLAG)
-        set(GOOGLE_CLOUD_CPP_COVERAGE_FLAGS "--coverage -fno-inline -fno-inline-small-functions -fno-default-inline")
+        set(GOOGLE_CLOUD_CPP_COVERAGE_FLAGS "--coverage")
         # Coverage build type
         set(CMAKE_CXX_FLAGS_COVERAGE
             "${CMAKE_CXX_FLAGS_DEBUG} ${GOOGLE_CLOUD_CPP_COVERAGE_FLAGS}"
