@@ -17,6 +17,8 @@
 #include "google/cloud/internal/retry_policy.h"
 #include "google/cloud/testing_util/assert_ok.h"
 #include "google/cloud/testing_util/chrono_literals.h"
+#include "google/cloud/testing_util/mock_async_response_reader.h"
+#include "google/cloud/testing_util/mock_completion_queue.h"
 #include <google/bigtable/admin/v2/bigtable_table_admin.grpc.pb.h>
 #include <gmock/gmock.h>
 #include <thread>
@@ -28,66 +30,19 @@ namespace internal {
 namespace {
 
 namespace btadmin = ::google::bigtable::admin::v2;
+using ::google::cloud::testing_util::MockAsyncResponseReader;
+using ::google::cloud::testing_util::MockCompletionQueue;
 using ::testing::_;
 using ::testing::Invoke;
 
-// Tests typically create an instance of this class, then create a
-// `google::cloud::bigtable::CompletionQueue` to wrap it, keeping a reference to
-// the instance to manipulate its state directly.
-class MockCompletionQueue
-    : public google::cloud::internal::CompletionQueueImpl {
- public:
-  std::unique_ptr<grpc::Alarm> CreateAlarm() const override {
-    // grpc::Alarm objects are really hard to cleanup when mocking their
-    // behavior, so we do not create an alarm, instead we return nullptr, which
-    // the classes that care (AsyncTimerFunctor) know what to do with.
-    return std::unique_ptr<grpc::Alarm>();
-  }
-
-  using CompletionQueueImpl::empty;
-  using CompletionQueueImpl::SimulateCompletion;
-  using CompletionQueueImpl::size;
-};
-
 /**
- * Define the interface to mock the result of starting a unary async RPC.
+ * A class to test the retry loop.
  *
- * Note that using this mock often requires special memory management. The
- * google mock library requires all mocks to be destroyed. In contrast, grpc
- * specializes `std::unique_ptr<>` to *not* delete objects of type
- * `grpc::ClientAsyncResponseReaderInterface<T>`:
- *
- *
- *     https://github.com/grpc/grpc/blob/608188c680961b8506847c135b5170b41a9081e8/include/grpcpp/impl/codegen/async_unary_call.h#L305
- *
- * No delete, no destructor, nothing. The gRPC library expects all
- * `grpc::ClientAsyncResponseReader<R>` objects to be allocated from a
- * per-call arena, and deleted in bulk with other objects when the call
- * completes and the full arena is released. Unfortunately, our mocks are
- * allocated from the global heap, as they do not have an associated call or
- * arena. The override in the gRPC library results in a leak, unless we manage
- * the memory explicitly.
- *
- * As a result, the unit tests need to manually delete the objects. The idiom we
- * use is a terrible, horrible, no good, very bad hack:
- *
- * We create a unique pointer to `MockAsyncResponseReader<T>`, then we pass that
- * pointer to gRPC using `reader.get()`, and gRPC promptly puts it into a
- * `std::unique_ptr<ClientAsyncResponseReaderInterface<T>>`. That looks like a
- * double delete waiting to happen, but it is not, because gRPC has done the
- * weird specialization of `std::unique_ptr`.
- *
- * @tparam Response the type of the RPC response
+ * Defines the async versions of two RPCs, one returning a value and the other
+ * returning `void` (or its equivalent in protobuf):
+ * - `google.bigtable.admin.v2.GetTable`
+ * - `google.bigtagble.admin.v2.DeleteTable`
  */
-template <typename Response>
-class MockAsyncResponseReader
-    : public grpc::ClientAsyncResponseReaderInterface<Response> {
- public:
-  MOCK_METHOD0(StartCall, void());
-  MOCK_METHOD1(ReadInitialMetadata, void(void*));
-  MOCK_METHOD3_T(Finish, void(Response*, grpc::Status*, void*));
-};
-
 class MockStub {
  public:
   MOCK_METHOD3(
@@ -103,6 +58,12 @@ class MockStub {
                                              grpc::CompletionQueue* cq));
 };
 
+// Each library defines its own retry policy class, typically by defining the
+// status type (we used to have different status objects on each library), and
+// defining which status codes represent a permanent failure. In this test we
+// define some types to mock the behavior of our libraries.
+
+/// Define which status codes are permanent failures for this test.
 struct IsRetryableTraits {
   static bool IsPermanentFailure(Status const& status) {
     return !status.ok() && status.code() != StatusCode::kUnavailable;
