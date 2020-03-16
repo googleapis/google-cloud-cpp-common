@@ -33,6 +33,7 @@ namespace btadmin = ::google::bigtable::admin::v2;
 using ::google::cloud::testing_util::MockAsyncResponseReader;
 using ::google::cloud::testing_util::MockCompletionQueue;
 using ::testing::_;
+using ::testing::HasSubstr;
 using ::testing::Invoke;
 
 /**
@@ -165,7 +166,7 @@ TEST(AsyncRetryUnaryRpcTest, VoidImmediatelySucceeds) {
   auto fut = StartRetryAsyncUnaryRpc(
       cq, __func__, RpcLimitedErrorCountRetryPolicy(3).clone(),
       RpcExponentialBackoffPolicy(10_us, 40_us, 2.0).clone(),
-      /*is_idempotent=*/true,
+      /*is_idempotent=*/false,
       [&mock](grpc::ClientContext* context,
               btadmin::DeleteTableRequest const& request,
               grpc::CompletionQueue* cq) {
@@ -231,6 +232,8 @@ TEST(AsyncRetryUnaryRpcTest, PermanentFailure) {
   auto result = fut.get();
   EXPECT_FALSE(result);
   EXPECT_EQ(StatusCode::kPermissionDenied, result.status().code());
+  EXPECT_THAT(result.status().message(), HasSubstr("permanent failure"));
+  EXPECT_THAT(result.status().message(), HasSubstr("uh-oh"));
 }
 
 TEST(AsyncRetryUnaryRpcTest, TooManyTransientFailures) {
@@ -311,6 +314,62 @@ TEST(AsyncRetryUnaryRpcTest, TooManyTransientFailures) {
   auto result = fut.get();
   EXPECT_FALSE(result);
   EXPECT_EQ(StatusCode::kUnavailable, result.status().code());
+  EXPECT_THAT(result.status().message(), HasSubstr("retry policy exhausted"));
+  EXPECT_THAT(result.status().message(), HasSubstr("try-again"));
+}
+
+TEST(AsyncRetryUnaryRpcTest, TransientOnNonIdempotent) {
+  using namespace google::cloud::testing_util::chrono_literals;
+
+  MockStub mock;
+
+  using ReaderType = MockAsyncResponseReader<google::protobuf::Empty>;
+  auto reader = google::cloud::internal::make_unique<ReaderType>();
+  EXPECT_CALL(*reader, Finish(_, _, _))
+      .WillOnce(
+          Invoke([](google::protobuf::Empty*, grpc::Status* status, void*) {
+            *status =
+                grpc::Status(grpc::StatusCode::UNAVAILABLE, "maybe-try-again");
+          }));
+
+  EXPECT_CALL(mock, AsyncDeleteTable(_, _, _))
+      .WillOnce(Invoke([&reader](grpc::ClientContext*,
+                                 btadmin::DeleteTableRequest const& request,
+                                 grpc::CompletionQueue*) {
+        EXPECT_EQ("fake/table/name/request", request.name());
+        return std::unique_ptr<grpc::ClientAsyncResponseReaderInterface<
+            // This is safe, see comments in MockAsyncResponseReader.
+            google::protobuf::Empty>>(reader.get());
+      }));
+
+  auto impl = std::make_shared<MockCompletionQueue>();
+  CompletionQueue cq(impl);
+
+  // Do some basic initialization of the request to verify the values get
+  // carried to the mock.
+  btadmin::DeleteTableRequest request;
+  request.set_name("fake/table/name/request");
+
+  auto fut = StartRetryAsyncUnaryRpc(
+      cq, __func__, RpcLimitedErrorCountRetryPolicy(3).clone(),
+      RpcExponentialBackoffPolicy(10_us, 40_us, 2.0).clone(),
+      /*is_idempotent=*/false,
+      [&mock](grpc::ClientContext* context,
+              btadmin::DeleteTableRequest const& request,
+              grpc::CompletionQueue* cq) {
+        return mock.AsyncDeleteTable(context, request, cq);
+      },
+      request);
+
+  EXPECT_EQ(1, impl->size());
+  impl->SimulateCompletion(true);
+
+  EXPECT_TRUE(impl->empty());
+  EXPECT_EQ(std::future_status::ready, fut.wait_for(0_us));
+  auto result = fut.get();
+  EXPECT_EQ(StatusCode::kUnavailable, result.status().code());
+  EXPECT_THAT(result.status().message(), HasSubstr("non-idempotent"));
+  EXPECT_THAT(result.status().message(), HasSubstr("maybe-try-again"));
 }
 
 }  // namespace
