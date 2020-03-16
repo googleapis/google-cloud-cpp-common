@@ -24,10 +24,10 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "^(Clang|GNU)$")
     check_cxx_compiler_flag("--coverage" CXX_SUPPORTS_COVERAGE_FLAG)
     set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS}")
     if (CXX_SUPPORTS_COVERAGE_FLAG)
-
+        set(GOOGLE_CLOUD_CPP_COVERAGE_FLAGS "--coverage -fno-inline -fno-inline-small-functions -fno-default-inline")
         # Coverage build type
         set(CMAKE_CXX_FLAGS_COVERAGE
-            "${CMAKE_CXX_FLAGS_DEBUG} --coverage"
+            "${CMAKE_CXX_FLAGS_DEBUG} ${GOOGLE_CLOUD_CPP_COVERAGE_FLAGS}"
             CACHE STRING
                   "Flags used by the C++ compiler during coverage builds."
                   FORCE)
@@ -35,16 +35,16 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "^(Clang|GNU)$")
         # A bit of a hack: we should not assume the C compiler also supports
         # --coverage
         set(CMAKE_C_FLAGS_COVERAGE
-            "${CMAKE_C_FLAGS_DEBUG} --coverage"
+            "${CMAKE_C_FLAGS_DEBUG} ${GOOGLE_CLOUD_CPP_COVERAGE_FLAGS}"
             CACHE STRING "Flags used by the C compiler during coverage builds."
                   FORCE)
         set(CMAKE_EXE_LINKER_FLAGS_COVERAGE
-            "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage"
+            "${CMAKE_EXE_LINKER_FLAGS_DEBUG} ${GOOGLE_CLOUD_CPP_COVERAGE_FLAGS}"
             CACHE STRING
                   "Flags used for linking binaries during coverage builds."
                   FORCE)
         set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE
-            "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --coverage"
+            "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} ${GOOGLE_CLOUD_CPP_COVERAGE_FLAGS}"
             CACHE
                 STRING
                 "Flags used by the shared libraries linker during coverage builds."
