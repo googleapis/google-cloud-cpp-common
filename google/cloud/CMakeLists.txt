@@ -376,9 +376,9 @@ if (GOOGLE_CLOUD_CPP_ENABLE_GRPC_UTILS)
             add_executable(${target} ${fname})
             target_link_libraries(
                 ${target}
-                PRIVATE google_cloud_cpp_grpc_testing
-                    google_cloud_cpp_grpc_utils
-                    google_cloud_cpp_testing
+                PRIVATE google_cloud_cpp_grpc_utils
+                        google_cloud_cpp_testing_grpc
+                        google_cloud_cpp_testing
                         google_cloud_cpp_common
                         googleapis-c++::bigtable_protos
                         GTest::gmock_main
