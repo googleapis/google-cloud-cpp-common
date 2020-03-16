@@ -16,8 +16,8 @@
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_TESTING_UTIL_MOCK_ASYNC_RESPONSE_READER_H
 
 #include "google/cloud/version.h"
-#include <grpcpp/grpcpp.h>
 #include <gmock/gmock.h>
+#include <grpcpp/grpcpp.h>
 
 namespace google {
 namespace cloud {

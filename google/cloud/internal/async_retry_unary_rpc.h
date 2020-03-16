@@ -125,8 +125,8 @@ class RetryAsyncUnaryRpc {
           RPCRetryPolicy::RetryableTraits::IsPermanentFailure(result.status())
               ? "permanent failure"
               : "retry policy exhausted";
-      self->final_result_.set_value(self->DetailedStatus(
-          failure_description, result.status()));
+      self->final_result_.set_value(
+          self->DetailedStatus(failure_description, result.status()));
       return;
     }
     cq.MakeRelativeTimer(self->rpc_backoff_policy_->OnCompletion())
@@ -226,4 +226,4 @@ StartRetryAsyncUnaryRpc(CompletionQueue cq, char const* location,
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_BIGTABLE_INTERNAL_ASYNC_RETRY_UNARY_RPC_H
+#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_INTERNAL_ASYNC_RETRY_UNARY_RPC_H
