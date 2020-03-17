@@ -335,21 +335,12 @@ TEST(CompletionQueueTest, RunAsync) {
 namespace {
 using TimerFuture = future<StatusOr<std::chrono::system_clock::time_point>>;
 
-void RunAndReschedule(CompletionQueue& cq, bool ok) {
+void RunAndReschedule(CompletionQueue& cq, bool ok,
+                      std::chrono::seconds duration) {
   if (ok) {
-    cq.MakeRelativeTimer(std::chrono::seconds(1))
-        .then([&cq](TimerFuture result) {
-          RunAndReschedule(cq, result.get().ok());
-        });
-  }
-}
-
-void RunAndRescheduleFast(CompletionQueue& cq, bool ok) {
-  if (ok) {
-    cq.MakeRelativeTimer(std::chrono::seconds(0))
-        .then([&cq](TimerFuture result) {
-          RunAndRescheduleFast(cq, result.get().ok());
-        });
+    cq.MakeRelativeTimer(duration).then([&cq, duration](TimerFuture result) {
+      RunAndReschedule(cq, result.get().ok(), duration);
+    });
   }
 }
 }  // namespace
@@ -358,7 +349,7 @@ TEST(CompletionQueueTest, ShutdownWithReschedulingTimer) {
   CompletionQueue cq;
   std::thread t([&cq] { cq.Run(); });
 
-  RunAndReschedule(cq, /*ok=*/true);
+  RunAndReschedule(cq, /*ok=*/true, std::chrono::seconds(1));
 
   cq.Shutdown();
   t.join();
@@ -373,7 +364,7 @@ TEST(CompletionQueueTest, ShutdownWithFastReschedulingTimer) {
                   [&cq] { return std::thread([&cq] { cq.Run(); }); });
 
   for (int i = 0; i != kTimerCount; ++i) {
-    RunAndRescheduleFast(cq, /*ok=*/true);
+    RunAndReschedule(cq, /*ok=*/true, std::chrono::seconds(0));
   }
 
   promise<void> wait;
@@ -391,7 +382,7 @@ TEST(CompletionQueueTest, CancelAndShutdownWithReschedulingTimer) {
   CompletionQueue cq;
   std::thread t([&cq] { cq.Run(); });
 
-  RunAndReschedule(cq, /*ok=*/true);
+  RunAndReschedule(cq, /*ok=*/true, std::chrono::seconds(1));
 
   cq.CancelAll();
   cq.Shutdown();
