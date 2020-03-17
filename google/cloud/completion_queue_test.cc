@@ -333,11 +333,23 @@ TEST(CompletionQueueTest, RunAsync) {
 // Sets up a timer that reschedules itself and verifies we can shut down
 // cleanly whether we call `CancelAll()` on the queue first or not.
 namespace {
+using TimerFuture = future<StatusOr<std::chrono::system_clock::time_point>>;
+
 void RunAndReschedule(CompletionQueue& cq, bool ok) {
   if (ok) {
     cq.MakeRelativeTimer(std::chrono::seconds(1))
-        .then([&cq](future<StatusOr<std::chrono::system_clock::time_point>>
-                        result) { RunAndReschedule(cq, result.get().ok()); });
+        .then([&cq](TimerFuture result) {
+          RunAndReschedule(cq, result.get().ok());
+        });
+  }
+}
+
+void RunAndRescheduleFast(CompletionQueue& cq, bool ok) {
+  if (ok) {
+    cq.MakeRelativeTimer(std::chrono::seconds(0))
+        .then([&cq](TimerFuture result) {
+          RunAndRescheduleFast(cq, result.get().ok());
+        });
   }
 }
 }  // namespace
@@ -350,6 +362,29 @@ TEST(CompletionQueueTest, ShutdownWithReschedulingTimer) {
 
   cq.Shutdown();
   t.join();
+}
+
+TEST(CompletionQueueTest, ShutdownWithFastReschedulingTimer) {
+  auto constexpr kThreadCount = 32;
+  auto constexpr kTimerCount = 100;
+  CompletionQueue cq;
+  std::vector<std::thread> threads(kThreadCount);
+  std::generate_n(threads.begin(), threads.size(),
+                  [&cq] { return std::thread([&cq] { cq.Run(); }); });
+
+  for (int i = 0; i != kTimerCount; ++i) {
+    RunAndRescheduleFast(cq, /*ok=*/true);
+  }
+
+  promise<void> wait;
+  cq.MakeRelativeTimer(std::chrono::milliseconds(1)).then([&wait](TimerFuture) {
+    wait.set_value();
+  });
+  wait.get_future().get();
+  cq.Shutdown();
+  for (auto& t : threads) {
+    t.join();
+  }
 }
 
 TEST(CompletionQueueTest, CancelAndShutdownWithReschedulingTimer) {
