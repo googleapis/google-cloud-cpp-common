@@ -201,9 +201,8 @@ class AsyncReadStreamImpl
 
     auto callback = std::make_shared<NotifyRead>(this->shared_from_this());
     auto response = &callback->response;
-    cq_->StartOperation(std::move(callback), [&](void* tag) {
-      reader_->Read(response, tag);
-    });
+    cq_->StartOperation(std::move(callback),
+                        [&](void* tag) { reader_->Read(response, tag); });
   }
 
   /// Handle the result of a `Read()` call.
@@ -250,9 +249,8 @@ class AsyncReadStreamImpl
 
     auto callback = std::make_shared<NotifyFinish>(this->shared_from_this());
     auto status = &callback->status;
-    cq_->StartOperation(std::move(callback), [&](void* tag) {
-      reader_->Finish(status, tag);
-    });
+    cq_->StartOperation(std::move(callback),
+                        [&](void* tag) { reader_->Finish(status, tag); });
   }
 
   /// Handle the result of a Finish() request.
@@ -289,9 +287,8 @@ class AsyncReadStreamImpl
 
     auto callback = std::make_shared<NotifyDiscard>(this->shared_from_this());
     auto response = &callback->response;
-    cq_->StartOperation(std::move(callback), [&](void* tag) {
-      reader_->Read(response, tag);
-    });
+    cq_->StartOperation(std::move(callback),
+                        [&](void* tag) { reader_->Read(response, tag); });
   }
 
   /// Handle the result of a Discard() call.
