@@ -1,6 +1,14 @@
 # Changelog
 
-## v0.23.x - TBD
+## v0.24.x - TBD
+
+## v0.23.x - 2020-03
+
+* refactor: adapt async retry loop from Bigtable (#244)
+
+## v0.22.1 - 2020-03
+
+* fix: correct range validation in ParseRfc3339 (#219)
 
 ## v0.22.x - 2020-03
 
