@@ -119,13 +119,23 @@ elif [[ "${BUILD_NAME}" = "cmake-super" ]]; then
   export DISTRO=ubuntu
   export DISTRO_VERSION=18.04
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
+elif [[ "${BUILD_NAME}" = "gcc-9" ]]; then
+  # Compile under fedora:31. This distro uses gcc-9.
+  export DISTRO=fedora-install
+  export DISTRO_VERSION=31
+  export CC=gcc
+  export CXX=g++
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
+elif [[ "${BUILD_NAME}" = "clang-9" ]]; then
+  # Compile under fedora:31. This distro uses clang-9.
+  export DISTRO=fedora-install
+  export DISTRO_VERSION=31
+  export CC=clang
+  export CXX=clang++
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "ninja" ]]; then
   # Compiling with Ninja can catch bugs that may not be caught using Make.
   export USE_NINJA=yes
-elif [[ "${BUILD_NAME}" = "gcc-9" ]]; then
-  # Compile under fedora:30. This distro uses gcc-9.
-  export DISTRO=fedora-install
-  export DISTRO_VERSION=30
 elif [[ "${BUILD_NAME}" = "clang-8" ]]; then
   # Compile under fedora:30. This distro uses clang-8.
   export CC=clang
