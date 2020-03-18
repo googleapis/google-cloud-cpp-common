@@ -17,8 +17,6 @@ FROM ubuntu:${DISTRO_VERSION}
 
 RUN apt-get update && \
     apt-get --no-install-recommends install -y \
-        abi-compliance-checker \
-        abi-dumper \
         apt-transport-https \
         apt-utils \
         automake \
@@ -28,13 +26,11 @@ RUN apt-get update && \
         clang \
         cmake \
         curl \
-        ctags \
         doxygen \
         gawk \
         git \
         gcc \
         g++ \
-        cmake \
         libssl-dev \
         libtool \
         lsb-release \

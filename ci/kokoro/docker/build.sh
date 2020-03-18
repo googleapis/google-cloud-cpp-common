@@ -168,6 +168,26 @@ elif [[ "${BUILD_NAME}" = "scan-build" ]]; then
   export CC=clang
   export CXX=clang++
   export SCAN_BUILD=yes
+elif [[ "${BUILD_NAME}" = "gcc-4.8" ]]; then
+  # The oldest version of GCC we support is 4.8, this build checks the code
+  # against that version. The use of CentOS 7 for that build is not a
+  # coincidence: the reason we support GCC 4.8 is to support this distribution
+  # (and its commercial cousin: RHEL 7).
+  export DISTRO=centos
+  export DISTRO_VERSION=7
+  export CMAKE_SOURCE_DIR="super"
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
+elif [[ "${BUILD_NAME}" = "clang-3.8" ]]; then
+  # The oldest version of Clang we actively test is 3.8. There is nothing
+  # particularly interesting about that version. It is simply the version
+  # included with Ubuntu:16.04, and the oldest version tested by
+  # google-cloud-cpp-common.
+  export DISTRO=ubuntu
+  export DISTRO_VERSION=16.04
+  export CC=clang
+  export CXX=clang++
+  export CMAKE_SOURCE_DIR="super"
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "cxx17" ]]; then
   export GOOGLE_CLOUD_CPP_CXX_STANDARD=17
   export TEST_INSTALL=yes
@@ -237,6 +257,7 @@ docker_build_flags=(
   # upload it.
   "-t" "${IMAGE}:latest"
   "--build-arg" "NCPU=${NCPU}"
+  "--build-arg" "DISTRO_VERSION=${DISTRO_VERSION}"
   "-f" "ci/kokoro/docker/Dockerfile.${DISTRO}"
 )
 
