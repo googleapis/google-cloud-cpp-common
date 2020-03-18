@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.24.x - TBD
+## v0.25.x - TBD
+
+## v0.24.x - 2020-03
+
+* fix: workaround clang-3.8 bugs
+* fix: fix racy conditions during CompletionQueue shutdown (#250)
 
 ## v0.23.x - 2020-03
 
