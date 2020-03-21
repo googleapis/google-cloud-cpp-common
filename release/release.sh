@@ -6,11 +6,12 @@
 #   Args:
 #     organization/project-name    Required. The GitHub repo to release.
 #
-#     new-version                  Optional. The new version number to use. If
-#                                  not specified, the new version will be
-#                                  computed from existing git tags. This flag
-#                                  should only be needed when jumping to a
-#                                  non-sequential version number.
+#     new-version                  Optional. The new version number to use,
+#                                  specified as M.N.0. If not specified, the
+#                                  new version will be computed from existing
+#                                  git tags. This flag should only be needed
+#                                  when jumping to a non-sequential version
+#                                  number.
 #
 #   Options:
 #     -f     Force; actually make and push the changes
@@ -121,34 +122,32 @@ banner "Starting release for ${PROJECT_ARG} (${CLONE_URL})"
 hub clone "${PROJECT_ARG}" "${REPO_DIR}"  # May force login to GH at this point
 cd "${REPO_DIR}"
 
+# Figures out the most recent tagged version, and computes the next version.
+readonly TAG="$(git describe --tags --abbrev=0 origin/master)"
+readonly CUR_TAG="$(test -n "${TAG}" && echo "${TAG}" || echo "v0.0.0")"
+readonly CUR_VERSION="${CUR_TAG#v}"
+
 NEW_VERSION=""
 if [[ -n "${VERSION_ARG}" ]]; then
   NEW_VERSION="${VERSION_ARG}"
-  echo "New version: ${NEW_VERSION}"
 else
-  # Figures out the most recent tagged version, and computes the next version.
-  readonly TAG="$(git describe --tags --abbrev=0 origin/master)"
-  readonly CUR_TAG="$(test -n "${TAG}" && echo "${TAG}" || echo "v0.0.0")"
-  readonly CUR_VERSION="${CUR_TAG#v}"
+  # No new version specified; compute the new version number
   NEW_VERSION="$(perl -pe 's/(\d+).(\d+).(\d+)/"$1.${\($2+1)}.$3"/e' <<<"${CUR_VERSION}")"
-  echo "Current tag: ${CUR_TAG}"
-  echo "New version: ${NEW_VERSION}"
 fi
 declare -r NEW_VERSION
 
 # Avoid handling patch releases for now, because we wouldn't need a new branch
 # for those.
-if ! grep -P "\d+\.\d+.0" <<<"${NEW_VERSION}" > /dev/null; then
+if ! grep -P "\d+\.\d+\.0" <<<"${NEW_VERSION}" > /dev/null; then
   echo "Sorry, cannot handle patch releases (yet)"
   echo "$USAGE"
   exit 1
 fi
 
-readonly NEW_RELEASE="v${NEW_VERSION}"
-readonly NEW_TAG="${NEW_RELEASE}"
-readonly NEW_BRANCH="${NEW_RELEASE%.0}.x"
+readonly NEW_TAG="v${NEW_VERSION}"
+readonly NEW_BRANCH="${NEW_TAG%.0}.x"
 
-banner "Release info for ${NEW_RELEASE}"
+banner "Release info for ${CUR_TAG} -> ${NEW_TAG}"
 echo "    New tag: ${NEW_TAG}"
 echo " New branch: ${NEW_BRANCH}"
 
