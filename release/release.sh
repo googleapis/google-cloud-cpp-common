@@ -1,21 +1,37 @@
 #!/bin/bash
 #
 # Usage:
-#   $ release.sh [-f] <organization/project-name>
+#   $ release.sh [-f] <organization/project-name> [new-version]
+#
+#   Args:
+#     organization/project-name    Required. The GitHub repo to release.
+#
+#     new-version                  Optional. The new version number to use. If
+#                                  not specified, the new version will be
+#                                  computed from existing git tags. This flag
+#                                  should only be needed when jumping to a
+#                                  non-sequential version number.
 #
 #   Options:
 #     -f     Force; actually make and push the changes
 #     -h     Print help message
 #
 # Example:
-#   # Shows what commands would be run. NO CHANGES ARE PUSHED
+#   # NO CHANGES ARE PUSHED. Shows what commands would be run.
 #   $ release.sh googleapis/google-cloud-cpp-spanner
 #
-#   # Shows commands AND PUSHES changes when -f is specified
+#   # NO CHANGES ARE PUSHED. Shows what commands would be run.
+#   $ release.sh googleapis/google-cloud-cpp-spanner 2.0.0
+#
+#   # PUSHES CHANGES to release -spanner
 #   $ release.sh -f googleapis/google-cloud-cpp-spanner
 #
+#   # PUSHES CHANGES to release -spanner, setting its new version to 2.0.0
+#   $ release.sh -f googleapis/google-cloud-cpp-spanner 2.0.0
+#
 # This script creates a "release" on github by doing the following:
-#   1. Computes the next version to use
+#
+#   1. Computes the next version to use, if not specified on the command line
 #   2. Creates and pushes the tag w/ the new version
 #   3. Creates and pushes a new branch w/ the new version
 #   4. Creates the "Pre-Release" in the GitHub UI.
@@ -47,15 +63,23 @@ done
 shift $((OPTIND - 1))
 declare -r FORCE_FLAG
 
-if [[ $# -ne 1 ]]; then
-  echo "Missing repo name, example googleapis/google-cloud-cpp-spanner"
+PROJECT_ARG=""
+VERSION_ARG=""
+if [[ $# -eq 1 ]]; then
+  PROJECT_ARG="$1"
+elif [[ $# -eq 2 ]]; then
+  PROJECT_ARG="$1"
+  VERSION_ARG="$2"
+else
+  echo "Invalid arguments"
   echo "$USAGE"
   exit 1;
 fi
+declare -r PROJECT_ARG
+declare -r VERSION_ARG
 
-readonly PROJECT="$1"
-readonly CLONE_URL="git@github.com:${PROJECT}.git"
-readonly TMP_DIR="$(mktemp -d "/tmp/${PROJECT//\//-}-release.XXXXXXXX")"
+readonly CLONE_URL="git@github.com:${PROJECT_ARG}.git"
+readonly TMP_DIR="$(mktemp -d "/tmp/${PROJECT_ARG//\//-}-release.XXXXXXXX")"
 readonly REPO_DIR="${TMP_DIR}/repo"
 
 function banner() {
@@ -93,19 +117,38 @@ if ! command -v hub > /dev/null; then
   exit 1
 fi
 
-banner "Starting release for ${PROJECT} (${CLONE_URL})"
-hub clone "${PROJECT}" "${REPO_DIR}"  # May force login to GH at this point
+banner "Starting release for ${PROJECT_ARG} (${CLONE_URL})"
+hub clone "${PROJECT_ARG}" "${REPO_DIR}"  # May force login to GH at this point
 cd "${REPO_DIR}"
 
-# Figures out the most recent tagged version, and computes the next version.
-readonly TAG="$(git describe --tags --abbrev=0 origin/master)"
-readonly CUR_TAG="$(test -n "${TAG}" && echo "${TAG}" || echo "v0.0.0")"
-readonly NEW_RELEASE="$(perl -pe 's/v0.(\d+).0/"v0.${\($1+1)}"/e' <<<"${CUR_TAG}")"
-readonly NEW_TAG="${NEW_RELEASE}.0"
-readonly NEW_BRANCH="${NEW_RELEASE}.x"
+NEW_VERSION=""
+if [[ -n "${VERSION_ARG}" ]]; then
+  NEW_VERSION="${VERSION_ARG}"
+  echo "New version: ${NEW_VERSION}"
+else
+  # Figures out the most recent tagged version, and computes the next version.
+  readonly TAG="$(git describe --tags --abbrev=0 origin/master)"
+  readonly CUR_TAG="$(test -n "${TAG}" && echo "${TAG}" || echo "v0.0.0")"
+  readonly CUR_VERSION="${CUR_TAG#v}"
+  NEW_VERSION="$(perl -pe 's/(\d+).(\d+).(\d+)/"$1.${\($2+1)}.$3"/e' <<<"${CUR_VERSION}")"
+  echo "Current tag: ${CUR_TAG}"
+  echo "New version: ${NEW_VERSION}"
+fi
+declare -r NEW_VERSION
+
+# Avoid handling patch releases for now, because we wouldn't need a new branch
+# for those.
+if ! grep -P "\d+\.\d+.0" <<<"${NEW_VERSION}" > /dev/null; then
+  echo "Sorry, cannot handle patch releases (yet)"
+  echo "$USAGE"
+  exit 1
+fi
+
+readonly NEW_RELEASE="v${NEW_VERSION}"
+readonly NEW_TAG="${NEW_RELEASE}"
+readonly NEW_BRANCH="${NEW_RELEASE%.0}.x"
 
 banner "Release info for ${NEW_RELEASE}"
-echo "Current tag: ${CUR_TAG}"
 echo "    New tag: ${NEW_TAG}"
 echo " New branch: ${NEW_BRANCH}"
 
