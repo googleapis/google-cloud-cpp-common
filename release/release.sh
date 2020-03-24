@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Usage:
-#   $ release.sh [-f] <organization/project-name> [new-version]
+#   $ release.sh [-f] <organization/project-name> [<new-version>]
 #
 #   Args:
 #     organization/project-name    Required. The GitHub repo to release.
@@ -17,19 +17,6 @@
 #     -f     Force; actually make and push the changes
 #     -h     Print help message
 #
-# Example:
-#   # NO CHANGES ARE PUSHED. Shows what commands would be run.
-#   $ release.sh googleapis/google-cloud-cpp-spanner
-#
-#   # NO CHANGES ARE PUSHED. Shows what commands would be run.
-#   $ release.sh googleapis/google-cloud-cpp-spanner 2.0.0
-#
-#   # PUSHES CHANGES to release -spanner
-#   $ release.sh -f googleapis/google-cloud-cpp-spanner
-#
-#   # PUSHES CHANGES to release -spanner, setting its new version to 2.0.0
-#   $ release.sh -f googleapis/google-cloud-cpp-spanner 2.0.0
-#
 # This script creates a "release" on github by doing the following:
 #
 #   1. Computes the next version to use, if not specified on the command line
@@ -42,11 +29,34 @@
 # happen. Then run this script. After running this script, the user must still
 # go to the GH UI where the new release will exist as a "pre-release", and edit
 # the release notes.
+#
+# Examples:
+#
+#   # NO CHANGES ARE PUSHED. Shows what commands would be run.
+#   $ release.sh googleapis/google-cloud-cpp-spanner
+#
+#   # NO CHANGES ARE PUSHED. Shows what commands would be run.
+#   $ release.sh googleapis/google-cloud-cpp-spanner 2.0.0
+#
+#   # PUSHES CHANGES to release -spanner
+#   $ release.sh -f googleapis/google-cloud-cpp-spanner
+#
+#   # PUSHES CHANGES to release -spanner, setting its new version to 2.0.0
+#   $ release.sh -f googleapis/google-cloud-cpp-spanner 2.0.0
 
 set -eu
 
 # Extracts all the documentation at the top of this file as the usage text.
 readonly USAGE="$(sed -n '3,/^$/s/^# \?//p' "$0")"
+
+# Takes an optional list of strings to be printed with a trailing newline and
+# exits the program with code 1
+function die_with_message() {
+  for m in "$@"; do
+    echo "$m" 1>&2
+  done
+  exit 1
+}
 
 FORCE_FLAG="no"
 while getopts "fh" opt "$@"; do
@@ -54,11 +64,10 @@ while getopts "fh" opt "$@"; do
     [f])
       FORCE_FLAG="yes";;
     [h])
-      echo "$USAGE"
+      echo "${USAGE}"
       exit 0;;
     *)
-      echo "$USAGE"
-      exit 1;;
+      die_with_message "${USAGE}";;
   esac
 done
 shift $((OPTIND - 1))
@@ -72,9 +81,7 @@ elif [[ $# -eq 2 ]]; then
   PROJECT_ARG="$1"
   VERSION_ARG="$2"
 else
-  echo "Invalid arguments"
-  echo "$USAGE"
-  exit 1;
+  die_with_message "Invalid arguments" "${USAGE}"
 fi
 declare -r PROJECT_ARG
 declare -r VERSION_ARG
@@ -112,10 +119,10 @@ trap exit_handler EXIT
 # of the release. We also use 'hub' to do the clone so that the user is asked
 # to authenticate at the beginning of the process rather than at the end.
 if ! command -v hub > /dev/null; then
-  echo "Can't find 'hub' command"
-  echo "Maybe run: sudo apt install hub"
-  echo "Or build it from https://github.com/github/hub"
-  exit 1
+  die_with_message \
+    "Can't find 'hub' command" \
+    "Maybe run: sudo apt install hub" \
+    "Or build it from https://github.com/github/hub"
 fi
 
 banner "Starting release for ${PROJECT_ARG} (${CLONE_URL})"
@@ -139,9 +146,7 @@ declare -r NEW_VERSION
 # Avoid handling patch releases for now, because we wouldn't need a new branch
 # for those.
 if ! grep -P "\d+\.\d+\.0" <<<"${NEW_VERSION}" > /dev/null; then
-  echo "Sorry, cannot handle patch releases (yet)"
-  echo "$USAGE"
-  exit 1
+  die_with_message "Sorry, cannot handle patch releases (yet)" "${USAGE}"
 fi
 
 readonly NEW_TAG="v${NEW_VERSION}"
