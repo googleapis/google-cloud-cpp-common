@@ -48,13 +48,15 @@ struct Timestamp {
 
 std::ostream& operator<<(std::ostream& os, Timestamp const& ts) {
   auto const prev = os.fill(' ');
-  os << std::setw(4) << ts.tm.tm_year + 1900;
+  auto constexpr kTmYearOffset = 1900;
+  os << std::setw(4) << ts.tm.tm_year + kTmYearOffset;
   os.fill('0');
   os << '-' << std::setw(2) << ts.tm.tm_mon + 1;
   os << '-' << std::setw(2) << ts.tm.tm_mday;
   os << 'T' << std::setw(2) << ts.tm.tm_hour;
   os << ':' << std::setw(2) << ts.tm.tm_min;
   os << ':' << std::setw(2) << ts.tm.tm_sec;
+  // NOLINTNEXTLINE(readability-magic-numbers)
   os << '.' << std::setw(9) << ts.nanos << 'Z';
   os.fill(prev);
   return os;
