@@ -85,6 +85,11 @@ if [[ "${USE_NINJA:-}" == "yes" ]]; then
   cmake_extra_flags+=( "-GNinja" )
 fi
 
+# From time to time the builds fail because this file does not exist, create it
+# just to make the builds more reliable.
+mkdir -p "${HOME}/.ccache"
+echo "max_size = 4.0G" >"${HOME}/.ccache/ccache.conf"
+
 # We use parameter expansion for ${cmake_extra_flags} because set -u doesn't
 # like empty arrays on older versions of Bash (which some of our builds use).
 # The expression ${parameter+word} will expand word only if parameter is not
