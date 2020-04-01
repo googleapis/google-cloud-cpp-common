@@ -100,7 +100,7 @@ of these tools we test with are:
 | Tool       | Minimum Version |
 | ---------- | --------------- |
 | CMake      | 3.5 |
-| Bazel      | 0.24.0 |
+| Bazel      | 2.0.0 |
 
 #### Libraries
 
