@@ -1,6 +1,17 @@
 # Changelog
 
-## v0.25.x - TBD
+## v0.26.0 - 2020-05
+
+## v0.25.x - 2020-04
+
+**NOTE:** `google-cloud-cpp-common` will be merged with `google-cloud-cpp`
+on or around 2020-06. We have no plans to remove this repository, but we will
+freeze and move all development, including open issues to
+[google-cloud-cpp](https://github.com/googleapis/google-cloud-cpp).
+
+* fix: use a safer token to workaround libstdc++ bug (#272)
+* feat: add timestamps in default log backend (#266)
+* fix: include needed header (#265)
 
 ## v0.24.x - 2020-03
 
