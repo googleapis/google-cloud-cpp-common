@@ -4,10 +4,14 @@
 
 ## v0.25.x - 2020-04
 
-**NOTE:** `google-cloud-cpp-common` will be merged with `google-cloud-cpp`
-on or around 2020-06. We have no plans to remove this repository, but we will
-freeze and move all development, including open issues to
-[google-cloud-cpp](https://github.com/googleapis/google-cloud-cpp).
+> **NOTICE:** This repo will be merging with the
+[googleapis/google-cloud-cpp](https://github.com/googleapis/google-cloud-cpp)
+monorepo in 60 days, around **June 1, 2020**. This change should not break any
+users who are using a released version. We expect this new monorepo
+organization to be better for our existing and new customers going forward.
+Please see
+[googleapis/google-cloud-cpp#3612](https://github.com/googleapis/google-cloud-cpp/issues/3612)
+for more details.
 
 * fix: use a safer token to workaround libstdc++ bug (#272)
 * feat: add timestamps in default log backend (#266)
