@@ -14,9 +14,12 @@
 
 #include <gmock/gmock.h>
 
-// DEPRECATED(https://github.com/googleapis/google-cloud-cpp/issues/3713):
-// Callers should instead directly use `::testing::InitGoogleMock`, or link
-// with googlemock's `:gmock_main` build target.
+/**
+ * @deprecated
+ * Callers should instead directly use `::testing::InitGoogleMock`, or link
+ * with googlemock's `:gmock_main` build target. See also
+ * https://github.com/googleapis/google-cloud-cpp/issues/3713.
+ */
 int main(int argc, char* argv[]) {
   ::testing::InitGoogleMock(&argc, argv);
   return RUN_ALL_TESTS();

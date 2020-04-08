@@ -23,13 +23,15 @@ namespace cloud {
 inline namespace GOOGLE_CLOUD_CPP_NS {
 namespace testing_util {
 /**
- * DEPRECATED(https://github.com/googleapis/google-cloud-cpp/issues/3713):
+ * @deprecated
  * This function will be deleted soon. Callers should directly use
  * `::testing::InitGoogleMock` instead.
  *
  * We used to need to work around a gmock issue on Windows, but it has since
  * been fixed by https://github.com/google/googletest/pull/2372 and included in
  * googletest v1.10.0.
+ *
+ * See also https://github.com/googleapis/google-cloud-cpp/issues/3713.
  */
 inline void InitGoogleMock(int& argc, char* argv[]) {
   ::testing::InitGoogleMock(&argc, argv);
