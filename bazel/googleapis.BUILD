@@ -13,67 +13,15 @@
 # limitations under the License.
 
 package(default_visibility = ["//visibility:public"])
+
 licenses(["notice"])  # Apache 2.0
 
-load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
-
+# This rule lets us include headers from googleapis targets using angle
+# brackets like system includes.
 cc_library(
-    name = "grpc_utils_protos",
+    name = "googleapis_system_includes",
     includes = [
         ".",
     ],
-    deps = [
-        "@com_github_grpc_grpc//:grpc++",
-        "//google/rpc:status_cc_proto"
-    ],
 )
 
-cc_proto_library(
-    name = "bigtableadmin_cc_proto",
-    deps = ["//google/bigtable/admin/v2:admin_proto"],
-)
-
-cc_proto_library(
-    name = "bigtable_cc_proto",
-    deps = ["//google/bigtable/v2:bigtable_proto"],
-)
-
-cc_grpc_library(
-    name = "bigtableadmin_cc_grpc",
-    srcs = [
-        "//google/bigtable/admin/v2:admin_proto",
-    ],
-    grpc_only = True,
-    use_external = True,
-    well_known_protos = True,
-    deps = [
-        ":bigtableadmin_cc_proto",
-        "//google/longrunning:longrunning_cc_grpc"
-    ],
-)
-
-cc_grpc_library(
-    name = "bigtable_cc_grpc",
-    srcs = ["//google/bigtable/v2:bigtable_proto"],
-    grpc_only = True,
-    use_external = True,
-    well_known_protos = True,
-    deps = [
-        ":bigtable_cc_proto",
-    ],
-)
-
-cc_library(
-    name = "bigtable_protos",
-    includes = [
-        ".",
-    ],
-    deps = [
-        "@com_github_grpc_grpc//:grpc++",
-        ":bigtable_cc_grpc",
-        ":bigtable_cc_proto",
-        ":bigtableadmin_cc_grpc",
-        ":bigtableadmin_cc_proto",
-        "//google/rpc:error_details_cc_proto"
-    ],
-)
