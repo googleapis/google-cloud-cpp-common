@@ -17,14 +17,12 @@ licenses(["notice"])  # Apache 2.0
 
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
+# This rule lets us include all the headers from googleapis targets using angle
+# brackets so they look like system includes.
 cc_library(
-    name = "grpc_utils_protos",
+    name = "googleapis_system_includes",
     includes = [
         ".",
-    ],
-    deps = [
-        "@com_github_grpc_grpc//:grpc++",
-        "//google/rpc:status_cc_proto"
     ],
 )
 
