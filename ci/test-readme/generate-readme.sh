@@ -65,7 +65,7 @@ cat <<'_EOF_'
   - [CentOS (7)](#centos-7)
   - [Debian (10 - Buster)](#debian-10---buster)
   - [Debian (9 - Stretch)](#debian-9---stretch)
-  - [Fedora (30)](#fedora-30)
+  - [Fedora (31)](#fedora-31)
   - [openSuSE (Tumbleweed)](#opensuse-tumbleweed)
   - [openSuSE (Leap)](#opensuse-leap)
   - [Ubuntu (18.04 - Bionic Beaver)](#ubuntu-1804---bionic-beaver)
@@ -140,7 +140,7 @@ echo "### Debian (9 - Stretch)"
 badge debian-stretch
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.debian-stretch"
 
-echo "### Fedora (30)"
+echo "### Fedora (31)"
 badge fedora
 "${BINDIR}/extract-readme.sh" "${DOCKERFILES_DIR}/Dockerfile.fedora"
 

@@ -18,7 +18,7 @@
 #     https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
 #
 
-ARG DISTRO_VERSION=30
+ARG DISTRO_VERSION=31
 FROM fedora:${DISTRO_VERSION} AS devtools
 
 ## [START README.md]

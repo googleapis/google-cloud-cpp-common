@@ -147,7 +147,7 @@ these dependencies.
 
 ## Table of Contents
 
-- [Fedora 30](#fedora-30)
+- [Fedora 31](#fedora-31)
 - [openSUSE (Tumbleweed)](#opensuse-tumbleweed)
 - [openSUSE (Leap)](#opensuse-leap)
 - [Ubuntu (18.04 - Bionic Beaver)](#ubuntu-1804---bionic-beaver)
@@ -160,7 +160,7 @@ END_OF_PREAMBLE
 readonly DOCKERFILES_DIR="${BINDIR}/../kokoro/install"
 
 echo
-echo "### Fedora (30)"
+echo "### Fedora (31)"
 "${BINDIR}/extract-install.sh" "${DOCKERFILES_DIR}/Dockerfile.fedora"
 
 echo
